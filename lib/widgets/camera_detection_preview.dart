@@ -12,7 +12,7 @@ class CameraDetectionPreview extends StatelessWidget {
 
   final CameraService _cameraService = locator<CameraService>();
   final FaceDetectorService _faceDetectorService =
-      locator<FaceDetectorService>();
+  locator<FaceDetectorService>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class CameraDetectionPreview extends StatelessWidget {
             child: Container(
               width: width,
               height:
-                  width * _cameraService.cameraController!.value.aspectRatio,
+              width * _cameraService.cameraController!.value.aspectRatio,
               child: Stack(
                 fit: StackFit.expand,
                 children: <Widget>[

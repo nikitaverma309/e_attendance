@@ -40,28 +40,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        // ClipRRect(
-                        //   borderRadius: BorderRadius.circular(10), // Image ko thoda rounded karne ke liye
-                        //   child: Image(
-                        //     image: AssetImage('assets/images/cglogo.png'),
-                        //
-                        //     height:99,// Set height
-                        //     width:99, // Set width
-                        //     fit: BoxFit.cover, // Crop karne ke liye BoxFit.cover
-                        //   ),
-                        // ),
-                        // SizedBox(height: 10,),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10), // Image ko thoda rounded karne ke liye
                           child: Image(
-                            image: AssetImage('assets/logo.png'),
+                            image: AssetImage('assets/images/cglogo.png'),
 
-                            height:88,// Set height
-                            width:88, // Set width
+                            height:99,// Set height
+                            width:99, // Set width
                             fit: BoxFit.cover, // Crop karne ke liye BoxFit.cover
                           ),
                         ),
-
                         Container(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: Column(
@@ -75,10 +63,23 @@ class _MyHomePageState extends State<MyHomePage> {
                               SizedBox(
                                 height: 20,
                               ),
-      
+
                             ],
                           ),
                         ),
+                        SizedBox(height: 55,),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10), // Image ko thoda rounded karne ke liye
+                          child: Image(
+                            image: AssetImage('assets/logo.png'),
+
+                            height:88,// Set height
+                            width:88, // Set width
+                            fit: BoxFit.cover, // Crop karne ke liye BoxFit.cover
+                          ),
+                        ),
+
+
                         Column(
                           children: [
                             InkWell(

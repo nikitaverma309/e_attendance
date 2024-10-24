@@ -5,10 +5,10 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:online/services/camera.service.dart';
+import 'package:online/services/face_detector_service.dart';
 import 'package:online/widgets/FacePainter.dart';
 import 'package:online/widgets/auth-action-button.dart';
 import 'package:online/widgets/camera_header.dart';
-
 
 import 'locator.dart';
 
@@ -26,16 +26,12 @@ class SignUpState extends State<SignUp> {
 
   bool _detectingFaces = false;
   bool pictureTaken = false;
-
   bool _initializing = false;
-
-  bool _saving = false;
   bool _bottomSheetVisible = false;
 
-  // service injection
-  // FaceDetectorService _faceDetectorService = locator<FaceDetectorService>();
-  CameraService _cameraService = locator<CameraService>();
-
+  // Service injection
+  final FaceDetectorService _faceDetectorService = locator<FaceDetectorService>();
+  final CameraService _cameraService = locator<CameraService>();
 
   @override
   void initState() {
@@ -52,6 +48,7 @@ class SignUpState extends State<SignUp> {
   _start() async {
     setState(() => _initializing = true);
     await _cameraService.initialize();
+    _faceDetectorService.initialize();
     setState(() => _initializing = false);
 
     _frameFaces();
@@ -62,32 +59,59 @@ class SignUpState extends State<SignUp> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return const AlertDialog(
             content: Text('No face detected!'),
           );
         },
       );
-
       return false;
     } else {
-      _saving = true;
-      await Future.delayed(Duration(milliseconds: 500));
-      // await _cameraService.cameraController?.stopImageStream();
-      await Future.delayed(Duration(milliseconds: 200));
-      XFile? file = await _cameraService.takePicture();
-      imagePath = file?.path;
+      try {
+        await _cameraService.cameraController?.stopImageStream();
+        await Future.delayed(const Duration(milliseconds: 500));
 
-      setState(() {
-        _bottomSheetVisible = true;
-        pictureTaken = true;
-      });
+        XFile? file = await _cameraService.takePicture();
+        imagePath = file?.path;
 
-      return true;
+        setState(() {
+          _bottomSheetVisible = true;
+          pictureTaken = true;
+        });
+
+        return true;
+      } catch (e) {
+        print("Error capturing image: $e");
+        return false;
+      }
     }
   }
 
   _frameFaces() {
+    imageSize = _cameraService.getImageSize();
 
+    _cameraService.cameraController?.startImageStream((image) async {
+      if (_detectingFaces) return;
+
+      _detectingFaces = true;
+
+      try {
+        await _faceDetectorService.detectFacesFromImage(image);
+        if (_faceDetectorService.faces.isNotEmpty) {
+          setState(() {
+            faceDetected = _faceDetectorService.faces[0];
+          });
+        } else {
+          setState(() {
+            faceDetected = _faceDetectorService.faces[0];
+          });
+        }
+
+        _detectingFaces = false;
+      } catch (e) {
+        print('Error in face detection: $e');
+        _detectingFaces = false;
+      }
+    });
   }
 
   _onBackPressed() {
@@ -97,9 +121,9 @@ class SignUpState extends State<SignUp> {
   _reload() {
     setState(() {
       _bottomSheetVisible = false;
-      pictureTaken = false;
+      pictureTaken = true;
     });
-    this._start();
+    _start();
   }
 
   @override
@@ -110,26 +134,23 @@ class SignUpState extends State<SignUp> {
 
     late Widget body;
     if (_initializing) {
-      body = Center(
+      body = const Center(
         child: CircularProgressIndicator(),
       );
-    }
-
-    if (!_initializing && pictureTaken) {
+    } else if (pictureTaken) {
       body = Container(
         width: width,
         height: height,
         child: Transform(
-            alignment: Alignment.center,
-            child: FittedBox(
-              fit: BoxFit.cover,
-              child: Image.file(File(imagePath!)),
-            ),
-            transform: Matrix4.rotationY(mirror)),
+          alignment: Alignment.center,
+          transform: Matrix4.rotationY(mirror),
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Image.file(File(imagePath!)),
+          ),
+        ),
       );
-    }
-
-    if (!_initializing && !pictureTaken) {
+    } else {
       body = Transform.scale(
         scale: 1.0,
         child: AspectRatio(
@@ -140,16 +161,18 @@ class SignUpState extends State<SignUp> {
               fit: BoxFit.fitHeight,
               child: Container(
                 width: width,
-                height:
-                    width * _cameraService.cameraController!.value.aspectRatio,
+                height: width * _cameraService.cameraController!.value.aspectRatio,
                 child: Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
                     CameraPreview(_cameraService.cameraController!),
-                    CustomPaint(
-                      painter: FacePainter(
-                          face: faceDetected, imageSize: imageSize!),
-                    ),
+                    if (faceDetected != null)
+                      CustomPaint(
+                        painter: FacePainter(
+                          face: faceDetected!,
+                          imageSize: imageSize!,
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -160,22 +183,21 @@ class SignUpState extends State<SignUp> {
     }
 
     return Scaffold(
-        body: Stack(
-          children: [
-            body,
-            CameraHeader(
-              "SIGN UP",
-              onBackPressed: _onBackPressed,
-            )
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: !_bottomSheetVisible
-            ? AuthActionButton(
-                onPressed: onShot,
-                isLogin: false,
-                reload: _reload,
-              )
-            : Container());
+      body: Stack(
+        children: [
+          body,
+          CameraHeader(
+            "SIGN UP",
+            onBackPressed: _onBackPressed,
+          )
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: _bottomSheetVisible ? null : onShot, // Call onShot when pressed
+        tooltip: 'Capture', // Tooltip for the button
+        child: const Icon(Icons.camera_alt), // Icon for the button
+      ),
+    );
   }
 }
