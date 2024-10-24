@@ -1,8 +1,6 @@
 import 'dart:ui';
-import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:camera/camera.dart';
 
 class CameraService {
   CameraController? _cameraController;

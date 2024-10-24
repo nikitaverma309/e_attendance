@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../locator.dart';
 import '../models/user.model.dart';
-import '../profile.dart';
+import '../modules/profile/profile.dart';
 import '../services/camera.service.dart';
 import 'app_button.dart';
 import 'app_text_field.dart';

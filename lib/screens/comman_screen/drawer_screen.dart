@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
 
-import '../../profile.dart';
+import '../../modules/profile/profile.dart';
 
 
 

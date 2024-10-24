@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:online/home.dart';
+import 'package:online/modules/home/home.dart';
 import 'package:online/locator.dart';
-import 'package:online/splash_page.dart';
+import 'package:online/modules/splash/splash_page.dart';
 
 
 void main() {

@@ -7,8 +7,8 @@ import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
-import '../home.dart';
-import 'constants/string_res.dart';
+import '../home/home.dart';
+import '../../constants/string_res.dart';
 
 class Profile extends StatelessWidget {
   const Profile(this.username, {Key? key, required this.imagePath})

@@ -9,7 +9,7 @@ import 'package:online/services/face_detector_service.dart';
 import 'package:online/widgets/FacePainter.dart';
 import 'package:online/widgets/camera_header.dart';
 
-import 'locator.dart';
+import '../../locator.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);

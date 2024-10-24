@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online/constants/colors_res.dart';
-import 'package:online/home.dart';
+import 'package:online/modules/home/home.dart';
 
 import 'constants/string_res.dart';
 

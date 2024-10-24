@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:online/screens/comman_screen/drawer_screen.dart';
-import 'package:online/screens/login_screen.dart';
-import 'package:online/sign-up.dart';
+import 'package:online/modules/auth/login_screen.dart';
+import 'package:online/modules/auth/sign-up.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
