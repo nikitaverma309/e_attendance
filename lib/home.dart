@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:online/screens/comman_screen/drawer_screen.dart';
+import 'package:online/screens/login_screen.dart';
 import 'package:online/sign-up.dart';
+import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
 
@@ -27,12 +30,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          leading: Container(),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
+        appBar: CustomAppBar(
+          title: 'Online Attendance',
+          showDrawer: true,
 
         ),
+        drawer: const CmoDrawerScreen(),
+        // AppBar(
+        //   leading: Container(),
+        //   elevation: 0,
+        //   backgroundColor: Colors.transparent,
+        //
+        // ),
         body: !loading
             ? SingleChildScrollView(
                 child: SafeArea(
@@ -40,9 +49,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
+                        SizedBox(
+                          height: 20,
+                        ),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10), // Image ko thoda rounded karne ke liye
-                          child: Image(
+                          child: const Image(
                             image: AssetImage('assets/images/cglogo.png'),
 
                             height:99,// Set height
@@ -50,9 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             fit: BoxFit.cover, // Crop karne ke liye BoxFit.cover
                           ),
                         ),
-                        Container(
+                        SizedBox(
+                          height: 20,
+                        ),
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
-                          child: Column(
+                          child: const Column(
                             children: [
                               Text(
                                 "Secure and Smart Online Attendance System",
@@ -67,10 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 55,),
+                        const SizedBox(height: 55,),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10), // Image ko thoda rounded karne ke liye
-                          child: Image(
+                          child: const Image(
                             image: AssetImage('assets/logo.png'),
 
                             height:88,// Set height
@@ -84,12 +99,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: [
                             InkWell(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (BuildContext context) => SignIn(),
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) => LoginPage(),
+                                  ),
+                                );
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -99,15 +114,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                     BoxShadow(
                                       color: Colors.blue.withOpacity(0.1),
                                       blurRadius: 1,
-                                      offset: Offset(0, 2),
+                                      offset: const Offset(0, 2),
                                     ),
                                   ],
                                 ),
                                 alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     vertical: 14, horizontal: 16),
                                 width: MediaQuery.of(context).size.width * 0.8,
-                                child: Row(
+                                child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(

@@ -15,6 +15,12 @@ class Strings {
   static const String warning = "Warning!!!";
   static const String higher = "Welcome to Higher Education Department's";
   static const String welcome = "Welcome to the future of login. Access your educational portal securely using face recognition. No passwords, just convenience.";
+  static const String introOneT = "उच्च शिक्षा का महत्व";
+  static const String guest = "Guest Lecturer Form";
+  static const String introThreeT = "कॉल टू एक्शन";
+  static const String login = "Login Screen";
+
+
 
 
 

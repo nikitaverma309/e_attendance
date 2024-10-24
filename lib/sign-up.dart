@@ -7,7 +7,6 @@ import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/widgets/FacePainter.dart';
-import 'package:online/widgets/auth-action-button.dart';
 import 'package:online/widgets/camera_header.dart';
 
 import 'locator.dart';
@@ -128,7 +127,7 @@ class SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final double mirror = math.pi;
+    const double mirror = math.pi;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -138,7 +137,7 @@ class SignUpState extends State<SignUp> {
         child: CircularProgressIndicator(),
       );
     } else if (pictureTaken) {
-      body = Container(
+      body = SizedBox(
         width: width,
         height: height,
         child: Transform(
