@@ -87,15 +87,6 @@ class MLService {
   }
 
 
-  double _euclideanDistance(List<double>? e1, List<double>? e2) {
-    if (e1 == null || e2 == null) throw Exception("Null argument");
-
-    double sum = 0.0;
-    for (int i = 0; i < e1.length; i++) {
-      sum += (e1[i] - e2[i]) * (e1[i] - e2[i]);
-    }
-    return sqrt(sum);
-  }
 
   /// संसाधनों को रिलीज़ करें।
   void dispose() {

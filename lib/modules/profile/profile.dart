@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:online/res/Mycolor.dart';
+import 'package:online/constants/colors_res.dart';
 import 'package:online/res/assetimagespath.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
@@ -15,7 +15,6 @@ class Profile extends StatelessWidget {
       : super(key: key);
   final String username;
   final String imagePath;
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,8 @@ class Profile extends StatelessWidget {
                 ),
                 Text(
                   'Hi $username!',
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -57,7 +57,7 @@ class Profile extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.12,
               ),
             ),
-            Text(
+            const Text(
               'Shift Name \\ ${Strings.shiftName} !  : ${Strings.morning}',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
@@ -76,7 +76,7 @@ class Profile extends StatelessWidget {
               height: MediaQuery.of(context).size.height *
                   0.21, // Screen height ka 15%
             ),
-            Text(
+            const Text(
               '${Strings.inTime}  : ${Strings.morning}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
@@ -97,16 +97,16 @@ class Profile extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => MyHomePage()),
                 );
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.logout,
                 color: Colors.white,
               ),
-              color: MyColor.green_fern,
+              color: AppColors.bbAccentColor,
             ),
             Spacer(),
           ],
         ),
-        bottomSheet: Footerwidget(),
+        bottomSheet: FooterWidget(),
       ),
     );
   }

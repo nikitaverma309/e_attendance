@@ -78,15 +78,7 @@ class _SplashPageState extends State<SplashPage>
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text(
-                "Welcome to Atithi Vyakhayata",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+
             ],
           ),
         ),

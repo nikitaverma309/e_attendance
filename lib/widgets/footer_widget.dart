@@ -1,23 +1,24 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:online/constants/colors_res.dart';
 
 import '../../constants/string_res.dart';
-import '../res/Mycolor.dart';
+
 import '../res/assetimagespath.dart';
 
-Widget Footerwidget() {
+Widget FooterWidget() {
   return Container(
     decoration: BoxDecoration(
-        color: MyColor.niccolor,
-        border: Border.all(width: 0, color: MyColor.white_pure),
+        color: Color(0xff176daa),
+        border: Border.all(width: 0, color: AppColors.white),
         borderRadius: BorderRadius.circular(0)),
-    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
+        const Text(
           Strings.copyright_content,
           style: TextStyle(color: Colors.white),
           maxLines: 2,

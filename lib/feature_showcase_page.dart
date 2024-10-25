@@ -20,11 +20,11 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
     FeatureShowCaseModel(
         subtitle: Strings.introOneTitle,
         title: Strings.introOneT,
-        imgPath: "assets/intro/attendance.png"),
+        imgPath: "assets/intro/documentFace.jpg"),
     FeatureShowCaseModel(
         subtitle: Strings.introTwoSub,
         title: Strings.introTwoTi,
-        imgPath: "assets/intro/introTwo.jpg"),
+        imgPath: "assets/intro/faceCamera.png"),
     FeatureShowCaseModel(
         subtitle: Strings.introThreeSub,
         title: Strings.introThreeT,
