@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'custom_widgets.dart';
 
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -38,24 +36,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           if (showBackButton)
             leadingWidget ??
-                CustomNeuCircleButton(
-                  isColored: true,
-                  icon: Icon(
-                    showDrawer ? Icons.menu : Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    if (showDrawer) {
-                      Scaffold.of(context).openDrawer();
-                    } else {
-                      if (onBackTap != null) {
-                        onBackTap!.call();
-                      } else {
-                        Get.back();
-                      }
-                    }
-                  },
-                ),
+                // CustomNeuCircleButton(
+                //   isColored: true,
+                //   icon: Icon(
+                //     showDrawer ? Icons.menu : Icons.arrow_back,
+                //     color: Colors.white,
+                //   ),
+                //   onTap: () {
+                //     if (showDrawer) {
+                //       Scaffold.of(context).openDrawer();
+                //     } else {
+                //       if (onBackTap != null) {
+                //         onBackTap!.call();
+                //       } else {
+                //         Get.back();
+                //       }
+                //     }
+                //   },
+                // ),
           Expanded(
             child: title != null
                 ? Center(

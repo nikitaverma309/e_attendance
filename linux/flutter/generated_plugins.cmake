@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_linux
+  nb_utils
   tflite_flutter
   url_launcher_linux
 )

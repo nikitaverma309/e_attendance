@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:online/modules/home/home.dart';
 import 'package:online/locator.dart';
 import 'package:online/modules/splash/splash_page.dart';
 
+import 'modules/restriction_dialog/dialog_manager.dart';
+
 
 void main() {
+
+  void initDialogManager() => serviceLocator<DialogManager>().init();
+
   setupServices();
+  initDialogManager();
   runApp(const MyApp());
 }
 
@@ -23,7 +28,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-       home:  const SplashPage(),
+       home:  const SplashScreenOne(),
 
     );
   }

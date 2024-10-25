@@ -29,8 +29,8 @@ class SignUpState extends State<SignUp> {
   bool _bottomSheetVisible = false;
 
   // Service injection
-  final FaceDetectorService _faceDetectorService = locator<FaceDetectorService>();
-  final CameraService _cameraService = locator<CameraService>();
+  final FaceDetectorService _faceDetectorService = serviceLocator<FaceDetectorService>();
+  final CameraService _cameraService = serviceLocator<CameraService>();
 
   @override
   void initState() {

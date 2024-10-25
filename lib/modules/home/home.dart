@@ -1,10 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:online/screens/comman_screen/drawer_screen.dart';
 import 'package:online/modules/auth/login_screen.dart';
 import 'package:online/modules/auth/sign-up.dart';
-import 'package:online/widgets/common/app_bar_widgets.dart';
-import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
 
@@ -96,13 +93,24 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         const SizedBox(height: 50),
                         // Center the buttons
-                        buildButton(
-                          context,
-                          'LOGIN',
-                          Colors.white,
-                          Colors.blueAccent,
-                          Icons.login,
-                              () {
+                        // buildButton(
+                        //   context,
+                        //   'LOGIN',
+                        //   Colors.white,
+                        //   Colors.blueAccent,
+                        //   Icons.login,
+                        //       () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (BuildContext context) =>
+                        //             const LoginPage(), // Replace with your SignUp screen
+                        //       ),
+                        //     );
+                        //   },
+                        // ),
+                        ElevatedButton(
+                          onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -111,23 +119,46 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             );
                           },
+                          child: const Text('LOGIN'),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 10),
-                        buildButton(
-                          context,
-                          'SIGN UP',
-                          Colors.blueAccent,
-                          Colors.white,
-                          Icons.person_add,
-                              () {
+                        // buildButton(
+                        //   context,
+                        //   'SIGN UP',
+                        //   Colors.blueAccent,
+                        //   Colors.white,
+                        //   Icons.person_add,
+                        //       () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (BuildContext context) =>
+                        //             SignUp(), // Replace with your SignUp screen
+                        //       ),
+                        //     );
+                        //   },
+                        // ),
+                        ElevatedButton(
+                          onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    SignUp(), // Replace with your SignUp screen
+                                    const SignUp(), // Replace with your SignUp screen
                               ),
                             );
                           },
+                          child: const Text('SIGN UP'),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                         ),
                       ],
                     ),

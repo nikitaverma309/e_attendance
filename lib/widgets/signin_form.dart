@@ -13,7 +13,7 @@ class SignInSheet extends StatelessWidget {
   final User user;
 
   final _passwordController = TextEditingController();
-  final _cameraService = locator<CameraService>();
+  final _cameraService = serviceLocator<CameraService>();
 
   Future _signIn(context, user) async {
     if (user.password == _passwordController.text) {

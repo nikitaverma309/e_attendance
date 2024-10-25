@@ -8,8 +8,8 @@ import 'FacePainter.dart'; // Adjust the path as needed
 class CameraDetectionPreview extends StatelessWidget {
   CameraDetectionPreview({Key? key}) : super(key: key);
 
-  final CameraService _cameraService = locator<CameraService>();
-  final FaceDetectorService _faceDetectorService = locator<FaceDetectorService>();
+  final CameraService _cameraService = serviceLocator<CameraService>();
+  final FaceDetectorService _faceDetectorService = serviceLocator<FaceDetectorService>();
 
   @override
   Widget build(BuildContext context) {
