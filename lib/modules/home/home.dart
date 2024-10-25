@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:online/screens/comman_screen/drawer_screen.dart';
+import 'package:online/modules/auth/login_screen_two.dart';
 import 'package:online/modules/auth/login_screen.dart';
-import 'package:online/modules/auth/sign-up.dart';
-import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
@@ -124,7 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    SignUp(), // Replace with your SignUp screen
+                                   // SignUp(),
+                                // ProfilePage(),
+                                LoginPageTwo(title: 'login',),
                               ),
                             );
                           },
