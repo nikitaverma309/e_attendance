@@ -1,18 +1,23 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'dart:typed_data';
+import 'dart:ui';
+import 'package:image/image.dart' as imglib;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
+import 'package:online/services/image_converter.dart';
+import 'package:online/utils/utils.dart';
 import 'package:online/widgets/FacePainter.dart';
 import 'package:online/widgets/camera_header.dart';
 
 import '../../locator.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  const SignUp({super.key});
 
   @override
   SignUpState createState() => SignUpState();
@@ -26,10 +31,10 @@ class SignUpState extends State<SignUp> {
   bool _detectingFaces = false;
   bool pictureTaken = false;
   bool _initializing = false;
-  bool _bottomSheetVisible = false;
 
   // Service injection
-  final FaceDetectorService _faceDetectorService = serviceLocator<FaceDetectorService>();
+  final FaceDetectorService _faceDetectorService =
+      serviceLocator<FaceDetectorService>();
   final CameraService _cameraService = serviceLocator<CameraService>();
 
   @override
@@ -65,17 +70,18 @@ class SignUpState extends State<SignUp> {
       );
       return false;
     } else {
+      _faceDetectorService.captureImage = true;
       try {
-        await _cameraService.cameraController?.stopImageStream();
-        await Future.delayed(const Duration(milliseconds: 500));
-
-        XFile? file = await _cameraService.takePicture();
-        imagePath = file?.path;
-
-        setState(() {
-          _bottomSheetVisible = true;
-          pictureTaken = true;
-        });
+        // await _cameraService.cameraController?.stopImageStream();
+        // await Future.delayed(const Duration(milliseconds: 500));
+        //
+        // XFile? file = await _cameraService.takePicture();
+        // imagePath = file?.path;
+        //
+        // setState(() {
+        //   // _bottomSheetVisible = true;
+        //   pictureTaken = true;
+        // });
 
         return true;
       } catch (e) {
@@ -88,24 +94,44 @@ class SignUpState extends State<SignUp> {
   _frameFaces() {
     imageSize = _cameraService.getImageSize();
 
-    _cameraService.cameraController?.startImageStream((image) async {
+    _cameraService.cameraController?.startImageStream((cameraImage) async {
       if (_detectingFaces) return;
 
       _detectingFaces = true;
 
       try {
-        await _faceDetectorService.detectFacesFromImage(image);
-        if (_faceDetectorService.faces.isNotEmpty) {
+        await _faceDetectorService.detectFacesFromImage(cameraImage);
+        if (_faceDetectorService.faces.length == 1) {
           setState(() {
             faceDetected = _faceDetectorService.faces[0];
           });
         } else {
           setState(() {
-            faceDetected = _faceDetectorService.faces[0];
+            faceDetected = null;
           });
         }
 
         _detectingFaces = false;
+        if (_faceDetectorService.captureImage) {
+          _faceDetectorService.currentImage = cameraImage;
+          _faceDetectorService.captureImage = false;
+          Utils.printLog('Capturing new image...');
+          final imageFromCamera = convertToImage(cameraImage);
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Column(
+                    children: <Widget>[
+                      // show the image
+                      const Text('Image Captured!'),
+                      Image.memory(Uint8List.fromList(
+                          imglib.encodeJpg(imageFromCamera))),
+                    ],
+                  ),
+                );
+              });
+        }
       } catch (e) {
         print('Error in face detection: $e');
         _detectingFaces = false;
@@ -119,15 +145,15 @@ class SignUpState extends State<SignUp> {
 
   _reload() {
     setState(() {
-      _bottomSheetVisible = false;
+      // _bottomSheetVisible = false;
       pictureTaken = true;
     });
     _start();
   }
 
+  final double mirror = math.pi;
   @override
   Widget build(BuildContext context) {
-    const double mirror = math.pi;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -160,7 +186,8 @@ class SignUpState extends State<SignUp> {
               fit: BoxFit.fitHeight,
               child: Container(
                 width: width,
-                height: width * _cameraService.cameraController!.value.aspectRatio,
+                height:
+                    width * _cameraService.cameraController!.value.aspectRatio,
                 child: Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
@@ -192,10 +219,12 @@ class SignUpState extends State<SignUp> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: _bottomSheetVisible ? null : onShot, // Call onShot when pressed
-        tooltip: 'Capture', // Tooltip for the button
-        child: const Icon(Icons.camera_alt), // Icon for the button
+      floatingActionButton: Visibility(
+        visible: faceDetected != null,
+        child: ElevatedButton(
+          onPressed: faceDetected == null ? null : onShot,
+          child: const Icon(Icons.camera_alt), // Icon for the button
+        ),
       ),
     );
   }

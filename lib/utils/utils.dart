@@ -12,9 +12,9 @@ class Utils {
 
   static final appNavigatorKey = GlobalKey<NavigatorState>();
   static final locationDialogKey = GlobalKey();
-  static final restrictionBoundary = coloradoBoundary;
+  static const restrictionBoundary = mantralayaBoundary;
 
-  static const coloradoBoundary = <LatLng>[
+  static const mantralayaBoundary = <LatLng>[
     LatLng(21.158931909764362, 81.79338743898444),
     LatLng(21.155982756084015, 81.80244959814013),
     LatLng(21.157840766288288, 81.80265393662432),
@@ -57,86 +57,6 @@ class Utils {
     return header;
   }
 
-  // static showSuccessInSnackBar(BuildContext context, String title) async {
-  //   try {
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //       duration: const Duration(seconds: 3),
-  //       behavior: SnackBarBehavior.floating,
-  //       backgroundColor: Colors.white,
-  //       content: Container(
-  //         decoration: Shape.submitContainerRed(context),
-  //         child: Row(
-  //           children: <Widget>[
-  //             const Icon(
-  //               Icons.check,
-  //               size: 40,
-  //               color: AppColors.white,
-  //             ),
-  //             Expanded(
-  //               child: Container(
-  //                   padding: const EdgeInsets.only(left: 10.0),
-  //                   child: Text(
-  //                     title,
-  //                     overflow: TextOverflow.clip,
-  //                     style: const TextStyle(fontWeight: FontWeight.bold),
-  //                   )),
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ));
-  //   } catch (e) {
-  //     // Handling the exception, but not using 'e'
-  //   }
-  // }
-
-  // static showError(BuildContext context, String title) async {
-  //   try {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         duration: const Duration(seconds: 1),
-  //         behavior: SnackBarBehavior.floating,
-  //         backgroundColor: Colors.transparent,
-  //         elevation: 0,
-  //         content: Container(
-  //           margin: const EdgeInsets.symmetric(
-  //               horizontal: 20, vertical: 10), // Adjust margin as needed
-  //           decoration: Shape.errorContainerRed(context),
-  //           child: Card(
-  //             elevation: 0,
-  //             color: Colors.transparent,
-  //             child: Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 10.0),
-  //               child: Row(
-  //                 children: <Widget>[
-  //                   const Icon(
-  //                     Icons.close,
-  //                     size: 40,
-  //                     color: AppColors.white,
-  //                   ),
-  //                   const SizedBox(width: 10),
-  //                   Expanded(
-  //                     child: Text(
-  //                       title,
-  //                       overflow: TextOverflow.clip,
-  //                       style: const TextStyle(
-  //                           fontWeight: FontWeight.bold,
-  //                           color: AppColors.white),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     // Handling the exception, but not using 'e'
-  //   }
-  // }
-
-
   static Future<void> selectDate(BuildContext context, TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -167,14 +87,6 @@ class Utils {
     } else {
       // No date selected, return null
       return null;
-    }
-  }
-
-  String formatDate(DateTime? date) {
-    if (date != null) {
-      return DateFormat('dd/MM/yyyy').format(date);
-    } else {
-      return 'dd/MM/yyyy';
     }
   }
 }

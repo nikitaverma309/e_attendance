@@ -51,3 +51,9 @@ imglib.Image _convertYUV420(CameraImage image) {
 
   return img;
 }
+
+imglib.Image convertCameraImage(CameraImage image) {
+  // CameraImage को imglib.Image में बदलने की विधि।
+  var img = convertToImage(image);
+  return imglib.copyRotate(img, -90); // घुमाव करें जैसा आवश्यक हो
+}

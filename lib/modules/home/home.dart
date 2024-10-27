@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:online/modules/auth/login_screen.dart';
 import 'package:online/modules/auth/sign-up.dart';
 import 'package:online/widgets/footer_widget.dart';
-
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -12,17 +10,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   bool loading = false;
 
   @override
   void initState() {
     super.initState();
-
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {

@@ -10,8 +10,10 @@ import '../locator.dart';
 import 'camera.service.dart';
 
 class FaceDetectorService {
-  CameraService _cameraService = serviceLocator<CameraService>();
+  final CameraService _cameraService = serviceLocator<CameraService>();
   late FaceDetector _faceDetector;
+  CameraImage? currentImage;
+  bool captureImage = false;
   List<Face> _faces = [];
 
   List<Face> get faces => _faces;
