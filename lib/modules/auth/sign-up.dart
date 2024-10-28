@@ -11,13 +11,14 @@ import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/services/image_converter.dart';
 import 'package:online/utils/utils.dart';
-import 'package:online/widgets/FacePainter.dart';
-import 'package:online/widgets/camera_header.dart';
+import 'package:online/widgets/camera_widgets/FacePainter.dart';
+import 'package:online/widgets/camera_widgets/camera_header.dart';
 
 import '../../locator.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  final String employeeCode;
+  const SignUp({super.key,  required this.employeeCode});
 
   @override
   SignUpState createState() => SignUpState();
@@ -186,8 +187,7 @@ class SignUpState extends State<SignUp> {
               fit: BoxFit.fitHeight,
               child: Container(
                 width: width,
-                height:
-                    width * _cameraService.cameraController!.value.aspectRatio,
+                height: width * _cameraService.cameraController!.value.aspectRatio,
                 child: Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
@@ -206,6 +206,37 @@ class SignUpState extends State<SignUp> {
           ),
         ),
       );
+
+      // body = Transform.scale(
+      //   scale: 1.0,
+      //   child: AspectRatio(
+      //     aspectRatio: MediaQuery.of(context).size.aspectRatio,
+      //     child: OverflowBox(
+      //       alignment: Alignment.center,
+      //       child: FittedBox(
+      //         fit: BoxFit.fitHeight,
+      //         child: Container(
+      //           width: width,
+      //           height:
+      //               width * _cameraService.cameraController!.value.aspectRatio,
+      //           child: Stack(
+      //             fit: StackFit.expand,
+      //             children: <Widget>[
+      //               CameraPreview(_cameraService.cameraController!),
+      //               if (faceDetected != null)
+      //                 CustomPaint(
+      //                   painter: FacePainter(
+      //                     face: faceDetected!,
+      //                     imageSize: imageSize!,
+      //                   ),
+      //                 ),
+      //             ],
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // );
     }
 
     return Scaffold(

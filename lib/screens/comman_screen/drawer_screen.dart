@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/modules/auth/profile%20page.dart';
+import 'package:online/modules/profile/profile%20page.dart';
 
 import '../../modules/profile/profile.dart';
 

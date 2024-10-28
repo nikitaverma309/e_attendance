@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:online/modules/auth/sign-up.dart';
+
+import 'controllers/login_controller.dart';
 
 class LoginPageTwo extends StatefulWidget {
   const LoginPageTwo({Key? key, required this.title}) : super(key: key);
@@ -10,6 +15,8 @@ class LoginPageTwo extends StatefulWidget {
 }
 
 class _LoginPageTwoState extends State<LoginPageTwo> {
+  final LoginController loginController = Get.put(LoginController());
+  final TextEditingController empCode = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var mediaHeight = MediaQuery.of(context).size.height;
@@ -27,7 +34,29 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text("hbsha"),backgroundColor: Color(0xff447897),),
+        appBar: AppBar(
+          title: const Text(
+            'Shining',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                  Colors.white,
+                  Colors.white,
+                  Colors.white,
+                  Color(0xff176daa),
+                  Color(0xff176daa),
+                ])),
+          ),
+        ),
         body: SafeArea(
           child: Container(
             decoration: const BoxDecoration(
@@ -54,7 +83,7 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(32),
                           gradient: const LinearGradient(
-                            //transform: GradientRotation(1.5708),
+                              //transform: GradientRotation(1.5708),
                               colors: [
                                 Color(0xff87bee6),
                                 Color(0xff274f6c),
@@ -133,7 +162,8 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                     margin: EdgeInsets.only(
                         top: mediaHeight * 0.26, left: mediaWidth * 0.1),
                     width: mediaWidth * 0.6,
-                    child: const TextField(
+                    child: TextField(
+                      controller: empCode,
                       decoration: InputDecoration(
                         label: Text(
                           'User Employee code',
@@ -158,42 +188,53 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                   ),
 
                   // Log in button
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: mediaWidth * 0.05),
-                    margin: EdgeInsets.only(
-                        top: mediaHeight * 0.5, left: mediaWidth * 0.1),
-                    height: mediaHeight * 0.1,
-                    width: mediaWidth * 0.7,
-                    decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Color(0xffa4c6dc),
-                              offset: Offset(0.0, 0.75),
-                              spreadRadius: 2,
-                              blurRadius: 2)
-                        ],
-                        color: Colors.white,
-                        border: Border.all(color: Color(0xffD4D3E8)),
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('LOG IN NOW CAMERA',
-                              style: TextStyle(
-                                color: const Color(0xff103149),
-                                fontWeight: FontWeight.bold,
-                                fontSize: (mediaHeight * 0.1) * 0.2,
-                              )),
-                          Transform.rotate(
-                            angle: 3.14159,
-                            child: Icon(
-                              Icons.arrow_back_ios,
-                              color: Color(0xff7875B5),
-                              size: (mediaHeight * 0.1) * 0.35,
-                            ),
-                          )
-                        ]),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              SignUp(employeeCode: empCode.text),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: mediaWidth * 0.05),
+                      margin: EdgeInsets.only(
+                          top: mediaHeight * 0.5, left: mediaWidth * 0.1),
+                      height: mediaHeight * 0.1,
+                      width: mediaWidth * 0.7,
+                      decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Color(0xffa4c6dc),
+                                offset: Offset(0.0, 0.75),
+                                spreadRadius: 2,
+                                blurRadius: 2)
+                          ],
+                          color: Colors.white,
+                          border: Border.all(color: Color(0xffD4D3E8)),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('LOG IN NOW CAMERA',
+                                style: TextStyle(
+                                  color: const Color(0xff103149),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: (mediaHeight * 0.1) * 0.2,
+                                )),
+                            Transform.rotate(
+                              angle: 3.14159,
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                color: Color(0xff7875B5),
+                                size: (mediaHeight * 0.1) * 0.35,
+                              ),
+                            )
+                          ]),
+                    ),
                   ),
                 ]),
               ),

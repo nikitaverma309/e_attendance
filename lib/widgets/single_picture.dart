@@ -16,11 +16,11 @@ class SinglePicture extends StatelessWidget {
       height: height,
       child: Transform(
           alignment: Alignment.center,
+          transform: Matrix4.rotationY(mirror),
           child: FittedBox(
             fit: BoxFit.cover,
             child: Image.file(File(imagePath)),
-          ),
-          transform: Matrix4.rotationY(mirror)),
+          )),
     );
   }
 }
