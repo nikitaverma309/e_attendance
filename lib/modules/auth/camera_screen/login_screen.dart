@@ -150,10 +150,10 @@ class _LoginCameraViewState extends State<LoginCameraView> {
                                       .uploadFileLogin(context, _image!);
                                   _loginController.isLoading.value =
                                   false; // Stop loading
-
-                                  Utils.showSuccessToast(
-                                      message:
-                                      'Image uploaded successfully!');
+                                  //
+                                  // Utils.showSuccessToast(
+                                  //     message:
+                                  //     'Image uploaded successfully!');
                                 } else {
                                   _loginController.isLoading.value =
                                   false; // Stop loading
@@ -218,7 +218,7 @@ class _LoginCameraViewState extends State<LoginCameraView> {
       source: source,
       maxWidth: 400,
       maxHeight: 400,
-      // imageQuality: 50, // Uncomment to reduce quality if needed
+
     );
     if (pickedFile != null) {
       _setPickedFile(pickedFile);

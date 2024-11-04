@@ -16,7 +16,7 @@ Future<File> convertCameraImageToFile(CameraImage image) async {
     final jpegBytes = imglib.encodeJpg(convertedImage);
     // Get temporary directory and save the file
     final directory = await getTemporaryDirectory();
-    final imagePath = '${directory.path}/camera_image.jpg';
+    final imagePath = '${directory.path}/camera_image.jpeg';
     final file = File(imagePath);
 
     return await file.writeAsBytes(jpegBytes);
@@ -79,4 +79,15 @@ imglib.Image convertCameraImage(CameraImage image) {
   // CameraImage को imglib.Image में बदलने की विधि।
   var img = convertToImage(image);
   return imglib.copyRotate(img, -90); // घुमाव करें जैसा आवश्यक हो
+}
+
+
+Future<File> convertImageToFile(imglib.Image image) async {
+  // Encode the image to JPEG format
+  final jpegBytes = imglib.encodeJpg(image);
+  // Get temporary directory and save the file
+  final directory = await getTemporaryDirectory();
+  final imagePath = '${directory.path}/camera_image.jpg';
+  final file = File(imagePath);
+  return await file.writeAsBytes(jpegBytes);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online/modules/auth/camera_screen/login_screen.dart';
 import 'package:online/modules/auth/camera_screen/registration_screen.dart';
+import 'package:online/modules/auth/sign-up.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
@@ -115,8 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                     // SignUp(),
-                                const CameraView(),
+                                     const SignUp(),
+                               // const CameraView(),
                               ),
                             );
                           },

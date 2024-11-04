@@ -1,23 +1,25 @@
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
-import 'dart:typed_data';
-import 'dart:ui';
-import 'package:image/image.dart' as imglib;
+import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:online/controllers/login_controller.dart';
+import 'package:online/modules/auth/SFD.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/services/image_converter.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
-
 import '../../locator.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key, });
+  const SignUp({
+    super.key,
+  });
 
   @override
   SignUpState createState() => SignUpState();
@@ -27,16 +29,15 @@ class SignUpState extends State<SignUp> {
   String? imagePath;
   Face? faceDetected;
   Size? imageSize;
-
   bool _detectingFaces = false;
   bool pictureTaken = false;
   bool _initializing = false;
 
   // Service injection
   final FaceDetectorService _faceDetectorService =
-  serviceLocator<FaceDetectorService>();
+      serviceLocator<FaceDetectorService>();
   final CameraService _cameraService = serviceLocator<CameraService>();
-
+  final LoginController _loginController = Get.put(LoginController());
   @override
   void initState() {
     super.initState();
@@ -54,7 +55,6 @@ class SignUpState extends State<SignUp> {
     await _cameraService.initialize();
     _faceDetectorService.initialize();
     setState(() => _initializing = false);
-
     _frameFaces();
   }
 
@@ -73,7 +73,6 @@ class SignUpState extends State<SignUp> {
       _faceDetectorService.captureImage = true;
       try {
 
-
         return true;
       } catch (e) {
         print("Error capturing image: $e");
@@ -84,44 +83,42 @@ class SignUpState extends State<SignUp> {
 
   _frameFaces() {
     imageSize = _cameraService.getImageSize();
-
     _cameraService.cameraController?.startImageStream((cameraImage) async {
       if (_detectingFaces) return;
-
       _detectingFaces = true;
-
       try {
         await _faceDetectorService.detectFacesFromImage(cameraImage);
         if (_faceDetectorService.faces.length == 1) {
-          setState(() {
-            faceDetected = _faceDetectorService.faces[0];
-          });
+          if (mounted) {
+            setState(() {
+              faceDetected = _faceDetectorService.faces[0];
+            });
+          }
         } else {
-          setState(() {
-            faceDetected = null;
-          });
+          if (mounted) {
+            setState(() {
+              faceDetected = null;
+            });
+          }
         }
-
         _detectingFaces = false;
+
         if (_faceDetectorService.captureImage) {
           _faceDetectorService.currentImage = cameraImage;
           _faceDetectorService.captureImage = false;
           Utils.printLog('Capturing new image...');
-          final imageFromCamera = convertToImage(cameraImage);
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: Column(
-                    children: <Widget>[
-                      // show the image
-                      const Text('Image Captured!'),
-                      Image.memory(Uint8List.fromList(
-                          imglib.encodeJpg(imageFromCamera))),
-                    ],
-                  ),
-                );
-              });
+          final imageFromCamera = await convertCameraImage(cameraImage);
+          final File imgFile = await convertImageToFile(imageFromCamera);
+          if (mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ImagePreviewPage(
+                  imageFile: imgFile,
+                ),
+              ),
+            );
+          }
         }
       } catch (e) {
         print('Error in face detection: $e');
@@ -129,6 +126,8 @@ class SignUpState extends State<SignUp> {
       }
     });
   }
+
+
 
   _onBackPressed() {
     Navigator.of(context).pop();
@@ -175,9 +174,10 @@ class SignUpState extends State<SignUp> {
             alignment: Alignment.center,
             child: FittedBox(
               fit: BoxFit.fitHeight,
-              child: Container(
+              child: SizedBox(
                 width: width,
-                height: width * _cameraService.cameraController!.value.aspectRatio,
+                height:
+                    width * _cameraService.cameraController!.value.aspectRatio,
                 child: Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
@@ -196,7 +196,6 @@ class SignUpState extends State<SignUp> {
           ),
         ),
       );
-
     }
 
     return Scaffold(

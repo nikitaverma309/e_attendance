@@ -28,12 +28,13 @@ class LoginController extends GetxController {
           'file',
           file.readAsBytes().asStream(),
           file.lengthSync(),
-          filename: 'upload.jpg',
+          filename: file.path.split('/').last,
           contentType: MediaType('image', 'jpeg'),
         ),
       );
     var response = await request.send();
-    Utils.printLog("response code was  =${response.statusCode}");
+    var responseData = await http.Response.fromStream(response);
+    Utils.printLog("response code was  =${response.statusCode} ${responseData.body}");
     if (response.statusCode == 200) {
       Utils.printLog('File uploaded successfully!');
       Get.offAll(() => MyHomePage());
@@ -42,7 +43,7 @@ class LoginController extends GetxController {
     }
   }
 
- /* Future<void> uploadFileLogin(File file) async {
+  /* Future<void> uploadFileLogin(File file) async {
      final url = Uri.parse(ApiStrings.login);
     //final url = Uri.parse("http://10.121.71.227:5000/api/recognize");
     Map<String, String> headers = {
@@ -74,7 +75,6 @@ class LoginController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
     };
-
     var request = http.MultipartRequest('POST', url)
       ..headers.addAll(headers)
       ..files.add(
@@ -82,50 +82,38 @@ class LoginController extends GetxController {
           'file',
           file.readAsBytes().asStream(),
           file.lengthSync(),
-          filename: 'upload.jpg',
+          filename: file.path.split('/').last,
           contentType: MediaType('image', 'jpeg'),
         ),
       );
-
     try {
       var response = await request.send();
-
+      var responseData = await http.Response.fromStream(response);
       if (response.statusCode == 200) {
-        Utils.printLog('Face recognized successfully!');
-        Get.offAll(() => MyHomePage());
+        var jsonResponse = jsonDecode(responseData.body);
+        if (jsonResponse['recognized_user'] != null) {
+          Utils.printLog('Face recognized successfully!');
+          Get.offAll(() => MyHomePage());
+        } else {
+          Utils.showErrorToast(message: 'Face not recognized. Please try again.');
+        }
+      } else if (response.statusCode == 401) {
+        Utils.showErrorToast(message: 'Unauthorized: Face not recognized.');
       } else {
-        var responseBody = await response.stream.bytesToString();
-        Utils.printLog('Failed to recognize face: ${response.statusCode} $responseBody');
-
-        // Use the passed context to show the dialog
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Recognition Error'),
-            content: Text(responseBody),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
+        var responseBody = responseData.body;
+        Utils.showErrorToast(message: 'Failed to recognize face: $responseBody');
       }
-    } catch (e) {
+    }
+    catch (e) {
       Utils.printLog('Error occurred: $e');
-
-      // Use the passed context to show the dialog
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
+          title: const Text('Error'),
           content: Text('An unexpected error occurred: $e'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -135,6 +123,4 @@ class LoginController extends GetxController {
       );
     }
   }
-
-
 }
