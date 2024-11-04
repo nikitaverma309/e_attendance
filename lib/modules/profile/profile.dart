@@ -80,15 +80,15 @@ class Profile extends StatelessWidget {
               '${Strings.inTime}  : ${Strings.morning}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
-            Text(
+            const Text(
               '${Strings.outTime}   : ${Strings.morning}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
-            Text(
+            const Text(
               '${Strings.responseTime}  \\ Response Time:  11:254',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
-            Spacer(),
+            const Spacer(),
             AppButton(
               text: "Ok  \\ LOG OUT  ",
               onPressed: () {
@@ -103,7 +103,7 @@ class Profile extends StatelessWidget {
               ),
               color: AppColors.bbAccentColor,
             ),
-            Spacer(),
+            const Spacer(),
           ],
         ),
         bottomSheet: FooterWidget(),

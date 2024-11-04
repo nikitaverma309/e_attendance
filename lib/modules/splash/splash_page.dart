@@ -5,7 +5,7 @@ import 'package:online/feature_showcase_page.dart';
 import 'package:poly_geofence_service/poly_geofence_service.dart';
 
 import 'package:permission_handler/permission_handler.dart'
-as PermissionHandler;
+    as PermissionHandler;
 
 import '../../locator.dart';
 import '../../module_controllers.dart';
@@ -66,7 +66,6 @@ class _SplashScreenOneState extends State<SplashScreenOne>
     checkLocationAndNavigate();
   }
 
-
   @override
   void dispose() {
     _controller.dispose();
@@ -90,7 +89,7 @@ class _SplashScreenOneState extends State<SplashScreenOne>
         channelId: 'geofence_service_notification_channel',
         channelName: 'Geofence Service Notification',
         channelDescription:
-        'This notification appears when the geofence service is running in the background.',
+            'This notification appears when the geofence service is running in the background.',
         channelImportance: NotificationChannelImportance.LOW,
         priority: NotificationPriority.LOW,
         isSticky: false,
@@ -165,8 +164,14 @@ class _SplashScreenOneState extends State<SplashScreenOne>
 
   initGeoLocation() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      geoFencingService.initServices(context);
+      if (mounted) {
+        geoFencingService.initServices(context);
+      }
     });
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   geoFencingService.initServices(context);
+    // });
   }
 
   pageNavigation() async {
@@ -200,7 +205,7 @@ class _SplashScreenOneState extends State<SplashScreenOne>
       await Future.delayed(const Duration(seconds: 2));
       Widget screen = const FeatureShowCasePage();
       initGeoLocation();
-      if(mounted) {
+      if (mounted) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -246,91 +251,3 @@ class _SplashScreenOneState extends State<SplashScreenOne>
     }
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:online/feature_showcase_page.dart';
-
-// class SplashPage extends StatefulWidget {
-//   const SplashPage({Key? key}) : super(key: key);
-//
-//   @override
-//   State<SplashPage> createState() => _SplashPageState();
-// }
-//
-// class _SplashPageState extends State<SplashPage>
-//     with SingleTickerProviderStateMixin {
-//   late AnimationController _controller;
-//   late Animation<double> _animation;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//
-//     // Initialize animation controller for scaling
-//     _controller = AnimationController(
-//       duration: const Duration(seconds: 2),
-//       vsync: this,
-//     );
-//
-//     // Create a bounce animation for the logo scale
-//     _animation = CurvedAnimation(
-//       parent: _controller,
-//       curve: Curves.bounceOut,
-//     );
-//
-//     // Start the animation
-//     _controller.forward();
-//     init();
-//   }
-//
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-//
-//   init() async {
-//     await Future.delayed(const Duration(seconds: 3));
-//     Get.off(() => const FeatureShowCasePage());
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Container(
-//         decoration: const BoxDecoration(
-//           gradient: LinearGradient(
-//             colors: [
-//               Color(0xff2193b0), // Light blue
-//               Color(0xff6dd5ed), // Sky blue
-//             ],
-//             begin: Alignment.topCenter,
-//             end: Alignment.bottomCenter,
-//           ),
-//         ),
-//         child: Center(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.center,
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               // ScaleTransition for jumping effect
-//
-//               ScaleTransition(
-//                 scale: _animation,
-//                 child: ClipOval(
-//                   child: Image.asset(
-//                     "assets/icon/higher.png",
-//                     height: 100,
-//                     width: 100,
-//                     fit: BoxFit.cover,
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

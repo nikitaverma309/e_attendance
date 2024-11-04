@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:online/modules/auth/sign-up.dart';
+import 'package:online/controllers/login_controller.dart';
 
-import 'controllers/login_controller.dart';
 
 class LoginPageTwo extends StatefulWidget {
-  const LoginPageTwo({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const LoginPageTwo({
+    super.key,
+  });
 
   @override
   State<LoginPageTwo> createState() => _LoginPageTwoState();
@@ -16,7 +15,9 @@ class LoginPageTwo extends StatefulWidget {
 
 class _LoginPageTwoState extends State<LoginPageTwo> {
   final LoginController loginController = Get.put(LoginController());
-  final TextEditingController empCode = TextEditingController();
+
+  TextEditingController empCode = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var mediaHeight = MediaQuery.of(context).size.height;
@@ -49,12 +50,12 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: <Color>[
-                  Colors.white,
-                  Colors.white,
-                  Colors.white,
-                  Color(0xff176daa),
-                  Color(0xff176daa),
-                ])),
+                      Colors.white,
+                      Colors.white,
+                      Colors.white,
+                      Color(0xff176daa),
+                      Color(0xff176daa),
+                    ])),
           ),
         ),
         body: SafeArea(
@@ -72,6 +73,7 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                 height: mediaHeight,
                 width: mediaWidth,
                 child: Stack(children: [
+
                   Positioned(
                     top: -mediaHeight * 0.04,
                     right: 0,
@@ -83,7 +85,7 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(32),
                           gradient: const LinearGradient(
-                              //transform: GradientRotation(1.5708),
+                            //transform: GradientRotation(1.5708),
                               colors: [
                                 Color(0xff87bee6),
                                 Color(0xff274f6c),
@@ -106,7 +108,7 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(32),
                           gradient: const LinearGradient(
-                              //transform: GradientRotation(1.5708),
+                            //transform: GradientRotation(1.5708),
                               colors: [
                                 Color(0xff87bee6),
                                 Color(0xff274f6c),
@@ -142,7 +144,7 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                         width: mediaWidth * 1.4,
                         decoration: const BoxDecoration(
                           borderRadius:
-                              BorderRadius.only(topRight: Radius.circular(72)),
+                          BorderRadius.only(topRight: Radius.circular(72)),
                           color: Colors.white,
                         ),
                       ),
@@ -164,7 +166,14 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                     width: mediaWidth * 0.6,
                     child: TextField(
                       controller: empCode,
-                      decoration: InputDecoration(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      onChanged: (value) {
+                        print('Current input: $value');
+                      },
+                      decoration: const InputDecoration(
                         label: Text(
                           'User Employee code',
                           style: TextStyle(
@@ -176,46 +185,57 @@ class _LoginPageTwoState extends State<LoginPageTwo> {
                           color: Colors.black,
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xffD1D1D4), width: 2),
+                          borderSide: BorderSide(color: Color(0xffD1D1D4), width: 2),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xffD1D1D4), width: 2),
+                          borderSide: BorderSide(color: Color(0xffD1D1D4), width: 2),
                         ),
                       ),
                     ),
+
                   ),
 
                   // Log in button
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              SignUp(employeeCode: empCode.text),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: mediaWidth * 0.05),
-                      margin: EdgeInsets.only(
-                          top: mediaHeight * 0.5, left: mediaWidth * 0.1),
-                      height: mediaHeight * 0.1,
-                      width: mediaWidth * 0.7,
-                      decoration: BoxDecoration(
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Color(0xffa4c6dc),
-                                offset: Offset(0.0, 0.75),
-                                spreadRadius: 2,
-                                blurRadius: 2)
-                          ],
-                          color: Colors.white,
-                          border: Border.all(color: Color(0xffD4D3E8)),
-                          borderRadius: BorderRadius.circular(50)),
+                  Container(
+                    padding:
+                    EdgeInsets.symmetric(horizontal: mediaWidth * 0.05),
+                    margin: EdgeInsets.only(
+                        top: mediaHeight * 0.5, left: mediaWidth * 0.1),
+                    height: mediaHeight * 0.1,
+                    width: mediaWidth * 0.7,
+                    decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Color(0xffa4c6dc),
+                              offset: Offset(0.0, 0.75),
+                              spreadRadius: 2,
+                              blurRadius: 2)
+                        ],
+                        color: Colors.white,
+                        border: Border.all(color: const Color(0xffD4D3E8)),
+                        borderRadius: BorderRadius.circular(50)),
+                    child:
+
+                    GestureDetector(
+                      onTap: () {
+                        if (empCode.text.trim().isEmpty) {
+                          Get.snackbar('Input Error', 'Please enter your Employee Code.',
+                              snackPosition: SnackPosition.BOTTOM);
+                        } else {
+                          // Convert the string to an integer
+                          int? employeeCode = int.tryParse(empCode.text.trim());
+
+                          if (employeeCode != null) {
+                            // If the conversion is successful, navigate to the SignUp page
+                           // Get.to(() => SignUp(employeeCode: employeeCode));
+                          } else {
+                            // Handle the case where the conversion failed
+                            Get.snackbar('Input Error', 'Invalid Employee Code. Please enter a valid number.',
+                                snackPosition: SnackPosition.BOTTOM);
+                          }
+                        }
+                      }
+                      ,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

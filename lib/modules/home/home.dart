@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:online/modules/auth/login_screen.dart';
-import 'package:online/modules/auth/login_screen_two.dart';
-import 'package:online/modules/auth/sign-up.dart';
+import 'package:get/get.dart';
+import 'package:online/modules/auth/camera_screen/login_screen.dart';
+import 'package:online/modules/auth/camera_screen/registration_screen.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
@@ -88,41 +88,39 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         const SizedBox(height: 50),
                         // Center the buttons
-                        buildButton(
+                        customButton(
                           context,
                           'LOGIN',
                           Colors.white,
                           Colors.blueAccent,
                           Icons.login,
-                              () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    LoginPageTwo(title: 'Signin Screen',), // Replace with your SignUp screen
-                              ),
-                            );
+                          () {
+                            if (mounted) {
+                              Get.to(() => const LoginCameraView());
+                             // Get.to(() => const CameraView());
+                            }
+
                           },
                         ),
 
                         const SizedBox(height: 10),
-                        buildButton(
+                        customButton(
                           context,
                           'SIGN UP',
                           Colors.blueAccent,
                           Colors.white,
                           Icons.person_add,
-                              () {
+                          () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    SignUp(employeeCode: '',),
+                                     // SignUp(),
+                                const CameraView(),
                               ),
                             );
                           },
                         ),
-
                       ],
                     ),
                   ),

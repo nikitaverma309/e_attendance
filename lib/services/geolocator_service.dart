@@ -84,7 +84,7 @@ class GeoLocatorService {
     if (status) {
       position = await getCurrentLocation();
     }
-    Utils.printLog('getCurrentCoords geolocation :: $position $status');
+    Utils.printLog('getCurrentCords geolocation :: $position $status');
     return position;
   }
 

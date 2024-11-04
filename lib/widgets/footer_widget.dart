@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:online/constants/colors_res.dart';
 
@@ -10,7 +9,7 @@ import '../res/assetimagespath.dart';
 Widget FooterWidget() {
   return Container(
     decoration: BoxDecoration(
-        color: Color(0xff176daa),
+        color: const Color(0xff176daa),
         border: Border.all(width: 0, color: AppColors.white),
         borderRadius: BorderRadius.circular(0)),
     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),

@@ -86,8 +86,6 @@ class MLService {
     return convertedBytes;
   }
 
-
-
   /// संसाधनों को रिलीज़ करें।
   void dispose() {
     _faceDetector.close(); // Face detector को बंद करें

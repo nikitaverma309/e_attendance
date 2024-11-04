@@ -26,9 +26,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _isDarkTheme = true;
+    bool isDarkTheme = true;
     return AppBar(
-      backgroundColor: _isDarkTheme ? AppColors.primaryB : Colors.white,
+      backgroundColor: isDarkTheme ? AppColors.primaryB : Colors.white,
       automaticallyImplyLeading: false,
       elevation: 7,
       title: Row(

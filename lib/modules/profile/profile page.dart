@@ -14,7 +14,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-    final String imgUrl = 'https://i.imgur.com/wXFHbEN.png';
+    const String imgUrl = 'https://i.imgur.com/wXFHbEN.png';
     return Scaffold(
         backgroundColor: const Color(0xff176daa),
         appBar: AppBar(
@@ -143,15 +143,15 @@ class _ProfilePageState extends State<ProfilePage> {
         ));
   }
 
-  Widget rowCell(int count, String type) => new Expanded(
-          child: new Column(
+  Widget rowCell(int count, String type) => Expanded(
+          child: Column(
         children: <Widget>[
-          new Text(
+          Text(
             '$count',
-            style: new TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
-          new Text(type,
-              style: new TextStyle(
+          Text(type,
+              style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.normal))
         ],
       ));

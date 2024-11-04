@@ -26,7 +26,6 @@ class Utils {
     LatLng(21.158931909764362, 81.79338743898444)
   ];
 
-
   static printLog(String message) {
     if (kDebugMode) {
       print(message);
@@ -57,7 +56,8 @@ class Utils {
     return header;
   }
 
-  static Future<void> selectDate(BuildContext context, TextEditingController controller) async {
+  static Future<void> selectDate(
+      BuildContext context, TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -67,11 +67,13 @@ class Utils {
 
     if (pickedDate != null) {
       // Format the date to a readable string
-      String formattedDate = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+      String formattedDate =
+          "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
       // Set the formatted date to the controller
       controller.text = formattedDate;
     }
   }
+
   Future<DateTime?> showDatePickerDialog(
       BuildContext context, DateTime selectedDate) async {
     DateTime? pickedDate = await showDatePicker(
@@ -88,5 +90,41 @@ class Utils {
       // No date selected, return null
       return null;
     }
+  }
+
+  static void showSuccessToast({
+    required String message,
+    Toast length = Toast.LENGTH_SHORT,
+    ToastGravity gravity = ToastGravity.BOTTOM,
+    int timeInSecForIosWeb = 1,
+    double fontSize = 16.0,
+  }) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: length,
+      gravity: gravity,
+      timeInSecForIosWeb: timeInSecForIosWeb,
+      backgroundColor: Colors.green, // Success color
+      textColor: Colors.white,
+      fontSize: fontSize,
+    );
+  }
+
+  static void showErrorToast({
+    required String message,
+    Toast length = Toast.LENGTH_SHORT,
+    ToastGravity gravity = ToastGravity.BOTTOM,
+    int timeInSecForIosWeb = 1,
+    double fontSize = 16.0,
+  }) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: length,
+      gravity: gravity,
+      timeInSecForIosWeb: timeInSecForIosWeb,
+      backgroundColor: Colors.red, // Error color
+      textColor: Colors.white,
+      fontSize: fontSize,
+    );
   }
 }

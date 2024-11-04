@@ -1,9 +1,32 @@
+import 'dart:io';
+
 import 'package:image/image.dart' as imglib;
 import 'package:camera/camera.dart';
+import 'package:path_provider/path_provider.dart';
+
+Future<File> convertCameraImageToFile(CameraImage image) async {
+  imglib.Image? convertedImage;
+  if (image.format.group == ImageFormatGroup.yuv420) {
+    convertedImage = _convertYUV420(image);
+  } else if (image.format.group == ImageFormatGroup.bgra8888) {
+    convertedImage = _convertBGRA8888(image);
+  }
+  if (convertedImage != null) {
+    // Encode the image to JPEG format
+    final jpegBytes = imglib.encodeJpg(convertedImage);
+    // Get temporary directory and save the file
+    final directory = await getTemporaryDirectory();
+    final imagePath = '${directory.path}/camera_image.jpg';
+    final file = File(imagePath);
+
+    return await file.writeAsBytes(jpegBytes);
+  }
+
+  throw Exception('Image format not supported');
+}
 
 imglib.Image convertToImage(CameraImage image) {
   try {
-    print('image.format.group=>${image.format.group}');
     if (image.format.group == ImageFormatGroup.yuv420) {
       return _convertYUV420(image);
     } else if (image.format.group == ImageFormatGroup.bgra8888) {
@@ -11,7 +34,7 @@ imglib.Image convertToImage(CameraImage image) {
     }
     throw Exception('Image format not supported');
   } catch (e) {
-    print("ERROR:" + e.toString());
+    print("ERROR:$e");
   }
   throw Exception('Image format not supported');
 }

@@ -4,6 +4,9 @@ class AppColors {
   AppColors._();
   static const kPrimaryColor = Color(0xFF00BF6D);
   static const kSecondaryColor = Color(0xFFFE9901);
+  static const Color scaffoldTopGradientClr = Color(0xff8D8AD3);
+  static const Color scaffoldBottomGradientClr = Color(0xff454362);
+  static const Color overlayContainerClr = Color(0xff2E2E2E);
   static const kContentColorLightTheme = Color(0xFF1D1D35);
   static const kContentColorDarkTheme = Color(0xFFF5FCF9);
   static const kWarninngColor = Color(0xFFF3BB1C);
