@@ -7,24 +7,25 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:online/controllers/login_controller.dart';
+import 'package:online/locator.dart';
+import 'package:online/modules/auth/registration/registration_camera_view.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/services/image_converter.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
-import '../../locator.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({
     super.key,
   });
 
   @override
-  SignUpState createState() => SignUpState();
+  RegistrationScreenState createState() => RegistrationScreenState();
 }
 
-class SignUpState extends State<SignUp> {
+class RegistrationScreenState extends State<RegistrationScreen> {
   String? imagePath;
   Face? faceDetected;
   Size? imageSize;
@@ -34,7 +35,7 @@ class SignUpState extends State<SignUp> {
 
   // Service injection
   final FaceDetectorService _faceDetectorService =
-      serviceLocator<FaceDetectorService>();
+  serviceLocator<FaceDetectorService>();
   final CameraService _cameraService = serviceLocator<CameraService>();
   final LoginController _loginController = Get.put(LoginController());
   @override
@@ -109,14 +110,14 @@ class SignUpState extends State<SignUp> {
           final imageFromCamera = await convertCameraImage(cameraImage);
           final File imgFile = await convertImageToFile(imageFromCamera);
           if (mounted) {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => ImagePreviewPage(
-            //       imageFile: imgFile,
-            //     ),
-            //   ),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RegistrationCameraViewTwo(
+                  imageFile: imgFile,
+                ),
+              ),
+            );
           }
         }
       } catch (e) {
@@ -176,7 +177,7 @@ class SignUpState extends State<SignUp> {
               child: SizedBox(
                 width: width,
                 height:
-                    width * _cameraService.cameraController!.value.aspectRatio,
+                width * _cameraService.cameraController!.value.aspectRatio,
                 child: Stack(
                   fit: StackFit.expand,
                   children: <Widget>[

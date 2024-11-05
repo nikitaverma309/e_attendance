@@ -36,24 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           if (showBackButton)
             leadingWidget ??
-                // CustomNeuCircleButton(
-                //   isColored: true,
-                //   icon: Icon(
-                //     showDrawer ? Icons.menu : Icons.arrow_back,
-                //     color: Colors.white,
-                //   ),
-                //   onTap: () {
-                //     if (showDrawer) {
-                //       Scaffold.of(context).openDrawer();
-                //     } else {
-                //       if (onBackTap != null) {
-                //         onBackTap!.call();
-                //       } else {
-                //         Get.back();
-                //       }
-                //     }
-                //   },
-                // ),
+
           Expanded(
             child: title != null
                 ? Center(

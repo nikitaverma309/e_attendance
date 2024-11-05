@@ -1,5 +1,5 @@
 class ApiStrings {
-  static const String baseUrl = 'http://192.168.186.1';
+  static const String baseUrl = 'http://10.121.71.227';
   static const String register = '$baseUrl:5000/upload/training?username=';
   static const String login = '$baseUrl:5000/api/recognize';
 

@@ -1,6 +1,3 @@
-
-
-
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +29,13 @@ class FaceDetectorService {
   Future<void> detectFacesFromImage(CameraImage image) async {
     print('Starting face detection...');
     InputImageData firebaseImageMetadata = InputImageData(
-      imageRotation: _cameraService.cameraRotation ?? InputImageRotation.rotation0deg,
-      inputImageFormat: InputImageFormatValue.fromRawValue(image.format.raw) ?? InputImageFormat.yuv_420_888,
+      imageRotation:
+          _cameraService.cameraRotation ?? InputImageRotation.rotation0deg,
+      inputImageFormat: InputImageFormatValue.fromRawValue(image.format.raw) ??
+          InputImageFormat.yuv_420_888,
       size: Size(image.width.toDouble(), image.height.toDouble()),
       planeData: image.planes.map(
-            (Plane plane) {
+        (Plane plane) {
           return InputImagePlaneMetadata(
             bytesPerRow: plane.bytesPerRow,
             height: plane.height,
@@ -58,7 +57,8 @@ class FaceDetectorService {
     );
 
     _faces = await _faceDetector.processImage(firebaseVisionImage);
-    print('Faces detected: ${_faces.length}'); // Log the number of detected faces
+    print(
+        'Faces detected: ${_faces.length}'); // Log the number of detected faces
   }
 
   dispose() {

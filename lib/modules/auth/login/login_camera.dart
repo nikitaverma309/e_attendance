@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
@@ -7,24 +6,25 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:online/controllers/login_controller.dart';
+import 'package:online/locator.dart';
+import 'package:online/modules/auth/login/lofin_camera_view.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/services/image_converter.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
-import '../../locator.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({
+class LoginCameraTwo extends StatefulWidget {
+  const LoginCameraTwo({
     super.key,
   });
 
   @override
-  SignUpState createState() => SignUpState();
+  LoginCameraTwoState createState() => LoginCameraTwoState();
 }
 
-class SignUpState extends State<SignUp> {
+class LoginCameraTwoState extends State<LoginCameraTwo> {
   String? imagePath;
   Face? faceDetected;
   Size? imageSize;
@@ -71,7 +71,6 @@ class SignUpState extends State<SignUp> {
     } else {
       _faceDetectorService.captureImage = true;
       try {
-
         return true;
       } catch (e) {
         print("Error capturing image: $e");
@@ -109,15 +108,19 @@ class SignUpState extends State<SignUp> {
           final imageFromCamera = await convertCameraImage(cameraImage);
           final File imgFile = await convertImageToFile(imageFromCamera);
           if (mounted) {
+            Get.off(() => LoginCameraViewTwo(
+                  imageFile: imgFile,
+                ));
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(
-            //     builder: (context) => ImagePreviewPage(
+            //     builder: (context) => LoginCameraViewTwo(
             //       imageFile: imgFile,
             //     ),
             //   ),
             // );
           }
+          _cameraService.dispose();
         }
       } catch (e) {
         print('Error in face detection: $e');
@@ -125,8 +128,6 @@ class SignUpState extends State<SignUp> {
       }
     });
   }
-
-
 
   _onBackPressed() {
     Navigator.of(context).pop();
@@ -142,16 +143,15 @@ class SignUpState extends State<SignUp> {
 
   final double mirror = math.pi;
   @override
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
     late Widget body;
     if (_initializing) {
-      body = const Center(
-        child: CircularProgressIndicator(),
-      );
-    } else if (pictureTaken) {
+      body = const Center(child: CircularProgressIndicator());
+    } else if (pictureTaken && imagePath != null) {
       body = SizedBox(
         width: width,
         height: height,
@@ -175,12 +175,14 @@ class SignUpState extends State<SignUp> {
               fit: BoxFit.fitHeight,
               child: SizedBox(
                 width: width,
-                height:
-                    width * _cameraService.cameraController!.value.aspectRatio,
+                height: _cameraService.cameraController != null
+                    ? width * _cameraService.cameraController!.value.aspectRatio
+                    : 0, // Avoid using null aspect ratio
                 child: Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
-                    CameraPreview(_cameraService.cameraController!),
+                    if (_cameraService.cameraController != null)
+                      CameraPreview(_cameraService.cameraController!),
                     if (faceDetected != null)
                       CustomPaint(
                         painter: FacePainter(
@@ -202,17 +204,17 @@ class SignUpState extends State<SignUp> {
         children: [
           body,
           CameraHeader(
-            "SIGN UP",
+            "Login with face",
             onBackPressed: _onBackPressed,
-          )
+          ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
         visible: faceDetected != null,
         child: ElevatedButton(
-          onPressed: faceDetected == null ? null : onShot,
-          child: const Icon(Icons.camera_alt), // Icon for the button
+          onPressed: faceDetected != null ? onShot : null,
+          child: const Icon(Icons.camera_alt),
         ),
       ),
     );

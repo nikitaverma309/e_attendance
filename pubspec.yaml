@@ -86,6 +86,9 @@ flutter:
      - assets/images/
      - assets/intro/
      - assets/icon/
+     - assets/success.mp3
+     - assets/failed.mp3
+     - assets/scan_beep.wav
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

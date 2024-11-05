@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:online/modules/auth/camera_screen/login_screen.dart';
-import 'package:online/modules/auth/camera_screen/registration_screen.dart';
-import 'package:online/modules/auth/sign-up.dart';
+import 'package:online/modules/auth/login/login_camera.dart';
+import 'package:online/modules/auth/registration/registration_camera.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
@@ -97,10 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           Icons.login,
                           () {
                             if (mounted) {
-                              Get.to(() => const LoginCameraView());
-                             // Get.to(() => const CameraView());
+                              Get.to(() => const LoginCameraTwo());
                             }
-
                           },
                         ),
 
@@ -116,12 +113,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                     const SignUp(),
-                               // const CameraView(),
+                                    const RegistrationScreen(),
                               ),
                             );
                           },
                         ),
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
