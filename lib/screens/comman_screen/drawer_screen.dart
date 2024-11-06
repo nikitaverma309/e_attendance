@@ -74,7 +74,7 @@ class CmoDrawerScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ProfilePage()
-                  ), // Replace AnotherScreen with your target screen
+                  ),
                 );
               },
             ),
