@@ -26,10 +26,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkTheme = true;
     return AppBar(
-      backgroundColor: isDarkTheme ? AppColors.primaryB : Colors.white,
-      automaticallyImplyLeading: false,
+      backgroundColor: AppColors.primaryB,
+      automaticallyImplyLeading: true,
       elevation: 7,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -59,6 +58,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
         ],
       ),
+      leading: showBackButton
+          ? (leadingWidget ??
+          IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: onBackTap ?? () => Navigator.of(context).pop(),
+          ))
+          : null,
     );
   }
 

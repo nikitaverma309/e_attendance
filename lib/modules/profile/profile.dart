@@ -89,7 +89,7 @@ class Profile extends StatelessWidget {
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             const Spacer(),
-            AppButton(
+            CommonButton(
               text: "Ok  \\ LOG OUT  ",
               onPressed: () {
                 Navigator.push(

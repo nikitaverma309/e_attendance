@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AppButton extends StatelessWidget {
-  const AppButton(
+class CommonButton extends StatelessWidget {
+  const CommonButton(
       {super.key,
       this.onPressed,
       this.text,
@@ -31,14 +31,14 @@ class AppButton extends StatelessWidget {
           ],
         ),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         width: MediaQuery.of(context).size.width * 0.8,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               text ?? '',
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             SizedBox(
               width: 10,

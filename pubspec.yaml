@@ -57,6 +57,7 @@ dependencies:
   http_parser: ^4.0.2
   mime: ^2.0.0
   audioplayers: ^3.0.1
+  htkc_utils: ^1.0.8
 
 dev_dependencies:
   flutter_test:

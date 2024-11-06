@@ -105,6 +105,16 @@ const kText13BoldBlackColorStyle = TextStyle(
     fontFamily: 'Roboto-Thin',
     fontWeight: FontWeight.bold,
     color: AppColors.black);
+const kText16BoldBlackColorStyle = TextStyle(
+    fontSize: 11.0,
+    fontFamily: 'Roboto-Thin',
+    fontWeight: FontWeight.bold,
+    color: AppColors.black);
+const kText16BoldRed = TextStyle(
+    fontSize: 12.0,
+    fontFamily: 'Roboto-Thin',
+    fontWeight: FontWeight.bold,
+    color: AppColors.redShade4);
 const kText13NormalBlackColorStyle = TextStyle(
     fontSize: 14.0,
     fontFamily: 'Roboto-Thin',
