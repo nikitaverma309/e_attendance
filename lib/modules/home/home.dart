@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/modules/auth/registration/registration_camera.dart';
 import 'package:online/screens/form/employee_registration_form.dart';
-import 'package:online/screens/form/sds.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
@@ -127,13 +126,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           Colors.blueAccent,
                           Colors.white,
                           Icons.person_add,
-                              () {
+                          () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                               // const EmployeeRegistrationForm(),
-                                CommonDroup(),
+                                    const EmployeeRegistrationForm(),
                               ),
                             );
                           },
@@ -150,6 +148,4 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomSheet: FooterWidget(),
     );
   }
-
-
 }

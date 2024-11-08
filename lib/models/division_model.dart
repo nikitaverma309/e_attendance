@@ -1,36 +1,43 @@
-class Division {
-  String? sId;
-  int? divisionCode;
-  String? name;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
 
-  Division(
-      {this.sId,
-        this.divisionCode,
-        this.name,
-        this.createdAt,
-        this.updatedAt,
-        this.iV});
 
-  Division.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    divisionCode = json['divisionCode'];
-    name = json['name'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
-  }
+import 'dart:convert';
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['divisionCode'] = this.divisionCode;
-    data['name'] = this.name;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['__v'] = this.iV;
-    return data;
-  }
+List<DivisionModel> divisionModelFromJson(String str) => List<DivisionModel>.from(json.decode(str).map((x) => DivisionModel.fromJson(x)));
+
+String divisionModelToJson(List<DivisionModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class DivisionModel {
+  String id;
+  int divisionCode;
+  String name;
+  DateTime createdAt;
+  DateTime updatedAt;
+  int v;
+
+  DivisionModel({
+    required this.id,
+    required this.divisionCode,
+    required this.name,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.v,
+  });
+
+  factory DivisionModel.fromJson(Map<String, dynamic> json) => DivisionModel(
+    id: json["_id"],
+    divisionCode: json["divisionCode"],
+    name: json["name"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
+    v: json["__v"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "divisionCode": divisionCode,
+    "name": name,
+    "createdAt": createdAt.toIso8601String(),
+    "updatedAt": updatedAt.toIso8601String(),
+    "__v": v,
+  };
 }

@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/colors_res.dart';
-import 'package:online/constants/string_res.dart';
-import 'package:online/controllers/division_controller.dart';
 import 'package:online/controllers/employee_registration_controller.dart';
 import 'package:online/models/division_model.dart';
 import 'package:online/modules/home/home.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
-import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/common/rich_title_value_list.dart';
 
@@ -27,7 +24,6 @@ class EmployeeRegistrationForm extends StatefulWidget {
 
 class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   final GlobalKey<FormState> _bagiKey = GlobalKey<FormState>();
-  final DivisionController controller = Get.put(DivisionController());
   final EmployeeRegistrationController empController =
       Get.put(EmployeeRegistrationController());
   TextEditingController empCodeCtr = TextEditingController();
@@ -121,90 +117,93 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 ),
                 10.height,
                 // Wrap the CustomDropdown with Obx to make it reactive
-                Obx(() {
-                  return CustomDropdown<Division>(
-                    items: controller.divisions,
-                    selectedValue: controller.divisions.firstWhereOrNull(
-                      (division) =>
-                          division.divisionCode ==
-                          controller.selectedDivisionCode.value,
-                    ),
-                    onChanged: (Division? newDivision) {
-                      if (newDivision != null) {
-                        controller.selectedDivisionCode.value =
-                            newDivision.divisionCode!;
-                      }
-                    },
-                    hint: "Choose a Division",
-                  );
-                }),
+                DropdownButton<DivisionModel>(
+                  hint: Text('Select Division'),
+                  value: empController.selectedDivision.value,
+                  onChanged: (newValue) {
+                    if (newValue != null) {
+                      empController.selectDivision(newValue);
+                    }
+                  },
+                  items: empController.divisionsList
+                      .map((division) => DropdownMenuItem<DivisionModel>(
+                            value: division,
+                            child:
+                                Text(division.name), // Displaying division name
+                          ))
+                      .toList(),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  empController.selectedDivision.value != null
+                      ? 'Selected Division: ${empController.selectedDivision.value!.name}'
+                      : 'No division selected',
+                ),
+
                 10.height,
                 const TitleValueTextFormData(
                   title: '7',
                   subTitle: "Select District",
                 ),
-                Obx(() {
-                  return CustomDropdown<Division>(
-                    items: controller.divisions,
-                    selectedValue: controller.divisions.firstWhereOrNull(
-                      (division) =>
-                          division.divisionCode ==
-                          controller.selectedDivisionCode.value,
-                    ),
-                    onChanged: (Division? newDivision) {
-                      if (newDivision != null) {
-                        controller.selectedDivisionCode.value =
-                            newDivision.divisionCode!;
-                      }
-                    },
-                    hint: "Choose a Division",
-                  );
-                }),
+                DropdownButton<DivisionModel>(
+                  hint: Text('Select Division'),
+                  value: empController.selectedDivision.value,
+                  onChanged: (newValue) {
+                    if (newValue != null) {
+                      empController.selectDivision(newValue);
+                    }
+                  },
+                  items: empController.divisionsList
+                      .map((division) => DropdownMenuItem<DivisionModel>(
+                            value: division,
+                            child:
+                                Text(division.name), // Displaying division name
+                          ))
+                      .toList(),
+                ),
                 10.height,
                 const TitleValueTextFormData(
                   title: '8',
                   subTitle: "Select Vidhan Sabha",
                 ),
                 10.height,
-                Obx(() {
-                  return CustomDropdown<Division>(
-                    items: controller.divisions,
-                    selectedValue: controller.divisions.firstWhereOrNull(
-                      (division) =>
-                          division.divisionCode ==
-                          controller.selectedDivisionCode.value,
-                    ),
-                    onChanged: (Division? newDivision) {
-                      if (newDivision != null) {
-                        controller.selectedDivisionCode.value =
-                            newDivision.divisionCode!;
-                      }
-                    },
-                    hint: "Choose a Division",
-                  );
-                }),
+                DropdownButton<DivisionModel>(
+                  hint: Text('Select Division'),
+                  value: empController.selectedDivision.value,
+                  onChanged: (newValue) {
+                    if (newValue != null) {
+                      empController.selectDivision(newValue);
+                    }
+                  },
+                  items: empController.divisionsList
+                      .map((division) => DropdownMenuItem<DivisionModel>(
+                            value: division,
+                            child:
+                                Text(division.name), // Displaying division name
+                          ))
+                      .toList(),
+                ),
                 10.height,
                 const TitleValueTextFormData(
                   title: '10',
                   subTitle: "Select College",
                 ),
-                Obx(() {
-                  return CustomDropdown<Division>(
-                    items: controller.divisions,
-                    selectedValue: controller.divisions.firstWhereOrNull(
-                      (division) =>
-                          division.divisionCode ==
-                          controller.selectedDivisionCode.value,
-                    ),
-                    onChanged: (Division? newDivision) {
-                      if (newDivision != null) {
-                        controller.selectedDivisionCode.value =
-                            newDivision.divisionCode!;
-                      }
-                    },
-                    hint: "Choose a Division",
-                  );
-                }),
+                DropdownButton<DivisionModel>(
+                  hint: Text('Select Division'),
+                  value: empController.selectedDivision.value,
+                  onChanged: (newValue) {
+                    if (newValue != null) {
+                      empController.selectDivision(newValue);
+                    }
+                  },
+                  items: empController.divisionsList
+                      .map((division) => DropdownMenuItem<DivisionModel>(
+                            value: division,
+                            child:
+                                Text(division.name), // Displaying division name
+                          ))
+                      .toList(),
+                ),
                 10.height,
                 TextInputField(
                   no: "4",
@@ -219,23 +218,22 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   title: '10',
                   subTitle: "Select Class",
                 ),
-                Obx(() {
-                  return CustomDropdown<Division>(
-                    items: controller.divisions,
-                    selectedValue: controller.divisions.firstWhereOrNull(
-                      (division) =>
-                          division.divisionCode ==
-                          controller.selectedDivisionCode.value,
-                    ),
-                    onChanged: (Division? newDivision) {
-                      if (newDivision != null) {
-                        controller.selectedDivisionCode.value =
-                            newDivision.divisionCode!;
-                      }
-                    },
-                    hint: "Choose a Division",
-                  );
-                }),
+                DropdownButton<DivisionModel>(
+                  hint: Text('Select Division'),
+                  value: empController.selectedDivision.value,
+                  onChanged: (newValue) {
+                    if (newValue != null) {
+                      empController.selectDivision(newValue);
+                    }
+                  },
+                  items: empController.divisionsList
+                      .map((division) => DropdownMenuItem<DivisionModel>(
+                            value: division,
+                            child:
+                                Text(division.name), // Displaying division name
+                          ))
+                      .toList(),
+                ),
                 10.height,
                 TextInputField(
                   no: "4",
