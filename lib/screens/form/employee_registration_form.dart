@@ -47,7 +47,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   final FocusNode _focusNodeFixed = FocusNode();
   String? selectedCollege;
 
-
   @override
   void dispose() {
     _focusNodeWorkBName.dispose();
@@ -126,11 +125,14 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   return CustomDropdown<Division>(
                     items: controller.divisions,
                     selectedValue: controller.divisions.firstWhereOrNull(
-                          (division) => division.divisionCode == controller.selectedDivisionCode.value,
+                      (division) =>
+                          division.divisionCode ==
+                          controller.selectedDivisionCode.value,
                     ),
                     onChanged: (Division? newDivision) {
                       if (newDivision != null) {
-                        controller.selectedDivisionCode.value = newDivision.divisionCode!;
+                        controller.selectedDivisionCode.value =
+                            newDivision.divisionCode!;
                       }
                     },
                     hint: "Choose a Division",
@@ -145,11 +147,14 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   return CustomDropdown<Division>(
                     items: controller.divisions,
                     selectedValue: controller.divisions.firstWhereOrNull(
-                          (division) => division.divisionCode == controller.selectedDivisionCode.value,
+                      (division) =>
+                          division.divisionCode ==
+                          controller.selectedDivisionCode.value,
                     ),
                     onChanged: (Division? newDivision) {
                       if (newDivision != null) {
-                        controller.selectedDivisionCode.value = newDivision.divisionCode!;
+                        controller.selectedDivisionCode.value =
+                            newDivision.divisionCode!;
                       }
                     },
                     hint: "Choose a Division",
@@ -165,11 +170,14 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   return CustomDropdown<Division>(
                     items: controller.divisions,
                     selectedValue: controller.divisions.firstWhereOrNull(
-                          (division) => division.divisionCode == controller.selectedDivisionCode.value,
+                      (division) =>
+                          division.divisionCode ==
+                          controller.selectedDivisionCode.value,
                     ),
                     onChanged: (Division? newDivision) {
                       if (newDivision != null) {
-                        controller.selectedDivisionCode.value = newDivision.divisionCode!;
+                        controller.selectedDivisionCode.value =
+                            newDivision.divisionCode!;
                       }
                     },
                     hint: "Choose a Division",
@@ -184,11 +192,14 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   return CustomDropdown<Division>(
                     items: controller.divisions,
                     selectedValue: controller.divisions.firstWhereOrNull(
-                          (division) => division.divisionCode == controller.selectedDivisionCode.value,
+                      (division) =>
+                          division.divisionCode ==
+                          controller.selectedDivisionCode.value,
                     ),
                     onChanged: (Division? newDivision) {
                       if (newDivision != null) {
-                        controller.selectedDivisionCode.value = newDivision.divisionCode!;
+                        controller.selectedDivisionCode.value =
+                            newDivision.divisionCode!;
                       }
                     },
                     hint: "Choose a Division",
@@ -212,11 +223,14 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   return CustomDropdown<Division>(
                     items: controller.divisions,
                     selectedValue: controller.divisions.firstWhereOrNull(
-                          (division) => division.divisionCode == controller.selectedDivisionCode.value,
+                      (division) =>
+                          division.divisionCode ==
+                          controller.selectedDivisionCode.value,
                     ),
                     onChanged: (Division? newDivision) {
                       if (newDivision != null) {
-                        controller.selectedDivisionCode.value = newDivision.divisionCode!;
+                        controller.selectedDivisionCode.value =
+                            newDivision.divisionCode!;
                       }
                     },
                     hint: "Choose a Division",
