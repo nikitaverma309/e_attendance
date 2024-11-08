@@ -10,7 +10,7 @@ class EmployeeRegistrationController extends GetxController {
   var errorMsg = ''.obs;
   var mVisible = false.obs;
   var isUpdated = false.obs;
-  var divisionsList = [].obs;
+
   var divisionList = List<DivisionModel>.empty().obs;
   var selectedDivision = Rxn<DivisionModel>();
   var districts = [].obs;
@@ -29,7 +29,7 @@ class EmployeeRegistrationController extends GetxController {
       isLoading(true);
       var data = await ApiServices.getApiServices();
       if (data != null) {
-        divisionsList.value = data;
+        divisionList.value = data;
         errorMsg.value = '';
       } else {
         errorMsg.value = 'Data not found!';
@@ -43,21 +43,21 @@ class EmployeeRegistrationController extends GetxController {
   void selectDivision(DivisionModel division) {
     selectedDivision.value = division;
   }
-
-  void getDistrict(int divisionCode) async {
-    try {
-      isLoading(true);
-      divisionsList.value = [];
-      var data = await ApiServices.getApiDistrictsByDivision(
-          divisionCode); // Removed 'int'
-      if (data != null) {
-        divisionsList.value = data as List; // Ensure data is a List here
-        errorMsg.value = '';
-      } else {
-        errorMsg.value = 'Data not found!';
-      }
-    } finally {
-      isLoading(false);
-    }
-  }
+  //
+  // void getDistrict(int divisionCode) async {
+  //   try {
+  //     isLoading(true);
+  //     divisionsList.value = [];
+  //     var data = await ApiServices.getApiDistrictsByDivision(
+  //         divisionCode); // Removed 'int'
+  //     if (data != null) {
+  //       divisionsList.value = data as List; // Ensure data is a List here
+  //       errorMsg.value = '';
+  //     } else {
+  //       errorMsg.value = 'Data not found!';
+  //     }
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 }

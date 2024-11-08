@@ -125,7 +125,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                       empController.selectDivision(newValue);
                     }
                   },
-                  items: empController.divisionsList
+                  items: empController.divisionList
                       .map((division) => DropdownMenuItem<DivisionModel>(
                             value: division,
                             child:
@@ -153,7 +153,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                       empController.selectDivision(newValue);
                     }
                   },
-                  items: empController.divisionsList
+                  items: empController.divisionList
                       .map((division) => DropdownMenuItem<DivisionModel>(
                             value: division,
                             child:
@@ -175,7 +175,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                       empController.selectDivision(newValue);
                     }
                   },
-                  items: empController.divisionsList
+                  items: empController.divisionList
                       .map((division) => DropdownMenuItem<DivisionModel>(
                             value: division,
                             child:
@@ -196,7 +196,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                       empController.selectDivision(newValue);
                     }
                   },
-                  items: empController.divisionsList
+                  items: empController.divisionList
                       .map((division) => DropdownMenuItem<DivisionModel>(
                             value: division,
                             child:
@@ -226,7 +226,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                       empController.selectDivision(newValue);
                     }
                   },
-                  items: empController.divisionsList
+                  items: empController.divisionList
                       .map((division) => DropdownMenuItem<DivisionModel>(
                             value: division,
                             child:
