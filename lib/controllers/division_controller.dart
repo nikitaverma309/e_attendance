@@ -1,51 +1,66 @@
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
+import 'package:online/api/api_services.dart';
+import 'package:online/models/district_model.dart';
 import 'package:online/models/division_model.dart';
 
 class DivisionController extends GetxController {
   var isLoading = false.obs;
-  var btnText = 'GET OTP'.obs;
-  var isEnabled = false.obs;
-  var isDetailLoading = false.obs;
-  var isAddLoading = false.obs;
-  var isDeleteLoading = false.obs;
-  var edit = false.obs;
-  var errorMsg = ''.obs;
-  var selectedCompany = ''.obs;
-  var selectedGroupWiseCompany = ''.obs;
-  var divisionDetail = List<Division>.empty().obs;
-  var mVisible = false.obs;
-  var isUpdated = false.obs;
-  var divisions = <Division>[].obs;
-  var selectedDivisionCode = Rxn<int>();
+  var divisionList = List<DivisionModel>.empty().obs;
+  var districtList = List<DistrictModel>.empty().obs;
+  var selectedDivisionCode = Rx<int?>(null); // Set to null initially
+  var selectedDistrictCode = Rx<int?>(null); // Set to null initially
+  var districts = <DistrictModel>[].obs;
+  var division = <DistrictModel>[].obs;
+
+  var divisions = <DivisionModel>[].obs;
+  //var selectedDivisionCode = Rxn<int>();
 
   @override
   void onInit() {
-    fetchDivisions();
     super.onInit();
+    fetchDivisions();
+// Ensure selectedDivisionCode.value is not null before using it
+    if (selectedDivisionCode.value != null) {
+      fetchDistrictsByDivision(selectedDivisionCode.value!);
+    }
   }
 
   Future<void> fetchDivisions() async {
-    isLoading.value = true;
     try {
-      final response = await http.get(Uri.parse(
-          'https://heonline.cg.nic.in/lmsbackend/api/division/get-all'));
-
-      if (response.statusCode == 200) {
-        List data = json.decode(response.body);
-        divisions.value = data.map((json) => Division.fromJson(json)).toList();
-        if (divisions.isNotEmpty) {
-          selectedDivisionCode.value = divisions.first.divisionCode!;
-        }
-      } else {
-        print('Failed to load divisions');
+      final dataDivision = await ApiServices.getApidemoServices();
+      if (dataDivision != null) {
+        divisionList.value = dataDivision;
+        print(dataDivision);
+        // Set default division code and fetch corresponding districts
+        selectedDivisionCode.value = dataDivision.first.divisionCode;
+        // Set default division code if available
+        await fetchDistrictsByDivision(selectedDivisionCode.value!);
+        selectedDistrictCode.value = null;
+        divisionList.clear();
       }
     } catch (e) {
-      print('Error: $e');
-    } finally {
-      isLoading.value = false;
+      Get.snackbar('Error', 'Failed to load divisions');
     }
   }
+
+  Future<void> fetchDistrictsByDivision(int selectedDivisionCode) async {
+    isLoading.value = true;
+
+    // Fetch districts from the API
+    final fetchedDistricts = await ApiServices.getApiDemoDistrictsByDivision(selectedDivisionCode);
+
+    if (fetchedDistricts != null && fetchedDistricts.isNotEmpty) {
+      // Set districtList with the fetched list of DistrictModel
+      districtList.value = fetchedDistricts;
+
+      // Assign the lgdCode of the first district to selectedDistrictCode
+      selectedDistrictCode.value = fetchedDistricts.first.lgdCode;
+    } else {
+      // Handle empty or null fetchedDistricts
+      Get.snackbar('Error', 'No districts found for the selected division');
+    }
+
+    isLoading.value = false;
+  }
+
 }

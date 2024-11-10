@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class DivisionController extends GetxController {
+class EmpController extends GetxController {
   var divisions = [].obs;
   var selectedDivision = ''.obs;
   var districts = [].obs;
@@ -19,7 +19,7 @@ class DivisionController extends GetxController {
 
   Future<void> fetchDivisions() async {
     final url =
-        Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
+    Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -48,8 +48,8 @@ class DivisionController extends GetxController {
   }
   Future<void> getVidhanSabhaByDivision(int districtLgdCode) async {
     final url = Uri.parse(
-        'http://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/$districtLgdCode');
-    // http://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/:districtLgdCode
+        'https://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/$districtLgdCode');
+    //http://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/:districtLgdCode
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -57,12 +57,15 @@ class DivisionController extends GetxController {
         var re = vidhanSabha.value = json.decode(response.body);
         print(re);
       } else {
+
         Get.snackbar('Error', 'Failed to load vidhanSaba');
       }
     } catch (e) {
+      print(e);
       Get.snackbar('Error', 'An error occurred: $e');
     }
   }
+
   void selectDivision(String divisionCode) {
     selectedDivision.value = divisionCode;
     selectedDistrict.value = '';
@@ -76,10 +79,52 @@ class DivisionController extends GetxController {
   }
 
   void selectVidhanSabha(String ce) {
-    selectedDivision.value = ce;
+    selectedVidhanSabha.value = ce;
   }
-  //
-  // void selectDivision(String divisionCode) {
-  //   selectedDivision.value = divisionCode;
-  // }
+  Future<void> addEmployee({
+    required String name,
+    required String empCode,
+    required String email,
+    required String contact,
+    required String division,
+    required String district,
+    required String vidhanSabha,
+    required String college,
+    required String designation,
+    required String classData,
+    required String address,
+  }) async {
+    final url = Uri.parse('http://heonline.cg.nic.in/lmsbackend/api/employee/add');
+    final body = jsonEncode({
+      "name": name,
+      "empCode": empCode,
+      "email": email,
+      "contact": contact,
+      "division": division,
+      "district": district,
+      "vidhanSabha": vidhanSabha,
+      "college": college,
+      "designation": designation,
+      "classData": classData,
+      "address": address,
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        Get.snackbar('Success', 'Employee registered successfully');
+      } else {
+        Get.snackbar('Error', 'Failed to register employee');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred: $e');
+    }
+  }
 }
