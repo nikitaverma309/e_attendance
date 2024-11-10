@@ -22,11 +22,13 @@ class FacePainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3.0
         ..color = Colors.red;
+      onFaceDetected(false);
     } else {
       paint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3.0
         ..color = Colors.green;
+      onFaceDetected(true);
     }
 
     scaleX = size.width / imageSize.width;

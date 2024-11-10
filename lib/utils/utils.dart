@@ -94,7 +94,8 @@ class Utils {
 
   String formatDate(DateTime? date) {
     if (date != null) {
-      return DateFormat('dd/MM/yyyy').format(date);
+      // return DateFormat('dd/MM/yyyy').format(date);
+      return "";
     } else {
       return 'dd/MM/yyyy';
     }

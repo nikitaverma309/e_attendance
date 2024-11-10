@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:online/locator.dart';
 import 'package:online/modules/auth/registration/registration_camera_view.dart';
@@ -27,7 +28,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   bool _detectingFaces = false;
   bool pictureTaken = false;
   bool _initializing = false;
-  bool isFaceDetected = false;
+  RxBool isFaceDetected = false.obs;
 
   // Service injection
   final FaceDetectorService _faceDetectorService =
@@ -180,9 +181,8 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                           face: faceDetected!,
                           imageSize: imageSize!,
                           onFaceDetected: (userDetected) {
-                            setState(() {
-                              isFaceDetected = userDetected;
-                            });
+                            Utils.printLog('User detected: $userDetected');
+                            isFaceDetected(userDetected);
                           },
                         ),
                       ),
@@ -206,13 +206,15 @@ class RegistrationScreenState extends State<RegistrationScreen> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Visibility(
-        visible: faceDetected != null && isFaceDetected,
-        child: ElevatedButton(
-          onPressed: faceDetected == null ? null : onShot,
-          child: const Icon(Icons.camera_alt),
-        ),
-      ),
+      floatingActionButton: Obx(() {
+        return Visibility(
+          visible: faceDetected != null && isFaceDetected.value,
+          child: ElevatedButton(
+            onPressed: faceDetected == null ? null : onShot,
+            child: const Icon(Icons.camera_alt),
+          ),
+        );
+      }),
     );
   }
 }
