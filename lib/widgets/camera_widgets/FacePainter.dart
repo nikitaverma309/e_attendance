@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
 class FacePainter extends CustomPainter {
-  FacePainter({required this.imageSize, required this.face});
+  FacePainter({
+    required this.imageSize,
+    required this.face,
+    required this.onFaceDetected,
+  });
   final Size imageSize;
   double? scaleX, scaleY;
   Face? face;
+  final Function(bool faceDetected) onFaceDetected;
   @override
   void paint(Canvas canvas, Size size) {
     if (face == null) return;

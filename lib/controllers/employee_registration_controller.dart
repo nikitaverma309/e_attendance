@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:online/api/api_services.dart';
 import 'package:online/models/division_model.dart';

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:poly_geofence_service/models/lat_lng.dart';
-import 'package:intl/intl.dart';
 class Utils {
   static final Dio dio = Dio();
   static final Logger _logger = Logger();
