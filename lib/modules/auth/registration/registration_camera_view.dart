@@ -7,16 +7,16 @@ import 'package:online/widgets/app_text_field.dart';
 import 'package:online/widgets/common/custom_button.dart';
 import 'package:online/widgets/footer_widget.dart';
 
-class RegistrationCameraViewTwo extends StatefulWidget {
+class ConfirmRegisterationScreen extends StatefulWidget {
   final File? imageFile; // यह फ़ाइल जो कैमरा से ली गई इमेज है
-  const RegistrationCameraViewTwo({super.key, this.imageFile});
+  const ConfirmRegisterationScreen({super.key, this.imageFile});
 
   @override
-  State<RegistrationCameraViewTwo> createState() =>
-      _RegistrationCameraViewTwoState();
+  State<ConfirmRegisterationScreen> createState() =>
+      _ConfirmRegisterationScreenState();
 }
 
-class _RegistrationCameraViewTwoState extends State<RegistrationCameraViewTwo> {
+class _ConfirmRegisterationScreenState extends State<ConfirmRegisterationScreen> {
   final LoginController loginController = Get.put(LoginController());
   TextEditingController empCode = TextEditingController();
 
