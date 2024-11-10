@@ -6,7 +6,6 @@ import 'package:online/models/division_model.dart';
 
 class DivisionController extends GetxController {
   var isLoading = false.obs;
-
   var btnText = 'GET OTP'.obs;
   var isEnabled = false.obs;
   var isDetailLoading = false.obs;
