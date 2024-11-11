@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:online/api/api_strings.dart';
 import 'dart:convert';
 
 import 'package:online/models/college_model.dart';
@@ -28,8 +29,7 @@ class EmpController extends GetxController {
   }
 
   Future<void> fetchCollege() async {
-    final url = Uri.parse(
-        'https://heonline.cg.nic.in/lmsbackend/api/college/get-all-college');
+    final url = Uri.parse(ApiStrings.college);
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -45,7 +45,7 @@ class EmpController extends GetxController {
 
   Future<void> fetchDivisions() async {
     final url =
-        Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
+        Uri.parse(ApiStrings.division);
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -60,7 +60,7 @@ class EmpController extends GetxController {
 
   Future<void> fetchDistrictsByDivision(int divisionCode) async {
     final url = Uri.parse(
-        'https://heonline.cg.nic.in/lmsbackend/api/district/get-division-district/$divisionCode');
+        '${ApiStrings.district}$divisionCode');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -75,7 +75,7 @@ class EmpController extends GetxController {
 
   Future<void> getVidhanSabhaByDivision(int districtLgdCode) async {
     final url = Uri.parse(
-        'https://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/$districtLgdCode');
+        '${ApiStrings.getVidhansabha}$districtLgdCode');
     //http://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/:districtLgdCode
     try {
       final response = await http.get(url);
@@ -125,7 +125,7 @@ class EmpController extends GetxController {
     required String address,
   }) async {
     final url =
-        Uri.parse('http://heonline.cg.nic.in/lmsbackend/api/employee/add');
+        Uri.parse(ApiStrings.empRegister);
     final body = jsonEncode({
       "name": name,
       "empCode": empCode,

@@ -86,8 +86,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   inputFormatters: [
                     FilteringTextInputFormatter
                         .digitsOnly, // Allows only digits
-                    LengthLimitingTextInputFormatter(
-                        10), // Limits input to 10 digits
+                    LengthLimitingTextInputFormatter(10),
                   ],
                   inputType: TextInputType.phone,
                   validator: (value) => Utils.validateRequired(value),
