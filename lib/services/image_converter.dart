@@ -87,7 +87,8 @@ Future<File> convertImageToFile(imglib.Image image) async {
   final jpegBytes = imglib.encodeJpg(image);
   // Get temporary directory and save the file
   final directory = await getTemporaryDirectory();
-  final imagePath = '${directory.path}/camera_image.jpg';
+  final getRandomName = DateTime.now().millisecondsSinceEpoch;
+  final imagePath = '${directory.path}/camera_image_$getRandomName.jpeg';
   final file = File(imagePath);
   return await file.writeAsBytes(jpegBytes);
 }

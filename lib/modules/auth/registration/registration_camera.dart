@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:online/locator.dart';
 import 'package:online/modules/auth/registration/registration_camera_view.dart';
@@ -27,9 +28,8 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   bool _detectingFaces = false;
   bool pictureTaken = false;
   bool _initializing = false;
-  bool isFaceDetected = false;
+  RxBool isFaceDetected = false.obs;
 
-  // Service injection
   final FaceDetectorService _faceDetectorService =
       serviceLocator<FaceDetectorService>();
   final CameraService _cameraService = serviceLocator<CameraService>();
@@ -100,16 +100,16 @@ class RegistrationScreenState extends State<RegistrationScreen> {
         if (_faceDetectorService.captureImage) {
           _faceDetectorService.currentImage = cameraImage;
           _faceDetectorService.captureImage = false;
-          Utils.printLog('Capturing new image...');
-          final imageFromCamera = convertCameraImage(cameraImage);
+          final imageFromCamera =
+              convertCameraImage(cameraImage);
           final File imgFile = await convertImageToFile(imageFromCamera);
+
           if (mounted) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => RegistrationCameraViewTwo(
-                  imageFile: imgFile,
-                ),
+                builder: (context) =>
+                    ConfirmRegisterationScreen(imageFile: imgFile),
               ),
             );
           }
@@ -123,14 +123,6 @@ class RegistrationScreenState extends State<RegistrationScreen> {
 
   _onBackPressed() {
     Navigator.of(context).pop();
-  }
-
-  _reload() {
-    setState(() {
-      // _bottomSheetVisible = false;
-      pictureTaken = true;
-    });
-    _start();
   }
 
   final double mirror = math.pi;
@@ -180,9 +172,8 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                           face: faceDetected!,
                           imageSize: imageSize!,
                           onFaceDetected: (userDetected) {
-                            setState(() {
-                              isFaceDetected = userDetected;
-                            });
+                            Utils.printLog("face red $isFaceDetected(userDetected);");
+                            isFaceDetected(userDetected);
                           },
                         ),
                       ),
@@ -206,13 +197,13 @@ class RegistrationScreenState extends State<RegistrationScreen> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Visibility(
-        visible: faceDetected != null && isFaceDetected,
-        child: ElevatedButton(
-          onPressed: faceDetected == null ? null : onShot,
-          child: const Icon(Icons.camera_alt),
-        ),
-      ),
+      floatingActionButton: Obx(() => Visibility(
+            visible: isFaceDetected.value && faceDetected != null,
+            child: ElevatedButton(
+              onPressed: faceDetected == null ? null : onShot,
+              child: const Icon(Icons.camera_alt),
+            ),
+          )),
     );
   }
 }

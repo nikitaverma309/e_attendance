@@ -2,28 +2,54 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:online/models/college_model.dart';
+import 'package:online/models/district_model.dart';
+import 'package:online/models/division_model.dart';
+import 'package:online/models/vidhan_sabha_model.dart';
+
 class EmpController extends GetxController {
-  var divisions = [].obs;
+  var college = <CollegeModel>[].obs;
+  var selectedCollege = ''.obs;
+  //var divisions = [].obs;
+  var divisions = <DivisionModel>[].obs;
   var selectedDivision = ''.obs;
-  var districts = [].obs;
+  // var districts = [].obs;
+  var districts = <DistrictModel>[].obs;
   var selectedDistrict = ''.obs;
-  var vidhanSabha = [].obs;
+  // var vidhanSabha = [].obs;
+  var vidhanSabha = <VidhanModel>[].obs;
   var selectedVidhanSabha = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     fetchDivisions();
-    // fetchDistrictsByDivision(1);
+    fetchCollege();
+  }
+
+  Future<void> fetchCollege() async {
+    final url = Uri.parse(
+        'https://heonline.cg.nic.in/lmsbackend/api/college/get-all-college');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        // Parse JSON data to List<CollegeModel>
+        college.value = collegeModelFromJson(response.body);
+      } else {
+        Get.snackbar('Error', 'Failed to load colleges');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred: $e');
+    }
   }
 
   Future<void> fetchDivisions() async {
     final url =
-    Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
+        Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        divisions.value = json.decode(response.body);
+        divisions.value = divisionModelFromJson(response.body);
       } else {
         Get.snackbar('Error', 'Failed to load divisions');
       }
@@ -38,7 +64,7 @@ class EmpController extends GetxController {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        districts.value = json.decode(response.body);
+        districts.value = districtModelFromJson(response.body);
       } else {
         Get.snackbar('Error', 'Failed to load districts');
       }
@@ -46,6 +72,7 @@ class EmpController extends GetxController {
       Get.snackbar('Error', 'An error occurred: $e');
     }
   }
+
   Future<void> getVidhanSabhaByDivision(int districtLgdCode) async {
     final url = Uri.parse(
         'https://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/$districtLgdCode');
@@ -53,11 +80,9 @@ class EmpController extends GetxController {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-
-        var re = vidhanSabha.value = json.decode(response.body);
+        var re = vidhanSabha.value = vidhanModelFromJson(response.body);
         print(re);
       } else {
-
         Get.snackbar('Error', 'Failed to load vidhanSaba');
       }
     } catch (e) {
@@ -81,6 +106,11 @@ class EmpController extends GetxController {
   void selectVidhanSabha(String ce) {
     selectedVidhanSabha.value = ce;
   }
+
+  void selectCollege(String college) {
+    selectedCollege.value = college;
+  }
+
   Future<void> addEmployee({
     required String name,
     required String empCode,
@@ -94,7 +124,8 @@ class EmpController extends GetxController {
     required String classData,
     required String address,
   }) async {
-    final url = Uri.parse('http://heonline.cg.nic.in/lmsbackend/api/employee/add');
+    final url =
+        Uri.parse('http://heonline.cg.nic.in/lmsbackend/api/employee/add');
     final body = jsonEncode({
       "name": name,
       "empCode": empCode,
@@ -110,6 +141,11 @@ class EmpController extends GetxController {
     });
 
     try {
+      print("Employee Data: $name, $empCode, "
+          "$email, $contact, $division, $district,"
+          " $vidhanSabha, $college, $designation,"
+          " $classData, $address");
+
       final response = await http.post(
         url,
         headers: {

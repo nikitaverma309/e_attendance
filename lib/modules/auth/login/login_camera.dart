@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:online/controllers/login_controller.dart';
 import 'package:online/locator.dart';
 import 'package:online/modules/auth/login/login_camera_view.dart';
 import 'package:online/services/camera.service.dart';
@@ -34,7 +33,6 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
   final FaceDetectorService _faceDetectorService =
       serviceLocator<FaceDetectorService>();
   final CameraService _cameraService = serviceLocator<CameraService>();
-  final LoginController _loginController = Get.put(LoginController());
   @override
   void initState() {
     super.initState();
@@ -107,14 +105,6 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
           final File imgFile = await convertImageToFile(imageFromCamera);
           if (mounted) {
             Get.off(() => LoginCameraViewTwo(imageFile: imgFile));
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => LoginCameraViewTwo(
-            //       imageFile: imgFile,
-            //     ),
-            //   ),
-            // );
           }
           // _cameraService.dispose();
         }
@@ -184,7 +174,9 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
                         painter: FacePainter(
                             face: faceDetected!,
                             imageSize: imageSize!,
-                            onFaceDetected: (userDetected) {}),
+                            onFaceDetected: (userDetected) {
+                              Utils.printLog("face red $userDetected");
+                            }),
                       ),
                   ],
                 ),

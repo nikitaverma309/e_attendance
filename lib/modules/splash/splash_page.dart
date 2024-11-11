@@ -102,28 +102,6 @@ class _SplashScreenOneState extends State<SplashScreenOne>
           stream: geoFencingService.streamController.stream,
           builder: (context, snapshot) {
             return Scaffold(
-              // backgroundColor: primaryColor,
-              // body: Center(
-              //   child: Column(
-              //     children: [
-              //       SizedBox(height: size.height / 3),
-              //       Container(
-              //         height: 210,
-              //         width: 210,
-              //         decoration: BoxDecoration(
-              //           color: Colors.white,
-              //           borderRadius: BorderRadius.circular(180),
-              //         ),
-              //         child: const Icon(
-              //           Icons.location_on,
-              //           size: 100,
-              //           color: Colors.red,
-              //         ),
-              //       ),
-              //       const Spacer(),
-              //     ],
-              //   ),
-              // ),
               body: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(

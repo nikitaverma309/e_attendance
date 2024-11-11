@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+import 'package:online/utils/utils.dart';
 
 class FacePainter extends CustomPainter {
   FacePainter({
@@ -7,6 +8,7 @@ class FacePainter extends CustomPainter {
     required this.face,
     required this.onFaceDetected,
   });
+  bool accurateFace = false;
   final Size imageSize;
   double? scaleX, scaleY;
   Face? face;
@@ -22,11 +24,20 @@ class FacePainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3.0
         ..color = Colors.red;
+      if (accurateFace != false) {
+        Utils.printLog("accurate red $accurateFace");
+        accurateFace = false;
+        onFaceDetected(accurateFace);
+      }
     } else {
       paint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3.0
         ..color = Colors.green;
+      if (accurateFace != true) {
+        accurateFace = true;
+        onFaceDetected(accurateFace);
+      }
     }
 
     scaleX = size.width / imageSize.width;

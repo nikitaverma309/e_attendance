@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
 import '../locator.dart';
+import '../utils/utils.dart';
 import 'camera.service.dart';
 
 class FaceDetectorService {
@@ -17,17 +18,16 @@ class FaceDetectorService {
   bool get faceDetected => _faces.isNotEmpty;
 
   void initialize() {
-    print('Initializing Face Detector...');
+    Utils.printLog('Initializing Face Detector...');
     _faceDetector = GoogleMlKit.vision.faceDetector(
       FaceDetectorOptions(
         performanceMode: FaceDetectorMode.accurate,
       ),
     );
-    print('Face Detector Initialized');
+    Utils.printLog('Face Detector Initialized');
   }
 
   Future<void> detectFacesFromImage(CameraImage image) async {
-    print('Starting face detection...');
     InputImageData firebaseImageMetadata = InputImageData(
       imageRotation:
           _cameraService.cameraRotation ?? InputImageRotation.rotation0deg,
