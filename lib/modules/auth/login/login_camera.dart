@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:online/controllers/login_controller.dart';
 import 'package:online/locator.dart';
-import 'package:online/modules/auth/login/lofin_camera_view.dart';
+import 'package:online/modules/auth/login/login_camera_view.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/services/image_converter.dart';
@@ -16,9 +16,7 @@ import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
 
 class LoginCameraTwo extends StatefulWidget {
-  const LoginCameraTwo({
-    super.key,
-  });
+  const LoginCameraTwo({super.key});
 
   @override
   LoginCameraTwoState createState() => LoginCameraTwoState();
@@ -105,12 +103,10 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
           _faceDetectorService.currentImage = cameraImage;
           _faceDetectorService.captureImage = false;
           Utils.printLog('Capturing new image...');
-          final imageFromCamera = await convertCameraImage(cameraImage);
+          final imageFromCamera = convertCameraImage(cameraImage);
           final File imgFile = await convertImageToFile(imageFromCamera);
           if (mounted) {
-            Get.off(() => LoginCameraViewTwo(
-                  imageFile: imgFile,
-                ));
+            Get.off(() => LoginCameraViewTwo(imageFile: imgFile));
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(
@@ -120,7 +116,7 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
             //   ),
             // );
           }
-          _cameraService.dispose();
+          // _cameraService.dispose();
         }
       } catch (e) {
         print('Error in face detection: $e');
@@ -141,8 +137,8 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
     _start();
   }
 
-  final double mirror = math.pi;
-  @override
+  static double mirror = math.pi;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -186,9 +182,9 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
                     if (faceDetected != null)
                       CustomPaint(
                         painter: FacePainter(
-                          face: faceDetected!,
-                          imageSize: imageSize!,
-                        ),
+                            face: faceDetected!,
+                            imageSize: imageSize!,
+                            onFaceDetected: (userDetected) {}),
                       ),
                   ],
                 ),

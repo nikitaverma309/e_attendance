@@ -45,13 +45,13 @@ class CustomDropdown<T> extends StatelessWidget {
   final bool enabled;
 
   const CustomDropdown({
-    Key? key,
+    super.key,
     required this.items,
     this.selectedValue,
     required this.onChanged,
     required this.hint,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
@@ -71,7 +70,6 @@ class SignUpState extends State<SignUp> {
     } else {
       _faceDetectorService.captureImage = true;
       try {
-
         return true;
       } catch (e) {
         print("Error capturing image: $e");
@@ -125,8 +123,6 @@ class SignUpState extends State<SignUp> {
       }
     });
   }
-
-
 
   _onBackPressed() {
     Navigator.of(context).pop();
@@ -184,9 +180,9 @@ class SignUpState extends State<SignUp> {
                     if (faceDetected != null)
                       CustomPaint(
                         painter: FacePainter(
-                          face: faceDetected!,
-                          imageSize: imageSize!,
-                        ),
+                            face: faceDetected!,
+                            imageSize: imageSize!,
+                            onFaceDetected: (userDetected) {}),
                       ),
                   ],
                 ),

@@ -26,7 +26,7 @@ class CommonButton extends StatelessWidget {
             BoxShadow(
               color: Colors.blue.withOpacity(0.1),
               blurRadius: 1,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -40,7 +40,7 @@ class CommonButton extends StatelessWidget {
               text ?? '',
               style: const TextStyle(color: Colors.white),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             icon

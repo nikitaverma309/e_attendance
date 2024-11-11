@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/controllers/login_controller.dart';
-import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_button.dart';
 import 'package:online/widgets/footer_widget.dart';
 

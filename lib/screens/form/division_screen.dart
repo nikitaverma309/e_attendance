@@ -15,7 +15,7 @@ class _DivisionDropdownState extends State<DivisionDropdown> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Select Division')),
+      appBar: AppBar(title: const Text('Select Division')),
       body: Center(
         child: Column(
           children: [

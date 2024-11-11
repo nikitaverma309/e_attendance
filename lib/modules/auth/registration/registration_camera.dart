@@ -1,12 +1,9 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
-import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:online/controllers/login_controller.dart';
 import 'package:online/locator.dart';
 import 'package:online/modules/auth/registration/registration_camera_view.dart';
 import 'package:online/services/camera.service.dart';
@@ -17,9 +14,7 @@ import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({
-    super.key,
-  });
+  const RegistrationScreen({super.key});
 
   @override
   RegistrationScreenState createState() => RegistrationScreenState();
@@ -32,12 +27,12 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   bool _detectingFaces = false;
   bool pictureTaken = false;
   bool _initializing = false;
+  bool isFaceDetected = false;
 
   // Service injection
   final FaceDetectorService _faceDetectorService =
-  serviceLocator<FaceDetectorService>();
+      serviceLocator<FaceDetectorService>();
   final CameraService _cameraService = serviceLocator<CameraService>();
-  final LoginController _loginController = Get.put(LoginController());
   @override
   void initState() {
     super.initState();
@@ -72,10 +67,9 @@ class RegistrationScreenState extends State<RegistrationScreen> {
     } else {
       _faceDetectorService.captureImage = true;
       try {
-
         return true;
       } catch (e) {
-        print("Error capturing image: $e");
+        Utils.printLog("Error capturing image: $e");
         return false;
       }
     }
@@ -107,7 +101,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
           _faceDetectorService.currentImage = cameraImage;
           _faceDetectorService.captureImage = false;
           Utils.printLog('Capturing new image...');
-          final imageFromCamera = await convertCameraImage(cameraImage);
+          final imageFromCamera = convertCameraImage(cameraImage);
           final File imgFile = await convertImageToFile(imageFromCamera);
           if (mounted) {
             Navigator.push(
@@ -121,13 +115,11 @@ class RegistrationScreenState extends State<RegistrationScreen> {
           }
         }
       } catch (e) {
-        print('Error in face detection: $e');
+        Utils.printLog('Error in face detection: $e');
         _detectingFaces = false;
       }
     });
   }
-
-
 
   _onBackPressed() {
     Navigator.of(context).pop();
@@ -177,7 +169,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
               child: SizedBox(
                 width: width,
                 height:
-                width * _cameraService.cameraController!.value.aspectRatio,
+                    width * _cameraService.cameraController!.value.aspectRatio,
                 child: Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
@@ -187,6 +179,11 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                         painter: FacePainter(
                           face: faceDetected!,
                           imageSize: imageSize!,
+                          onFaceDetected: (userDetected) {
+                            setState(() {
+                              isFaceDetected = userDetected;
+                            });
+                          },
                         ),
                       ),
                   ],
@@ -210,10 +207,10 @@ class RegistrationScreenState extends State<RegistrationScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
-        visible: faceDetected != null,
+        visible: faceDetected != null && isFaceDetected,
         child: ElevatedButton(
           onPressed: faceDetected == null ? null : onShot,
-          child: const Icon(Icons.camera_alt), // Icon for the button
+          child: const Icon(Icons.camera_alt),
         ),
       ),
     );
