@@ -5,7 +5,8 @@ import 'package:get/get.dart'; // Make sure to import Get for Get.snackbar
 import 'dart:convert';
 
 class ApiServices {
-  static Future<List<DivisionModel>?> getApiServices() async {
+
+  static Future<List<DivisionModel>?> getApidemoServices() async {
     final url =
         Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
     try {
@@ -25,18 +26,22 @@ class ApiServices {
     }
   }
 
-  static Future<List<DistrictModel>?> getApiDistrictsByDivision(
+  static Future<List<DistrictModel>?> getApiDemoDistrictsByDivision(
       int divisionCode) async {
-   // final url = Uri.parse(
-     //   'https://heonline.cg.nic.in/lmsbackend/api/district/get-division-district/:divisionCode=$divisionCode');
-    final url = Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/district/get-division-district/$divisionCode');
+    final url = Uri.parse(
+        'https://heonline.cg.nic.in/lmsbackend/api/district/get-division-district/$divisionCode');
 
     try {
-      final response = await http.get(url); // Changed client.get to http.get
+      final response = await http.get(url);
       if (response.statusCode == 200) {
+        // Decode the JSON and cast it to a List<Map<String, dynamic>>
         List<dynamic> jsonResponse = jsonDecode(response.body);
-        var data =
-            jsonResponse.map((data) => DistrictModel.fromJson(data)).toList();
+
+        // Map each JSON object in the list to a DistrictModel instance
+        List<DistrictModel> data = jsonResponse
+            .map((data) => DistrictModel.fromJson(data as Map<String, dynamic>))
+            .toList();
+
         print(data);
         return data;
       } else {

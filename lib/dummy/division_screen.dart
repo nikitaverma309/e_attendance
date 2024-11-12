@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:online/controllers/division_controller.dart';
+import 'package:online/dummy/division_controller.dart';
 
 class DivisionDropdown extends StatefulWidget {
   const DivisionDropdown({super.key});
@@ -15,13 +15,13 @@ class _DivisionDropdownState extends State<DivisionDropdown> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Select Division')),
+      appBar: AppBar(title: const Text('Select Division')),
       body: Center(
         child: Column(
           children: [
             Obx(() {
               if (divisionController.divisionList.isEmpty) {
-                return CircularProgressIndicator(); // Show loading indicator
+                return const CircularProgressIndicator(); // Show loading indicator
               }
               return DropdownButton<int?>(
                 value: divisionController.selectedDivisionCode.value,
@@ -37,7 +37,7 @@ class _DivisionDropdownState extends State<DivisionDropdown> {
                     child: Text(division.name),
                   );
                 }).toList(),
-                hint: Text('Select Division'),
+                hint: const Text('Select Division'),
               );
             }),
             Obx(() {

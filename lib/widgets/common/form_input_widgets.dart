@@ -127,7 +127,7 @@ class _TextInputFieldState extends State<TextInputField> {
               borderRadius: BorderRadius.circular(5.0),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.white, // Border color when focused
                 width: 1.0,
               ),
@@ -148,7 +148,7 @@ class _TextInputFieldState extends State<TextInputField> {
               borderRadius: BorderRadius.circular(5.0),
             ),
             hintText: widget.showHintText ? widget.hintText : null,
-            hintStyle:   kText16BoldBlackColorStyle,
+            hintStyle:   kText16GrayColorStyle,
             fillColor: Colors.white, // Background color
             filled: true, // Apply the background color
             contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),

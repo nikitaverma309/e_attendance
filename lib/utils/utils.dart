@@ -56,7 +56,19 @@ class Utils {
     };
     return header;
   }
-
+  static String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Required';
+    }
+    final emailRegex = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+    if (!emailRegex.hasMatch(value)) {
+      return 'Invalid email format';
+    }
+    return null;
+  }
+  static String? validateRequired(String? value) {
+    return (value == null || value.isEmpty) ? 'Required' : null;
+  }
   static Future<void> selectDate(
       BuildContext context, TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(

@@ -40,17 +40,21 @@ Widget customButton(BuildContext context, String label, Color bgColor,
 class CustomDropdown<T> extends StatelessWidget {
   final List<T> items;
   final T? selectedValue;
-  final void Function(T?) onChanged;
   final String hint;
+  final ValueChanged<T?> onChanged;
+  final String displayKey;
+  final String idKey;
   final bool enabled;
 
   const CustomDropdown({
     super.key,
     required this.items,
-    this.selectedValue,
-    required this.onChanged,
+    required this.selectedValue,
     required this.hint,
-    this.enabled = true,
+    required this.onChanged,
+    required this.idKey,
+    required this.displayKey,
+    this.enabled = true,  // Default to enabled
   });
 
   @override
@@ -59,19 +63,19 @@ class CustomDropdown<T> extends StatelessWidget {
       height: 40,
       child: DropdownButtonFormField<T>(
         value: selectedValue,
-        items: items
-            .map((item) => DropdownMenuItem<T>(
-          value: item,
-          child: Text(
-            item.toString(), // toString() shows the 'name' in dropdown
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.black,
-              fontWeight: FontWeight.w400,
+        items: items.map((T item) {
+          return DropdownMenuItem<T>(
+            value: item,
+            child: Text(
+              (item as dynamic).toJson()[displayKey],
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+              ),// Adjust according to model fields
             ),
-          ),
-        ))
-            .toList(),
+          );
+        }).toList(),
         onChanged: enabled ? onChanged : null,
         hint: Text(
           hint,
