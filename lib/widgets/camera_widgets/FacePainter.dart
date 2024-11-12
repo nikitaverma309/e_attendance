@@ -6,13 +6,11 @@ class FacePainter extends CustomPainter {
   FacePainter({
     required this.imageSize,
     required this.face,
-    required this.onFaceDetected,
   });
   bool accurateFace = false;
   final Size imageSize;
   double? scaleX, scaleY;
   Face? face;
-  final Function(bool faceDetected) onFaceDetected;
   @override
   void paint(Canvas canvas, Size size) {
     if (face == null) return;
@@ -26,9 +24,8 @@ class FacePainter extends CustomPainter {
         ..color = Colors.red;
       if (accurateFace != false) {
         Utils.printLog("accurate red $accurateFace");
-        accurateFace = false;
-        onFaceDetected(accurateFace);
       }
+      accurateFace = false;
     } else {
       paint = Paint()
         ..style = PaintingStyle.stroke
@@ -36,7 +33,6 @@ class FacePainter extends CustomPainter {
         ..color = Colors.green;
       if (accurateFace != true) {
         accurateFace = true;
-        onFaceDetected(accurateFace);
       }
     }
 

@@ -16,7 +16,7 @@ import '../restriction_dialog/loading_manager.dart';
 import '../restriction_dialog/restrict_user_dialog.dart';
 
 class SplashScreenOne extends StatefulWidget {
-  const SplashScreenOne({Key? key}) : super(key: key);
+  const SplashScreenOne({super.key});
 
   @override
   State<SplashScreenOne> createState() => _SplashScreenOneState();
@@ -60,9 +60,7 @@ class _SplashScreenOneState extends State<SplashScreenOne>
       curve: Curves.bounceOut,
     );
 
-    // Start the animation
     _controller.forward();
-    init();
     checkLocationAndNavigate();
   }
 
@@ -73,14 +71,8 @@ class _SplashScreenOneState extends State<SplashScreenOne>
     super.dispose();
   }
 
-  init() async {
-    await Future.delayed(const Duration(seconds: 3));
-    Get.off(() => const FeatureShowCasePage());
-  }
-
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return WillStartForegroundTask(
       onWillStart: () async {
         return geoFencingService.polyGeofenceService.isRunningService;
@@ -102,28 +94,6 @@ class _SplashScreenOneState extends State<SplashScreenOne>
           stream: geoFencingService.streamController.stream,
           builder: (context, snapshot) {
             return Scaffold(
-              // backgroundColor: primaryColor,
-              // body: Center(
-              //   child: Column(
-              //     children: [
-              //       SizedBox(height: size.height / 3),
-              //       Container(
-              //         height: 210,
-              //         width: 210,
-              //         decoration: BoxDecoration(
-              //           color: Colors.white,
-              //           borderRadius: BorderRadius.circular(180),
-              //         ),
-              //         child: const Icon(
-              //           Icons.location_on,
-              //           size: 100,
-              //           color: Colors.red,
-              //         ),
-              //       ),
-              //       const Spacer(),
-              //     ],
-              //   ),
-              // ),
               body: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -140,8 +110,6 @@ class _SplashScreenOneState extends State<SplashScreenOne>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // ScaleTransition for jumping effect
-
                       ScaleTransition(
                         scale: _animation,
                         child: ClipOval(
@@ -168,10 +136,6 @@ class _SplashScreenOneState extends State<SplashScreenOne>
         geoFencingService.initServices(context);
       }
     });
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   geoFencingService.initServices(context);
-    // });
   }
 
   pageNavigation() async {
@@ -204,13 +168,10 @@ class _SplashScreenOneState extends State<SplashScreenOne>
       }
       await Future.delayed(const Duration(seconds: 2));
       Widget screen = const FeatureShowCasePage();
+
       initGeoLocation();
       if (mounted) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => screen,
-            ));
+       Get.offAll(() => screen);
       }
     }
   }

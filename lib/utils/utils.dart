@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:logger/logger.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:poly_geofence_service/models/lat_lng.dart';
+
 class Utils {
   static final Dio dio = Dio();
   static final Logger _logger = Logger();
@@ -91,6 +93,24 @@ class Utils {
     }
   }
 
+  static bool isValidFace(Face? face) {
+    bool isValid = false;
+
+    try {
+      if (face == null) {
+        return false;
+      }
+      if ((face.headEulerAngleY!) > 10 || (face.headEulerAngleY!) < -10) {
+        isValid = false;
+      } else {
+        isValid = true;
+      }
+    } catch (e) {
+      isValid = false;
+    }
+
+    return isValid;
+  }
 
   String formatDate(DateTime? date) {
     if (date != null) {
@@ -100,6 +120,7 @@ class Utils {
       return 'dd/MM/yyyy';
     }
   }
+
   static void showSuccessToast({
     required String message,
     Toast length = Toast.LENGTH_SHORT,

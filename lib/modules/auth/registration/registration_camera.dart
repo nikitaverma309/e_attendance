@@ -25,7 +25,6 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   String? imagePath;
   Face? faceDetected;
   Size? imageSize;
-  bool _detectingFaces = false;
   bool pictureTaken = false;
   bool _initializing = false;
   RxBool isFaceDetected = false.obs;
@@ -78,8 +77,6 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   _frameFaces() {
     imageSize = _cameraService.getImageSize();
     _cameraService.cameraController?.startImageStream((cameraImage) async {
-      if (_detectingFaces) return;
-      _detectingFaces = true;
       try {
         await _faceDetectorService.detectFacesFromImage(cameraImage);
         if (_faceDetectorService.faces.length == 1) {
@@ -87,36 +84,29 @@ class RegistrationScreenState extends State<RegistrationScreen> {
             setState(() {
               faceDetected = _faceDetectorService.faces[0];
             });
+            isFaceDetected(Utils.isValidFace(faceDetected));
           }
         } else {
           if (mounted) {
+            isFaceDetected(false);
             setState(() {
               faceDetected = null;
             });
           }
         }
-        _detectingFaces = false;
 
         if (_faceDetectorService.captureImage) {
           _faceDetectorService.currentImage = cameraImage;
           _faceDetectorService.captureImage = false;
-          final imageFromCamera =
-              convertCameraImage(cameraImage);
+          final imageFromCamera = convertCameraImage(cameraImage);
           final File imgFile = await convertImageToFile(imageFromCamera);
 
           if (mounted) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    ConfirmRegisterationScreen(imageFile: imgFile),
-              ),
-            );
+            Get.off(() => ConfirmRegisterationScreen(imageFile: imgFile));
           }
         }
       } catch (e) {
         Utils.printLog('Error in face detection: $e');
-        _detectingFaces = false;
       }
     });
   }
@@ -171,9 +161,6 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                         painter: FacePainter(
                           face: faceDetected!,
                           imageSize: imageSize!,
-                          onFaceDetected: (userDetected) {
-                            isFaceDetected(userDetected);
-                          },
                         ),
                       ),
                   ],
@@ -196,13 +183,15 @@ class RegistrationScreenState extends State<RegistrationScreen> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Obx(() => Visibility(
-            visible: isFaceDetected.value && faceDetected != null,
-            child: ElevatedButton(
-              onPressed: faceDetected == null ? null : onShot,
-              child: const Icon(Icons.camera_alt),
-            ),
-          )),
+      floatingActionButton: Obx(
+        () => Visibility(
+          visible: isFaceDetected.value && faceDetected != null,
+          child: ElevatedButton(
+            onPressed: faceDetected == null ? null : onShot,
+            child: const Icon(Icons.camera_alt),
+          ),
+        ),
+      ),
     );
   }
 }
