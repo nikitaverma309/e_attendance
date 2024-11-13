@@ -105,12 +105,12 @@ class Shape {
   //error Container Red
   static BoxDecoration submitContainerRed(BuildContext context) {
     return BoxDecoration(
-      color: AppColors.green,
+      color: AppColors.white,
       border: Border.all(
         color: Colors.white,
         width: 1.0,
       ),
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(2.0),
     );
   }
 

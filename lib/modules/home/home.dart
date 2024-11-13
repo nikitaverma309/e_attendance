@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:online/controllers/check_status_employee_controller.dart';
 import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/modules/auth/registration/registration_camera.dart';
-import 'package:online/screens/form/emp_form.dart';
+import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
+import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,6 +18,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool loading = false;
 
+  final TextEditingController empCodeController = TextEditingController();
+  final TextEditingController contactController = TextEditingController();
+  final CheckStatusEmployeeController employeeController =
+      Get.put(CheckStatusEmployeeController());
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -127,14 +135,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           Colors.white,
                           Icons.person_add,
                           () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                   // const EmployeeRegistrationForm(),
-                                const EmployeeRegistrationForm(),
-                              ),
-                            );
+                            _showEmpRegistrationBottomSheet(context);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (BuildContext context) =>
+                            //        // const EmployeeRegistrationForm(),
+                            //     const EmployeeRegistrationForm(),
+                            //   ),
+                            // );
                           },
                         ),
                       ],
@@ -147,6 +156,130 @@ class _MyHomePageState extends State<MyHomePage> {
               child: CircularProgressIndicator(),
             ),
       bottomSheet: FooterWidget(),
+    );
+  }
+
+  void _showEmpRegistrationBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            Form(
+              key: _formKey,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      "Check status",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextInputField(
+                      no: "1",
+                      controller: empCodeController,
+                      title: "Employee Code",
+                      hintText: 'Fill details',
+                    ),
+                    const SizedBox(height: 10),
+                    TextInputField(
+                      no: "2",
+                      controller: contactController,
+                      title: "Contact",
+                      inputFormatters: [
+                        FilteringTextInputFormatter
+                            .digitsOnly, // Allows only digits
+                        LengthLimitingTextInputFormatter(
+                            10), // Limits input to 10 digits
+                      ],
+                      inputType: TextInputType.phone,
+                      validator: (value) => Utils.validateRequired(value),
+                      hintText: 'Fill Contact Nu.',
+                    ),
+                    const SizedBox(height: 20),
+                    Obx(() => InkWell(
+                          onTap: () async {
+                            // Add form validation check before calling fetchEmployeeData
+                            if (_formKey.currentState?.validate() ?? false) {
+                              if (empCodeController.text.isNotEmpty &&
+                                  contactController.text.isNotEmpty) {
+                                await employeeController.fetchEmployeeData(
+                                  empCodeController.text,
+                                  contactController.text,
+                                );
+                              } else {
+                                Get.snackbar(
+                                    "Error", "Please fill in all fields");
+                              }
+                            }
+                          },
+                          child: Card(
+                            color: const Color(0xFF0E2D49),
+                            elevation: 16.0,
+                            shadowColor: const Color(0xFFEDEBF5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(26.0),
+                              side: const BorderSide(
+                                color: Colors.white,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: SizedBox(
+                              height: 35,
+                              width: 99,
+                              child: Center(
+                                child: employeeController.isLoading.value
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.black,
+                                      )
+                                    : const Text(
+                                        "Submit",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                              ),
+                            ),
+                          ),
+                        )),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              right: 10,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

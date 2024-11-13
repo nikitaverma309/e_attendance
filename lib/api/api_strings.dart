@@ -2,6 +2,11 @@ class ApiStrings {
   static const String baseUrl = 'http://10.121.71.227';
   static const String register = '$baseUrl:5000/upload/training?username=';
   static const String login = '$baseUrl:5000/api/recognize';
+  static const String empRegister = 'http://heonline.cg.nic.in/lmsbackend/api/employee/add';
+  static const String college = 'https://heonline.cg.nic.in/lmsbackend/api/college/get-all-college';
+  static const String division = 'https://heonline.cg.nic.in/lmsbackend/api/division/get-all';
+  static const String district = 'https://heonline.cg.nic.in/lmsbackend/api/district/get-division-district/';
+  static const String getVidhansabha = 'https://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/';
 
 
 }
