@@ -1,7 +1,7 @@
 import 'package:online/models/district_model.dart';
 import 'package:online/models/division_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:get/get.dart'; // Make sure to import Get for Get.snackbar
+import 'package:get/get.dart';
 import 'dart:convert';
 
 class ApiServices {
