@@ -1,14 +1,19 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:online/api/api_strings.dart';
+import 'package:online/models/class_model.dart';
 import 'dart:convert';
 
 import 'package:online/models/college_model.dart';
+import 'package:online/models/designation_model.dart';
 import 'package:online/models/district_model.dart';
 import 'package:online/models/division_model.dart';
 import 'package:online/models/vidhan_sabha_model.dart';
 
 class EmpController extends GetxController {
+  var classList = <ClassModel>[].obs;
+  var selectedClass = ''.obs;
+  var designationList = <DesignationModel>[].obs;
+  var selectedDesignation = ''.obs;
   var college = <CollegeModel>[].obs;
   var selectedCollege = ''.obs;
   //var divisions = [].obs;
@@ -26,10 +31,41 @@ class EmpController extends GetxController {
     super.onInit();
     fetchDivisions();
     fetchCollege();
+    fetchClass();
+  }
+
+  Future<void> fetchClass() async {
+    final url =
+    Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/class/getAll');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        classList.value = classModelFromJson(response.body);
+      } else {
+        Get.snackbar('Error', 'Failed to load colleges');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred: $e');
+    }
+  }
+  Future<void> fetchClassByDesignation(String classId) async {
+    final url = Uri.parse(
+        'https://heonline.cg.nic.in/lmsbackend/api/degisnation-class-wise/$classId');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        designationList.value = designationModelFromJson(response.body);
+      } else {
+        Get.snackbar('Error', 'Failed to load districts');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred: $e');
+    }
   }
 
   Future<void> fetchCollege() async {
-    final url = Uri.parse(ApiStrings.college);
+    final url = Uri.parse(
+        'https://heonline.cg.nic.in/lmsbackend/api/college/get-all-college');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -45,7 +81,7 @@ class EmpController extends GetxController {
 
   Future<void> fetchDivisions() async {
     final url =
-        Uri.parse(ApiStrings.division);
+    Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -60,7 +96,7 @@ class EmpController extends GetxController {
 
   Future<void> fetchDistrictsByDivision(int divisionCode) async {
     final url = Uri.parse(
-        '${ApiStrings.district}$divisionCode');
+        'https://heonline.cg.nic.in/lmsbackend/api/district/get-division-district/$divisionCode');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -75,7 +111,7 @@ class EmpController extends GetxController {
 
   Future<void> getVidhanSabhaByDivision(int districtLgdCode) async {
     final url = Uri.parse(
-        '${ApiStrings.getVidhansabha}$districtLgdCode');
+        'https://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/$districtLgdCode');
     //http://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/:districtLgdCode
     try {
       final response = await http.get(url);
@@ -111,6 +147,14 @@ class EmpController extends GetxController {
     selectedCollege.value = college;
   }
 
+  void selectClass(String classS) {
+    selectedClass.value = classS;
+    selectedDesignation.value = "";
+    designationList.clear();
+  }
+  void selectDesignation(String designation) {
+    selectedDesignation.value = designation;
+  }
   Future<void> addEmployee({
     required String name,
     required String empCode,
@@ -125,7 +169,7 @@ class EmpController extends GetxController {
     required String address,
   }) async {
     final url =
-        Uri.parse(ApiStrings.empRegister);
+    Uri.parse('http://heonline.cg.nic.in/lmsbackend/api/employee/add');
     final body = jsonEncode({
       "name": name,
       "empCode": empCode,
