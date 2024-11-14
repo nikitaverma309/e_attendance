@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:online/models/class_model.dart';
@@ -8,6 +9,7 @@ import 'package:online/models/designation_model.dart';
 import 'package:online/models/district_model.dart';
 import 'package:online/models/division_model.dart';
 import 'package:online/models/vidhan_sabha_model.dart';
+import 'package:online/widgets/common/custom_widgets.dart';
 
 class EmpController extends GetxController {
   var classList = <ClassModel>[].obs;
@@ -42,12 +44,19 @@ class EmpController extends GetxController {
       if (response.statusCode == 200) {
         classList.value = classModelFromJson(response.body);
       } else {
-        Get.snackbar('Error', 'Failed to load colleges');
+        CustomSnackbarError.showSnackbar(
+          title: "Error",
+          message: 'Failed to load Class',
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
+      CustomSnackbarError.showSnackbar(
+        title: "Error",
+        message: 'An error occurred: $e',
+      );
     }
   }
+
   Future<void> fetchClassByDesignation(String classId) async {
     final url = Uri.parse(
         'https://heonline.cg.nic.in/lmsbackend/api/degisnation-class-wise/$classId');
@@ -56,10 +65,16 @@ class EmpController extends GetxController {
       if (response.statusCode == 200) {
         designationList.value = designationModelFromJson(response.body);
       } else {
-        Get.snackbar('Error', 'Failed to load districts');
+        CustomSnackbarError.showSnackbar(
+          title: "Error",
+          message: 'Failed to load Designation',
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
+      CustomSnackbarError.showSnackbar(
+        title: "Error",
+        message: 'An error occurred: $e',
+      );
     }
   }
 
@@ -72,10 +87,16 @@ class EmpController extends GetxController {
         // Parse JSON data to List<CollegeModel>
         college.value = collegeModelFromJson(response.body);
       } else {
-        Get.snackbar('Error', 'Failed to load colleges');
+        CustomSnackbarError.showSnackbar(
+          title: "Error",
+          message: 'Failed to load colleges',
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
+      CustomSnackbarError.showSnackbar(
+        title: "Error",
+        message: 'An error occurred: $e',
+      );
     }
   }
 
@@ -87,10 +108,16 @@ class EmpController extends GetxController {
       if (response.statusCode == 200) {
         divisions.value = divisionModelFromJson(response.body);
       } else {
-        Get.snackbar('Error', 'Failed to load divisions');
+        CustomSnackbarError.showSnackbar(
+          title: "Error",
+          message: 'Failed to load divisions',
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
+      CustomSnackbarError.showSnackbar(
+        title: "Error",
+        message: 'An error occurred: $e',
+      );
     }
   }
 
@@ -102,28 +129,39 @@ class EmpController extends GetxController {
       if (response.statusCode == 200) {
         districts.value = districtModelFromJson(response.body);
       } else {
-        Get.snackbar('Error', 'Failed to load districts');
+        CustomSnackbarError.showSnackbar(
+          title: "Error",
+          message: 'Failed to load districts',
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
+      CustomSnackbarError.showSnackbar(
+        title: "Error",
+        message: 'An error occurred: $e',
+      );
     }
   }
 
   Future<void> getVidhanSabhaByDivision(int districtLgdCode) async {
     final url = Uri.parse(
         'https://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/$districtLgdCode');
-    //http://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/:districtLgdCode
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         var re = vidhanSabha.value = vidhanModelFromJson(response.body);
         print(re);
       } else {
-        Get.snackbar('Error', 'Failed to load vidhanSaba');
+        CustomSnackbarError.showSnackbar(
+          title: "Error",
+          message: 'Failed to load vidhanSaba',
+        );
       }
     } catch (e) {
       print(e);
-      Get.snackbar('Error', 'An error occurred: $e');
+      CustomSnackbarError.showSnackbar(
+        title: "Error",
+        message: 'An error occurred: $e',
+      );
     }
   }
 
@@ -152,9 +190,11 @@ class EmpController extends GetxController {
     selectedDesignation.value = "";
     designationList.clear();
   }
+
   void selectDesignation(String designation) {
     selectedDesignation.value = designation;
   }
+
   Future<void> addEmployee({
     required String name,
     required String empCode,
@@ -168,8 +208,7 @@ class EmpController extends GetxController {
     required String classData,
     required String address,
   }) async {
-    final url =
-        Uri.parse('http://heonline.cg.nic.in/lmsbackend/api/employee/add');
+    final url = Uri.parse('http://164.100.150.78/lmsbackend/api/employee/add');
     final body = jsonEncode({
       "name": name,
       "empCode": empCode,
@@ -186,9 +225,9 @@ class EmpController extends GetxController {
 
     try {
       print("Employee Data: $name, $empCode, "
-          "$email, $contact, $division, $district,"
-          " $vidhanSabha, $college, $designation,"
-          " $classData, $address");
+          "$email, $contact, division is $division, district is $district,"
+          " vidhanSabha is $vidhanSabha, college is $college, designation is $designation,"
+          " classData is $classData, $address");
 
       final response = await http.post(
         url,
@@ -201,10 +240,16 @@ class EmpController extends GetxController {
       if (response.statusCode == 200) {
         Get.snackbar('Success', 'Employee registered successfully');
       } else {
-        Get.snackbar('Error', 'Failed to register employee');
+        CustomSnackbarError.showSnackbar(
+          title: "Error",
+          message: "Failed to register employee",
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
+      CustomSnackbarError.showSnackbar(
+        title: "Error",
+        message: 'An error occurred: $e',
+      );
     }
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:online/utils/shap/shape_design.dart';
 
 Widget customButton(BuildContext context, String label, Color bgColor,
@@ -131,6 +134,53 @@ class DropDownSelectionMessage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         child: Text(message),
       ),
+    );
+  }
+}
+
+
+
+
+
+class CustomSnackbarError {
+  static void showSnackbar({
+    required String title,
+    required String message,
+    SnackPosition position = SnackPosition.BOTTOM,
+    Color backgroundColor = Colors.red,
+    Color textColor = Colors.white,
+    double borderRadius = 10.0,
+    EdgeInsets margin = const EdgeInsets.all(10),
+  }) {
+    Get.snackbar(
+      title,
+      message,
+      snackPosition: position,
+      backgroundColor: backgroundColor,
+      colorText: textColor,
+      borderRadius: borderRadius,
+      margin: margin,
+    );
+  }
+}
+class CustomSnackbarSuccessfully {
+  static void showSnackbar({
+    required String title,
+    required String message,
+    SnackPosition position = SnackPosition.BOTTOM,
+    Color backgroundColor = Colors.green,
+    Color textColor = Colors.white,
+    double borderRadius = 10.0,
+    EdgeInsets margin = const EdgeInsets.all(10),
+  }) {
+    Get.snackbar(
+      title,
+      message,
+      snackPosition: position,
+      backgroundColor: backgroundColor,
+      colorText: textColor,
+      borderRadius: borderRadius,
+      margin: margin,
     );
   }
 }

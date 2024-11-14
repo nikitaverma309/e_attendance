@@ -68,6 +68,15 @@ class CheckStatusEmployeeController extends GetxController {
           employeeData: sendData,
         ));
       } else {
+        Get.snackbar(
+          "Error",
+          "Please fill in all fields",
+          snackPosition: SnackPosition.BOTTOM,  // Snackbar position
+          backgroundColor: Colors.red,         // Background color
+          colorText: Colors.white,              // Text color
+          borderRadius: 10,                     // Border radius
+          margin: EdgeInsets.all(10),           // Margin around snackbar
+        );
         Utils.showErrorToast(message: 'Employee not found');
       }
     } else {

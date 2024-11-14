@@ -151,13 +151,13 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     hint: 'Select Division  ',
                     idKey: 'divisionCode',
                     displayKey: 'name', // Display the 'ConstituencyName'
-                    onChanged: (DivisionModel? newVidhan) {
-                      if (newVidhan != null) {
+                    onChanged: (DivisionModel? Value) {
+                      if (Value != null) {
                         empController
-                            .selectDivision(newVidhan.divisionCode.toString());
+                            .selectDivision(Value.divisionCode.toString());
                         empController.fetchDistrictsByDivision(
-                            int.parse(newVidhan.divisionCode.toString()));
-                        print('Selected division Name: ${newVidhan.name}');
+                            int.parse(Value.divisionCode.toString()));
+                        print('Selected division Name: ${Value.name}');
                       }
                     },
                   );
@@ -340,52 +340,36 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     text: "Register Now",
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // Setting default values if fields are empty
-                        String name = nameCtr.text.isNotEmpty
-                            ? nameCtr.text
-                            : "Default Name";
-                        String empCode = empCodeCtr.text.isNotEmpty
-                            ? empCodeCtr.text
-                            : "Default Code";
-                        String email = emailCtr.text.isNotEmpty
-                            ? emailCtr.text
-                            : "default@example.com";
-                        String contact =
-                            mobCtr.text.isNotEmpty ? mobCtr.text : "0000000000";
-                        String division =
-                            empController.selectedDivision.value.isNotEmpty
-                                ? empController.selectedDivision.value
-                                : "1";
-                        String district =
-                            empController.selectedDistrict.value.isNotEmpty
-                                ? empController.selectedDistrict.value
-                                : "1";
-                        String vidhanSabha =
-                            empController.selectedVidhanSabha.value.isNotEmpty
-                                ? empController.selectedVidhanSabha.value
-                                : "1";
-                        String college =
-                            empController.selectedCollege.value.isNotEmpty
-                                ? empController.selectedCollege.value
-                                : "Default College";
-
-                        String address = addressCtr.text.isNotEmpty
-                            ? addressCtr.text
-                            : "Default Address";
+                        // Collecting employee data without default values
+                        final employeeData = {
+                          "name": nameCtr.text,
+                          "empCode": empCodeCtr.text,
+                          "email": emailCtr.text,
+                          "contact": mobCtr.text,
+                          "division": empController.selectedDivision.value,
+                          "district": empController.selectedDistrict.value,
+                          "vidhanSabha":
+                              empController.selectedVidhanSabha.value,
+                          "college": empController.selectedCollege.value,
+                          "classData": empController.selectedClass.value,
+                          "designation":
+                              empController.selectedDesignation.value,
+                          "address": addressCtr.text,
+                        };
 
                         // Calling the addEmployee method in your controller to pass data
                         empController.addEmployee(
-                          name: name,
-                          empCode: empCode,
-                          email: email,
-                          contact: contact,
-                          division: division,
-                          district: district,
-                          vidhanSabha: vidhanSabha,
-                          college: college,
-                          designation: empController.selectedDesignation.value,
+                          name: nameCtr.text,
+                          empCode: empCodeCtr.text,
+                          email: emailCtr.text,
+                          contact: mobCtr.text,
+                          division: empController.selectedDivision.value,
+                          district: empController.selectedDistrict.value,
+                          vidhanSabha: empController.selectedVidhanSabha.value,
+                          college: empController.selectedCollege.value,
                           classData: empController.selectedClass.value,
-                          address: address,
+                          designation: empController.selectedDesignation.value,
+                          address: addressCtr.text,
                         );
                       }
                     },
