@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online/utils/shap/shape_design.dart';
 
 Widget customButton(BuildContext context, String label, Color bgColor,
     Color textColor, IconData icon, VoidCallback onTap) {
@@ -110,3 +111,26 @@ class CustomDropdown<T> extends StatelessWidget {
   }
 }
 
+class DropDownSelectionMessage extends StatelessWidget {
+  final String message;
+
+
+  DropDownSelectionMessage({
+    Key? key,
+    required this.message,
+
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: Shape.submitContainerRed(context),
+      height: MediaQuery.of(context).size.height * 0.05,
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        child: Text(message),
+      ),
+    );
+  }
+}

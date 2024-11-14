@@ -10,7 +10,6 @@ import 'package:online/models/designation_model.dart';
 import 'package:online/models/district_model.dart';
 import 'package:online/models/division_model.dart';
 import 'package:online/models/vidhan_sabha_model.dart';
-import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
