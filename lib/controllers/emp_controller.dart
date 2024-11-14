@@ -36,7 +36,10 @@ class EmpController extends GetxController {
 
   Future<void> fetchClass() async {
     final url =
+        Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/class/getAll');
+
     Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/class/getAll');
+
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -48,6 +51,7 @@ class EmpController extends GetxController {
       Get.snackbar('Error', 'An error occurred: $e');
     }
   }
+
   Future<void> fetchClassByDesignation(String classId) async {
     final url = Uri.parse(
         'https://heonline.cg.nic.in/lmsbackend/api/degisnation-class-wise/$classId');
@@ -81,7 +85,7 @@ class EmpController extends GetxController {
 
   Future<void> fetchDivisions() async {
     final url =
-    Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
+        Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -152,9 +156,11 @@ class EmpController extends GetxController {
     selectedDesignation.value = "";
     designationList.clear();
   }
+
   void selectDesignation(String designation) {
     selectedDesignation.value = designation;
   }
+
   Future<void> addEmployee({
     required String name,
     required String empCode,
@@ -169,7 +175,7 @@ class EmpController extends GetxController {
     required String address,
   }) async {
     final url =
-    Uri.parse('http://heonline.cg.nic.in/lmsbackend/api/employee/add');
+        Uri.parse('http://heonline.cg.nic.in/lmsbackend/api/employee/add');
     final body = jsonEncode({
       "name": name,
       "empCode": empCode,

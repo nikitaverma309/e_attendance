@@ -30,8 +30,8 @@ class GeoFencingService extends GetxController {
   final streamController = StreamController<PolyGeofence>();
 
   final polyGeofenceService = PolyGeofenceService.instance.setup(
-    interval: 45000,
-    accuracy: 90,
+    interval: 5000,
+    accuracy: 80,
     loiteringDelayMs: 60000,
     statusChangeDelayMs: 10000,
     allowMockLocations: kDebugMode,

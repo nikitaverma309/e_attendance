@@ -2,13 +2,19 @@ class ApiStrings {
   static const String baseUrl = 'http://10.121.71.227';
   static const String register = '$baseUrl:5000/upload/training?username=';
   static const String login = '$baseUrl:5000/api/recognize';
-  static const String empRegister = 'http://heonline.cg.nic.in/lmsbackend/api/employee/add';
-  static const String college = 'https://heonline.cg.nic.in/lmsbackend/api/college/get-all-college';
-  static const String division = 'https://heonline.cg.nic.in/lmsbackend/api/division/get-all';
-  static const String district = 'https://heonline.cg.nic.in/lmsbackend/api/district/get-division-district/';
-  static const String getVidhansabha = 'https://heonline.cg.nic.in/lmsbackend/api/district/getVidhansabha-district-wise/';
 
-
+  //live server
+  static const String lBaseUrl = 'https://heonline.cg.nic.in/lmsbackend/api';
+  //staging
+  static const String sBaseUrl = 'http://164.100.150.78/lmsbackend/api';
+  //
+  static const String checkStatus = '$sBaseUrl/employee-code/check?';
+  static const String empRegister = '$sBaseUrl/employee/add';
+  static const String college = '$sBaseUrl/college/get-all-college';
+  static const String division = '$sBaseUrl/division/get-all';
+  static const String district = '$sBaseUrl/district/get-division-district/';
+  static const String getVidhansabha =
+      '$sBaseUrl/district/getVidhansabha-district-wise/';
 }
 
 class ApiVariables {

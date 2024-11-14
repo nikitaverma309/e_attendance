@@ -104,7 +104,7 @@ class SignUpState extends State<SignUp> {
           _faceDetectorService.currentImage = cameraImage;
           _faceDetectorService.captureImage = false;
           Utils.printLog('Capturing new image...');
-          final imageFromCamera = await convertCameraImage(cameraImage);
+          final imageFromCamera = convertCameraImage(cameraImage);
           final File imgFile = await convertImageToFile(imageFromCamera);
           if (mounted) {
             // Navigator.push(
@@ -180,9 +180,9 @@ class SignUpState extends State<SignUp> {
                     if (faceDetected != null)
                       CustomPaint(
                         painter: FacePainter(
-                            face: faceDetected!,
-                            imageSize: imageSize!,
-                            onFaceDetected: (userDetected) {}),
+                          face: faceDetected!,
+                          imageSize: imageSize!,
+                        ),
                       ),
                   ],
                 ),

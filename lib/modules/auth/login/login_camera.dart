@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:online/controllers/login_controller.dart';
 import 'package:online/locator.dart';
 import 'package:online/modules/auth/login/login_camera_view.dart';
 import 'package:online/services/camera.service.dart';
@@ -25,9 +26,9 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
   String? imagePath;
   Face? faceDetected;
   Size? imageSize;
-  bool _detectingFaces = false;
   bool pictureTaken = false;
   bool _initializing = false;
+  RxBool isFaceDetected = false.obs;
 
   // Service injection
   final FaceDetectorService _faceDetectorService =
@@ -78,8 +79,6 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
   _frameFaces() {
     imageSize = _cameraService.getImageSize();
     _cameraService.cameraController?.startImageStream((cameraImage) async {
-      if (_detectingFaces) return;
-      _detectingFaces = true;
       try {
         await _faceDetectorService.detectFacesFromImage(cameraImage);
         if (_faceDetectorService.faces.length == 1) {
@@ -87,15 +86,16 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
             setState(() {
               faceDetected = _faceDetectorService.faces[0];
             });
+            isFaceDetected(Utils.isValidFace(faceDetected));
           }
         } else {
           if (mounted) {
+            isFaceDetected(false);
             setState(() {
               faceDetected = null;
             });
           }
         }
-        _detectingFaces = false;
 
         if (_faceDetectorService.captureImage) {
           _faceDetectorService.currentImage = cameraImage;
@@ -106,11 +106,9 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
           if (mounted) {
             Get.off(() => LoginCameraViewTwo(imageFile: imgFile));
           }
-          // _cameraService.dispose();
         }
       } catch (e) {
         print('Error in face detection: $e');
-        _detectingFaces = false;
       }
     });
   }
@@ -172,11 +170,9 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
                     if (faceDetected != null)
                       CustomPaint(
                         painter: FacePainter(
-                            face: faceDetected!,
-                            imageSize: imageSize!,
-                            onFaceDetected: (userDetected) {
-                              Utils.printLog("face red $userDetected");
-                            }),
+                          face: faceDetected!,
+                          imageSize: imageSize!,
+                        ),
                       ),
                   ],
                 ),
@@ -198,13 +194,15 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Visibility(
-        visible: faceDetected != null,
-        child: ElevatedButton(
-          onPressed: faceDetected != null ? onShot : null,
-          child: const Icon(Icons.camera_alt),
-        ),
-      ),
+      floatingActionButton: Obx(() {
+        return Visibility(
+          visible: isFaceDetected.value,
+          child: ElevatedButton(
+            onPressed: faceDetected != null ? onShot : null,
+            child: const Icon(Icons.camera_alt),
+          ),
+        );
+      }),
     );
   }
 }
