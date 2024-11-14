@@ -136,14 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           Icons.person_add,
                           () {
                             _showEmpRegistrationBottomSheet(context);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (BuildContext context) =>
-                            //        // const EmployeeRegistrationForm(),
-                            //     const EmployeeRegistrationForm(),
-                            //   ),
-                            // );
                           },
                         ),
                       ],
@@ -218,8 +210,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               if (empCodeController.text.isNotEmpty &&
                                   contactController.text.isNotEmpty) {
                                 await employeeController.fetchEmployeeData(
-                                  empCodeController.text,
-                                  contactController.text,
+                                  empCodeController.text
+                                      .trim(), // Pass trimmed text
+                                  contactController.text.trim(),
                                 );
                               } else {
                                 Get.snackbar(

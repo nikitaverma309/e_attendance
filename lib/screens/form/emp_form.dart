@@ -3,14 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/colors_res.dart';
+import 'package:online/controllers/check_status_employee_controller.dart';
 import 'package:online/controllers/emp_controller.dart';
+import 'package:online/models/check_emp_status_model.dart';
 import 'package:online/models/class_model.dart';
 import 'package:online/models/college_model.dart';
 import 'package:online/models/designation_model.dart';
 import 'package:online/models/district_model.dart';
 import 'package:online/models/division_model.dart';
 import 'package:online/models/vidhan_sabha_model.dart';
-import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
@@ -19,9 +20,10 @@ import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/common/rich_title_value_list.dart';
 
 class EmployeeRegistrationForm extends StatefulWidget {
-  final Map<String, dynamic> employeeData;
+  final GetEmployeeCode employeeData;
   const EmployeeRegistrationForm({
-    super.key, required this.employeeData,
+    super.key,
+    required this.employeeData,
   });
 
   @override
@@ -32,12 +34,38 @@ class EmployeeRegistrationForm extends StatefulWidget {
 class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final EmpController empController = Get.put(EmpController());
-  TextEditingController empCodeCtr = TextEditingController();
-  TextEditingController nameCtr = TextEditingController();
+  final CheckStatusEmployeeController empCheckController =
+      Get.put(CheckStatusEmployeeController());
+
+  late TextEditingController empCodeCtr;
+  late TextEditingController nameCtr;
+
+  late TextEditingController mobCtr;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize controllers in initState with data from widget.employeeData
+    empCodeCtr = TextEditingController(text: widget.employeeData.empCode);
+    nameCtr = TextEditingController(text: widget.employeeData.name);
+    mobCtr =
+        TextEditingController(text: widget.employeeData.contact.toString());
+  }
+
+  @override
+  void dispose() {
+    // Dispose of controllers when not in use
+    empCodeCtr.dispose();
+    nameCtr.dispose();
+    emailCtr.dispose();
+    mobCtr.dispose();
+    addressCtr.dispose();
+    super.dispose();
+  }
+
   TextEditingController emailCtr = TextEditingController();
-  TextEditingController mobCtr = TextEditingController();
-  TextEditingController designationCtr = TextEditingController();
-  TextEditingController selectClassCtr = TextEditingController();
+
   TextEditingController addressCtr = TextEditingController();
 
   @override
@@ -64,6 +92,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   controller: nameCtr,
                   title: "Name",
                   hintText: 'Enter Your Name',
+                  enabled: nameCtr.text.isEmpty,
                 ),
                 10.height,
                 TextInputField(
@@ -71,6 +100,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   controller: empCodeCtr,
                   title: "Employee Code",
                   hintText: 'Fill details',
+                  enabled: empCodeCtr.text.isEmpty,
                 ),
                 10.height,
                 TextInputField(
@@ -86,6 +116,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 TextInputField(
                   no: "4",
                   controller: mobCtr,
+                  enabled: mobCtr.text.isEmpty,
                   title: "Contact",
                   inputFormatters: [
                     FilteringTextInputFormatter
@@ -210,7 +241,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   subTitle: "Select College",
                 ),
                 10.height,
-
                 Obx(() {
                   if (empController.college.isEmpty) {
                     return DropDownSelectionMessage(
@@ -253,24 +283,19 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     items: empController.classList, // Pass VidhanModel list
                     selectedValue: empController.selectedClass.value.isEmpty
                         ? null
-                        : empController.classList.firstWhere((vs) =>
-                    vs.id ==
-                        empController.selectedClass.value),
+                        : empController.classList.firstWhere(
+                            (vs) => vs.id == empController.selectedClass.value),
                     hint: 'Select Class  ',
                     idKey: '_id',
                     displayKey: 'className', // Display the 'ConstituencyName'
                     onChanged: (ClassModel? newValue) {
                       if (newValue != null) {
-                        empController
-                            .selectClass(newValue.id);
-                        empController.fetchClassByDesignation(
-                            newValue.id);
-
+                        empController.selectClass(newValue.id);
+                        empController.fetchClassByDesignation(newValue.id);
                       }
                     },
                   );
                 }),
-
                 10.height,
                 const TitleValueTextFormData(
                   title: '10',
@@ -343,12 +368,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                             empController.selectedCollege.value.isNotEmpty
                                 ? empController.selectedCollege.value
                                 : "Default College";
-                        String designation = designationCtr.text.isNotEmpty
-                            ? designationCtr.text
-                            : "Default Designation";
-                        String classData = selectClassCtr.text.isNotEmpty
-                            ? selectClassCtr.text
-                            : "1";
+
                         String address = addressCtr.text.isNotEmpty
                             ? addressCtr.text
                             : "Default Address";
@@ -363,8 +383,8 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                           district: district,
                           vidhanSabha: vidhanSabha,
                           college: college,
-                          designation: designation,
-                          classData: classData,
+                          designation: empController.selectedDesignation.value,
+                          classData: empController.selectedClass.value,
                           address: address,
                         );
                       }
