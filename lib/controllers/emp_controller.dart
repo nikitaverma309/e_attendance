@@ -9,6 +9,7 @@ import 'package:online/models/designation_model.dart';
 import 'package:online/models/district_model.dart';
 import 'package:online/models/division_model.dart';
 import 'package:online/models/vidhan_sabha_model.dart';
+import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 
 class EmpController extends GetxController {
@@ -96,6 +97,7 @@ class EmpController extends GetxController {
         );
       }
     } catch (e) {
+      Utils.printLog("Error was $e");
       CustomSnackbarError.showSnackbar(
         title: "Error",
         message: 'An error occurred: $e',
@@ -106,20 +108,13 @@ class EmpController extends GetxController {
   Future<void> fetchDivisions() async {
     final url =
         Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        divisions.value = divisionModelFromJson(response.body);
-      } else {
-        CustomSnackbarError.showSnackbar(
-          title: "Error",
-          message: 'Failed to load divisions',
-        );
-      }
-    } catch (e) {
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      divisions.value = divisionModelFromJson(response.body);
+    } else {
       CustomSnackbarError.showSnackbar(
         title: "Error",
-        message: 'An error occurred: $e',
+        message: 'Failed to load divisions',
       );
     }
   }
@@ -131,6 +126,7 @@ class EmpController extends GetxController {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         districts.value = districtModelFromJson(response.body);
+        Utils.printLog("Data was $districts.value");
       } else {
         CustomSnackbarError.showSnackbar(
           title: "Error",
@@ -138,6 +134,7 @@ class EmpController extends GetxController {
         );
       }
     } catch (e) {
+      Utils.printLog("Error was $e");
       CustomSnackbarError.showSnackbar(
         title: "Error",
         message: 'An error occurred: $e',
@@ -152,7 +149,7 @@ class EmpController extends GetxController {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         var re = vidhanSabha.value = vidhanModelFromJson(response.body);
-        print(re);
+        Utils.printLog("Data was $re");
       } else {
         CustomSnackbarError.showSnackbar(
           title: "Error",
@@ -160,7 +157,7 @@ class EmpController extends GetxController {
         );
       }
     } catch (e) {
-      print(e);
+      Utils.printLog("error was $e");
       CustomSnackbarError.showSnackbar(
         title: "Error",
         message: 'An error occurred: $e',

@@ -1,6 +1,4 @@
-// To parse this JSON data, do
-//
-//     final checkStatusModel = checkStatusModelFromJson(jsonString);
+
 
 import 'dart:convert';
 
