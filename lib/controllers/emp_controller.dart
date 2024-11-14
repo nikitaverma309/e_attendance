@@ -39,6 +39,9 @@ class EmpController extends GetxController {
   Future<void> fetchClass() async {
     final url =
         Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/class/getAll');
+
+    Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/class/getAll');
+
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {

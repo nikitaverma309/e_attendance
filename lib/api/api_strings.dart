@@ -2,6 +2,7 @@ class ApiStrings {
   static const String baseUrl = 'http://10.121.71.227';
   static const String register = '$baseUrl:5000/upload/training?username=';
   static const String login = '$baseUrl:5000/api/recognize';
+
   //live server
   static const String lBaseUrl = 'https://heonline.cg.nic.in/lmsbackend/api';
   //staging
@@ -12,9 +13,8 @@ class ApiStrings {
   static const String college = '$sBaseUrl/college/get-all-college';
   static const String division = '$sBaseUrl/division/get-all';
   static const String district = '$sBaseUrl/district/get-division-district/';
-  static const String getVidhansabha = '$sBaseUrl/district/getVidhansabha-district-wise/';
-
-
+  static const String getVidhansabha =
+      '$sBaseUrl/district/getVidhansabha-district-wise/';
 }
 
 class ApiVariables {

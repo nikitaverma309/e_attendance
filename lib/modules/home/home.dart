@@ -203,61 +203,35 @@ class _MyHomePageState extends State<MyHomePage> {
                       hintText: 'Fill Contact Nu.',
                     ),
                     const SizedBox(height: 20),
-                    Obx(() => InkWell(
-                          onTap: () async {
-                            // Add form validation check before calling fetchEmployeeData
-                            if (_formKey.currentState?.validate() ?? false) {
-                              if (empCodeController.text.isNotEmpty &&
-                                  contactController.text.isNotEmpty) {
-                                await employeeController.fetchEmployeeData(
-                                  empCodeController.text
-                                      .trim(), // Pass trimmed text
-                                  contactController.text.trim(),
-                                );
-                              } else {
-                                Get.snackbar(
-                                  "Error",
-                                  "Please fill in all fields",
-                                  snackPosition: SnackPosition.BOTTOM,  // Snackbar position
-                                  backgroundColor: Colors.red,         // Background color
-                                  colorText: Colors.white,              // Text color
-                                  borderRadius: 10,                     // Border radius
-                                  margin: EdgeInsets.all(10),           // Margin around snackbar
-                                );
-
-                              }
+                    Obx(
+                      () => InkWell(
+                        onTap: () async {
+                          // Add form validation check before calling fetchEmployeeData
+                          if (_formKey.currentState?.validate() ?? false) {
+                            if (empCodeController.text.isNotEmpty &&
+                                contactController.text.isNotEmpty) {
+                              await employeeController.fetchEmployeeData(
+                                empCodeController.text
+                                    .trim(), // Pass trimmed text
+                                contactController.text.trim(),
+                              );
+                            } else {
+                              Get.snackbar(
+                                "Error",
+                                "Please fill in all fields",
+                                snackPosition:
+                                    SnackPosition.BOTTOM, // Snackbar position
+                                backgroundColor: Colors.red, // Background color
+                                colorText: Colors.white, // Text color
+                                borderRadius: 10, // Border radius
+                                margin: EdgeInsets.all(
+                                    10), // Margin around snackbar
+                              );
                             }
-                          },
-                          child: Card(
-                            color: const Color(0xFF0E2D49),
-                            elevation: 16.0,
-                            shadowColor: const Color(0xFFEDEBF5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(26.0),
-                              side: const BorderSide(
-                                color: Colors.white,
-                                width: 1.0,
-                              ),
-                            ),
-                            child: SizedBox(
-                              height: 35,
-                              width: 99,
-                              child: Center(
-                                child: employeeController.isLoading.value
-                                    ? const CircularProgressIndicator(
-                                        color: Colors.black,
-                                      )
-                                    : const Text(
-                                        "Submit",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                              ),
-                            ),
-                          ),
-                        )),
-                    const SizedBox(height: 20),
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

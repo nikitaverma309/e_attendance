@@ -340,24 +340,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     text: "Register Now",
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // Collecting employee data without default values
-                        final employeeData = {
-                          "name": nameCtr.text,
-                          "empCode": empCodeCtr.text,
-                          "email": emailCtr.text,
-                          "contact": mobCtr.text,
-                          "division": empController.selectedDivision.value,
-                          "district": empController.selectedDistrict.value,
-                          "vidhanSabha":
-                              empController.selectedVidhanSabha.value,
-                          "college": empController.selectedCollege.value,
-                          "classData": empController.selectedClass.value,
-                          "designation":
-                              empController.selectedDesignation.value,
-                          "address": addressCtr.text,
-                        };
-
-                        // Calling the addEmployee method in your controller to pass data
                         empController.addEmployee(
                           name: nameCtr.text,
                           empCode: empCodeCtr.text,
