@@ -20,7 +20,6 @@ class EmpController extends GetxController {
   var selectedDesignation = ''.obs;
   var college = <CollegeModel>[].obs;
   var selectedCollege = ''.obs;
-  //var divisions = [].obs;
   var divisions = <DivisionModel>[].obs;
   var selectedDivision = ''.obs;
   // var districts = [].obs;
@@ -40,14 +39,16 @@ class EmpController extends GetxController {
 
   Future<void> fetchClass() async {
     final url =
-        Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/class/getAll');
-
-    Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/class/getAll');
+        Uri.parse('https://heonline.cg.nic.in/staging/api/class/getAll');
 
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
+        print(response.body);
+        print(response.statusCode);
         classList.value = classModelFromJson(response.body);
+        print('Response Class Body: ${response.body}');
+        print('Status Class Code: ${response.statusCode}');
       } else {
         CustomSnackbarError.showSnackbar(
           title: "Error",
@@ -55,6 +56,7 @@ class EmpController extends GetxController {
         );
       }
     } catch (e) {
+      print(classList);
       CustomSnackbarError.showSnackbar(
         title: "Error",
         message: 'An error occurred: $e',
@@ -63,22 +65,19 @@ class EmpController extends GetxController {
   }
 
   Future<void> fetchClassByDesignation(String classId) async {
+    print("pass data $classId");
     final url = Uri.parse(
-        'https://heonline.cg.nic.in/lmsbackend/api/degisnation-class-wise/$classId');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        designationList.value = designationModelFromJson(response.body);
-      } else {
-        CustomSnackbarError.showSnackbar(
-          title: "Error",
-          message: 'Failed to load Designation',
-        );
-      }
-    } catch (e) {
+        'https://heonline.cg.nic.in/staging/api/degisnation-class-wise/$classId');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      designationList.value = designationModelFromMap(response.body);
+
+      print('Response Designation Body: ${response.body}');
+      print('Status Designation Code: ${response.statusCode}');
+    } else {
       CustomSnackbarError.showSnackbar(
         title: "Error",
-        message: 'An error occurred: $e',
+        message: 'Failed to load Designation',
       );
     }
   }
@@ -192,7 +191,7 @@ class EmpController extends GetxController {
     designationList.clear();
   }
 
-  void selectDesignation(String designation) {
+  void selectDesignationOOb(String designation) {
     selectedDesignation.value = designation;
   }
 
@@ -210,16 +209,17 @@ class EmpController extends GetxController {
     required String address,
     required String workType,
   }) async {
-    final url = Uri.parse('https://heonline.cg.nic.in/staging/api/employee/add');
+    final url =
+        Uri.parse('https://heonline.cg.nic.in/staging/api/employee/add');
 
     final body = jsonEncode({
       "name": name,
       "empCode": empCode,
       "email": email,
       "contact": contact,
-      "division":  int.parse(division),
+      "divison": division,
       "district": district,
-      "vidhanSabha": vidhanSabha,
+      "vidhansabha": vidhanSabha,
       "college": college,
       "designation": designation,
       "classData": classData,
@@ -264,7 +264,8 @@ class EmpController extends GetxController {
         print("Request Body: $body");
 
         print(response.statusCode);
-        String errorMessage = responseData['msg'] ?? 'An unexpected error occurred';
+        String errorMessage =
+            responseData['msg'] ?? 'An unexpected error occurred';
         print("Error: $errorMessage");
         print("Request Parameters:");
         print("Name: $name");
@@ -280,17 +281,16 @@ class EmpController extends GetxController {
         print("Address: $address");
         print("WorkType: $workType");
         CustomSnackbarError.showSnackbar(
-          title: "This employee already exists. Please verify the details or try a different entry",
+          title:
+              "This employee already exists. Please verify the details or try a different entry",
           message: errorMessage,
         );
       }
     } catch (e) {
-
       CustomSnackbarError.showSnackbar(
         title: "Error",
         message: "An error occurred: $e",
       );
     }
   }
-
 }

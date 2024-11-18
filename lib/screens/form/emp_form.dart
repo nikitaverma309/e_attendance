@@ -5,6 +5,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/controllers/check_status_employee_controller.dart';
 import 'package:online/controllers/emp_controller.dart';
+import 'package:online/controllers/hgh.dart';
 import 'package:online/models/check_emp_status_model.dart';
 import 'package:online/models/class_model.dart';
 import 'package:online/models/college_model.dart';
@@ -36,7 +37,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   final EmpController empController = Get.put(EmpController());
   final CheckStatusEmployeeController empCheckController =
       Get.put(CheckStatusEmployeeController());
-
+  final DesignationController controller = Get.put(DesignationController());
   late TextEditingController empCodeCtr;
   late TextEditingController nameCtr;
 
@@ -291,7 +292,10 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     onChanged: (ClassModel? newValue) {
                       if (newValue != null) {
                         empController.selectClass(newValue.id);
-                        empController.fetchClassByDesignation(newValue.id);
+                        print('Class ID: ${newValue.id}');
+                        print('Class Name: ${newValue.className}');
+
+                        controller.fetchDesignations(newValue.id);
                       }
                     },
                   );
@@ -301,6 +305,42 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   title: '10',
                   subTitle: "Select Designation",
                 ),
+
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (controller.designations.isEmpty) {
+                    return Text('No designations available.');
+                  }
+
+                  // Print the designations list for debugging
+                  print('Designations List: ${controller.designations}');
+
+                  return ListView.builder(
+                    shrinkWrap: true, // Ensures ListView doesn't take infinite height inside other scrollable widgets
+                    itemCount: controller.designations.length,
+                    itemBuilder: (context, index) {
+                      final designation = controller.designations[index];
+
+                      // Print each designation item
+                      print('Designation at index $index: ${designation.designation}');
+
+                      return ListTile(
+                        title: Text(designation.designation), // Display designation name
+                        onTap: () {
+                          // Print the selected designation's ID
+                          print('Selected Designation ID: ${designation.id}');
+                          controller.selectDesignation(designation.id);
+                        },
+                        selected: controller.selectedDesignation.value == designation.id,
+                      );
+                    },
+                  );
+                }),
+
+
                 Obx(() {
                   if (empController.designationList.isEmpty) {
                     return DropDownSelectionMessage(
@@ -320,7 +360,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     hint: 'Select DesignationList',
                     onChanged: (DesignationModel? newCass) {
                       if (newCass != null) {
-                        empController.selectDesignation(newCass.id);
+                        empController.selectDesignationOOb(newCass.id);
                       }
                     },
                     idKey: '_id',

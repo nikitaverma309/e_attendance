@@ -238,10 +238,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     TextInputField(
                       no: "1",
                       controller: empCodeController,
+                      inputType: TextInputType.phone,
                       inputFormatters: [
                         FilteringTextInputFormatter
                             .digitsOnly, // Allows only digits
-                        LengthLimitingTextInputFormatter(17),
+                        LengthLimitingTextInputFormatter(11),
                       ],
                       title: "Employee Code",
                       hintText: 'Fill details',

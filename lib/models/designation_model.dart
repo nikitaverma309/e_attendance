@@ -1,16 +1,16 @@
 // To parse this JSON data, do
 //
-//     final designationModel = designationModelFromJson(jsonString);
+//     final designationModel = designationModelFromMap(jsonString);
 
 import 'dart:convert';
 
-List<DesignationModel> designationModelFromJson(String str) => List<DesignationModel>.from(json.decode(str).map((x) => DesignationModel.fromJson(x)));
+List<DesignationModel> designationModelFromMap(String str) => List<DesignationModel>.from(json.decode(str).map((x) => DesignationModel.fromMap(x)));
 
-String designationModelToJson(List<DesignationModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String designationModelToMap(List<DesignationModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toMap())));
 
 class DesignationModel {
   String id;
-  Class designationModelClass;
+  String designationModelClass;
   String designation;
   int isVerified;
   DateTime createdAt;
@@ -25,41 +25,66 @@ class DesignationModel {
     required this.updatedAt,
   });
 
-  factory DesignationModel.fromJson(Map<String, dynamic> json) => DesignationModel(
+  DesignationModel copyWith({
+    String? id,
+    String? designationModelClass,
+    String? designation,
+    int? isVerified,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      DesignationModel(
+        id: id ?? this.id,
+        designationModelClass: designationModelClass ?? this.designationModelClass,
+        designation: designation ?? this.designation,
+        isVerified: isVerified ?? this.isVerified,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+
+  factory DesignationModel.fromMap(Map<String, dynamic> json) => DesignationModel(
     id: json["_id"],
-    designationModelClass: classValues.map[json["class"]]!,
+    designationModelClass: json["class"],
     designation: json["designation"],
     isVerified: json["isVerified"],
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     "_id": id,
-    "class": classValues.reverse[designationModelClass],
+    "class": designationModelClass,
     "designation": designation,
     "isVerified": isVerified,
     "createdAt": createdAt.toIso8601String(),
     "updatedAt": updatedAt.toIso8601String(),
   };
 }
+class Designation {
+  final String id;
+  final String classId;
+  final String designation;
+  final int isVerified;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-enum Class {
-  THE_67308_DB1_A2060_D2_D3769_FBD9
-}
+  Designation({
+    required this.id,
+    required this.classId,
+    required this.designation,
+    required this.isVerified,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
-final classValues = EnumValues({
-  "67308db1a2060d2d3769fbd9": Class.THE_67308_DB1_A2060_D2_D3769_FBD9
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
+  factory Designation.fromJson(Map<String, dynamic> json) {
+    return Designation(
+      id: json['_id'],
+      classId: json['class'],
+      designation: json['designation'],
+      isVerified: json['isVerified'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
   }
 }
