@@ -7,6 +7,7 @@ class ApiStrings {
   static const String lBaseUrl = 'https://heonline.cg.nic.in/lmsbackend/api';
   //staging
   static const String sBaseUrl = 'http://164.100.150.78/lmsbackend/api';
+  static const String staging = 'https://heonline.cg.nic.in/staging';
   //
   static const String checkStatus = '$sBaseUrl/employee-code/check?';
   static const String empRegister = '$sBaseUrl/employee/add';

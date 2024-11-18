@@ -67,6 +67,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   TextEditingController emailCtr = TextEditingController();
 
   TextEditingController addressCtr = TextEditingController();
+  TextEditingController workTypeCtr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -262,9 +263,8 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                         empController.selectCollege(newCollege.id);
                       }
                     },
-                    idKey:
-                        'id', // No need for idKey as we directly access CollegeModel fields
-                    displayKey: 'name', // Display the name of the college
+                    idKey: 'id',
+                    displayKey: 'name',
                   );
                 }),
                 10.height,
@@ -280,14 +280,14 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   }
 
                   return CustomDropdown<ClassModel>(
-                    items: empController.classList, // Pass VidhanModel list
+                    items: empController.classList,
                     selectedValue: empController.selectedClass.value.isEmpty
                         ? null
                         : empController.classList.firstWhere(
                             (vs) => vs.id == empController.selectedClass.value),
                     hint: 'Select Class  ',
                     idKey: '_id',
-                    displayKey: 'className', // Display the 'ConstituencyName'
+                    displayKey: 'className',
                     onChanged: (ClassModel? newValue) {
                       if (newValue != null) {
                         empController.selectClass(newValue.id);
@@ -334,29 +334,49 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   title: "Address",
                   hintText: 'Fill details',
                 ),
+                TextInputField(
+                  no: "11",
+                  controller: workTypeCtr,
+                  title: "Work",
+                  hintText: 'Fill details',
+                ),
                 30.height,
                 Center(
-                  child: CommonButton(
-                    text: "Register Now",
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        empController.addEmployee(
-                          name: nameCtr.text,
-                          empCode: empCodeCtr.text,
-                          email: emailCtr.text,
-                          contact: mobCtr.text,
-                          division: empController.selectedDivision.value,
-                          district: empController.selectedDistrict.value,
-                          vidhanSabha: empController.selectedVidhanSabha.value,
-                          college: empController.selectedCollege.value,
-                          classData: empController.selectedClass.value,
-                          designation: empController.selectedDesignation.value,
-                          address: addressCtr.text,
-                        );
-                      }
-                    },
-                    icon: const Icon(Icons.logout, color: Colors.white),
-                    color: AppColors.bbAppColor1,
+                  child: Obx(
+                    () => empController.isLoading.value
+                        ? const Center(child: CircularProgressIndicator())
+                        : CommonButton(
+                            text: "Register Now",
+                            icon: const Icon(Icons.logout, color: Colors.white),
+                            color: AppColors.bbAppColor1,
+                            onPressed: empController.isLoading.value
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState?.validate() ??
+                                        false) {
+                                      empController.addEmployee(
+                                        name: nameCtr.text.trim(),
+                                        empCode: empCodeCtr.text.trim(),
+                                        email: emailCtr.text.trim(),
+                                        contact: mobCtr.text.trim(),
+                                        division: empController
+                                            .selectedDivision.value,
+                                        district: empController
+                                            .selectedDistrict.value,
+                                        vidhanSabha: empController
+                                            .selectedVidhanSabha.value,
+                                        college:
+                                            empController.selectedCollege.value,
+                                        classData:
+                                            empController.selectedClass.value,
+                                        designation: empController
+                                            .selectedDesignation.value,
+                                        address: addressCtr.text.trim(),
+                                        workType: workTypeCtr.text.trim(),
+                                      );
+                                    }
+                                  },
+                          ),
                   ),
                 ),
                 40.height,

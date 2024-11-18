@@ -1,45 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:online/utils/shap/shape_design.dart';
 
 Widget customButton(BuildContext context, String label, Color bgColor,
     Color textColor, IconData icon, VoidCallback onTap) {
   return InkWell(
     onTap: onTap, // Use the passed onTap function
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: bgColor,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.blue.withOpacity(0.1),
-            blurRadius: 1,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-      width: MediaQuery.of(context).size.width * 0.8,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            label,
-            style: TextStyle(color: textColor),
-
-          ),
-          const SizedBox(width: 10),
-          Icon(icon, color: textColor),
-        ],
+    child: Card(
+      elevation: 10,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: bgColor,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.blue.withOpacity(0.1),
+              blurRadius: 1,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        width: MediaQuery.of(context).size.width * 0.6,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 13,
+                fontFamily: 'Roboto-Thin',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Icon(icon, color: textColor),
+          ],
+        ),
       ),
     ),
   );
 }
-
-
 
 class CustomDropdown<T> extends StatelessWidget {
   final List<T> items;
@@ -58,7 +61,7 @@ class CustomDropdown<T> extends StatelessWidget {
     required this.onChanged,
     required this.idKey,
     required this.displayKey,
-    this.enabled = true,  // Default to enabled
+    this.enabled = true, // Default to enabled
   });
 
   @override
@@ -76,7 +79,7 @@ class CustomDropdown<T> extends StatelessWidget {
                 fontSize: 12,
                 color: Colors.black,
                 fontWeight: FontWeight.w400,
-              ),// Adjust according to model fields
+              ), // Adjust according to model fields
             ),
           );
         }).toList(),
@@ -92,7 +95,8 @@ class CustomDropdown<T> extends StatelessWidget {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5),
           disabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
           ),
@@ -117,11 +121,9 @@ class CustomDropdown<T> extends StatelessWidget {
 class DropDownSelectionMessage extends StatelessWidget {
   final String message;
 
-
   DropDownSelectionMessage({
     Key? key,
     required this.message,
-
   }) : super(key: key);
 
   @override
@@ -138,15 +140,11 @@ class DropDownSelectionMessage extends StatelessWidget {
   }
 }
 
-
-
-
-
 class CustomSnackbarError {
   static void showSnackbar({
     required String title,
     required String message,
-    SnackPosition position = SnackPosition.BOTTOM,
+    SnackPosition position = SnackPosition.TOP,
     Color backgroundColor = Colors.red,
     Color textColor = Colors.white,
     double borderRadius = 10.0,
@@ -163,6 +161,7 @@ class CustomSnackbarError {
     );
   }
 }
+
 class CustomSnackbarSuccessfully {
   static void showSnackbar({
     required String title,

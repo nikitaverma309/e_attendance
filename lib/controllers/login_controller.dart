@@ -146,7 +146,7 @@ class LoginController extends GetxController {
         var responseBody = responseData.body;
         Utils.showErrorToast(
             message: 'Failed to recognize face: $responseBody');
-        return false; // Return false for other errors
+        return false;
       }
     } catch (e) {
       Utils.printLog('Error occurred: $e');
@@ -165,7 +165,7 @@ class LoginController extends GetxController {
           ],
         ),
       );
-      return false; // Return false in case of exception
+      return false;
     }
   }
 }

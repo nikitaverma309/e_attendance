@@ -23,4 +23,5 @@ class Strings {
   static const String guest = "Guest Lecturer Form";
   static const String introThreeT = "Boosting Security and Efficiency";
   static const String login = "Login Screen";
+  static const String faq = "FAQs - Online Attendance";
 }

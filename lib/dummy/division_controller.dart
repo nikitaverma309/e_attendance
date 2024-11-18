@@ -7,19 +7,17 @@ class DivisionController extends GetxController {
   var isLoading = false.obs;
   var divisionList = List<DivisionModel>.empty().obs;
   var districtList = List<DistrictModel>.empty().obs;
-  var selectedDivisionCode = Rx<int?>(null); // Set to null initially
-  var selectedDistrictCode = Rx<int?>(null); // Set to null initially
+  var selectedDivisionCode = Rx<int?>(null);
+  var selectedDistrictCode = Rx<int?>(null);
   var districts = <DistrictModel>[].obs;
-  var division = <DistrictModel>[].obs;
+
 
   var divisions = <DivisionModel>[].obs;
-  //var selectedDivisionCode = Rxn<int>();
 
   @override
   void onInit() {
     super.onInit();
     fetchDivisions();
-// Ensure selectedDivisionCode.value is not null before using it
     if (selectedDivisionCode.value != null) {
       fetchDistrictsByDivision(selectedDivisionCode.value!);
     }
@@ -45,15 +43,10 @@ class DivisionController extends GetxController {
 
   Future<void> fetchDistrictsByDivision(int selectedDivisionCode) async {
     isLoading.value = true;
-
-    // Fetch districts from the API
-    final fetchedDistricts = await ApiServices.getApiDemoDistrictsByDivision(selectedDivisionCode);
-
+    final fetchedDistricts =
+        await ApiServices.getApiDemoDistrictsByDivision(selectedDivisionCode);
     if (fetchedDistricts != null && fetchedDistricts.isNotEmpty) {
-      // Set districtList with the fetched list of DistrictModel
       districtList.value = fetchedDistricts;
-
-      // Assign the lgdCode of the first district to selectedDistrictCode
       selectedDistrictCode.value = fetchedDistricts.first.lgdCode;
     } else {
       // Handle empty or null fetchedDistricts
@@ -62,5 +55,4 @@ class DivisionController extends GetxController {
 
     isLoading.value = false;
   }
-
 }

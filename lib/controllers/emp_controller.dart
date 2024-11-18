@@ -13,6 +13,7 @@ import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 
 class EmpController extends GetxController {
+  var isLoading = false.obs;
   var classList = <ClassModel>[].obs;
   var selectedClass = ''.obs;
   var designationList = <DesignationModel>[].obs;
@@ -207,28 +208,26 @@ class EmpController extends GetxController {
     required String designation,
     required String classData,
     required String address,
+    required String workType,
   }) async {
-    final url = Uri.parse('http://164.100.150.78/lmsbackend/api/employee/add');
+    final url = Uri.parse('https://heonline.cg.nic.in/staging/api/employee/add');
+
     final body = jsonEncode({
       "name": name,
       "empCode": empCode,
       "email": email,
       "contact": contact,
-      "division": division,
+      "division":  int.parse(division),
       "district": district,
       "vidhanSabha": vidhanSabha,
       "college": college,
       "designation": designation,
       "classData": classData,
       "address": address,
+      "workType": workType,
     });
 
     try {
-      print("Employee Data: $name, $empCode, "
-          "$email, $contact, division is $division, district is $district,"
-          " vidhanSabha is $vidhanSabha, college is $college, designation is $designation,"
-          " classData is $classData, $address");
-
       final response = await http.post(
         url,
         headers: {
@@ -237,19 +236,61 @@ class EmpController extends GetxController {
         body: body,
       );
 
-      if (response.statusCode == 200) {
-        Get.snackbar('Success', 'Employee registered successfully');
+      if (response.statusCode == 201) {
+        final responseData = json.decode(response.body);
+        print("Request Parameters:");
+        print("Name: $name");
+        print("EmpCode: $empCode");
+        print("Email: $email");
+        print("Contact: $contact");
+        print("Division: $division");
+        print("District: $district");
+        print("Vidhan Sabha: $vidhanSabha");
+        print("College: $college");
+        print("Designation: $designation");
+        print("ClassData: $classData");
+        print("Address: $address");
+        print("WorkType: $workType");
+        print("Success: $responseData");
+        Get.snackbar(
+          'Success',
+          'Employee registered successfully.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
       } else {
+        final responseData = json.decode(response.body);
+        print(responseData);
+        print(response.body);
+        print("Request Body: $body");
+
+        print(response.statusCode);
+        String errorMessage = responseData['msg'] ?? 'An unexpected error occurred';
+        print("Error: $errorMessage");
+        print("Request Parameters:");
+        print("Name: $name");
+        print("EmpCode: $empCode");
+        print("Email: $email");
+        print("Contact: $contact");
+        print("Division: $division");
+        print("District: $district");
+        print("Vidhan Sabha: $vidhanSabha");
+        print("College: $college");
+        print("Designation: $designation");
+        print("ClassData: $classData");
+        print("Address: $address");
+        print("WorkType: $workType");
         CustomSnackbarError.showSnackbar(
-          title: "Error",
-          message: "Failed to register employee",
+          title: "This employee already exists. Please verify the details or try a different entry",
+          message: errorMessage,
         );
       }
     } catch (e) {
+
       CustomSnackbarError.showSnackbar(
         title: "Error",
-        message: 'An error occurred: $e',
+        message: "An error occurred: $e",
       );
     }
   }
+
 }

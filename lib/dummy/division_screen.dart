@@ -42,7 +42,7 @@ class _DivisionDropdownState extends State<DivisionDropdown> {
             }),
             Obx(() {
               if (divisionController.isLoading.value) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
               return DropdownButton<int?>(
                 value: divisionController.selectedDistrictCode.value,
@@ -55,7 +55,7 @@ class _DivisionDropdownState extends State<DivisionDropdown> {
                     child: Text(district.districtNameEng),
                   );
                 }).toList(),
-                hint: Text('Select District'),
+                hint: const Text('Select District'),
               );
             }),
           ],

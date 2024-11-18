@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:online/constants/colors_res.dart';
+import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/check_status_employee_controller.dart';
+import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/modules/auth/registration/registration_camera.dart';
-import 'package:online/utils/utils.dart';
+import 'package:online/screens/comman_screen/faq.dart';
+import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
@@ -20,8 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final TextEditingController empCodeController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
-  final CheckStatusEmployeeController employeeController =
-      Get.put(CheckStatusEmployeeController());
+  final CheckStatusEmployeeController employeeController = Get.put(CheckStatusEmployeeController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -39,23 +43,58 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const SizedBox(height: 50),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
                     child: Row(
                       children: [
-                        Text(
-                          "Welcome Back",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
+                        const Expanded(
+                          child: Text(
+                            "Welcome ",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow
+                                .ellipsis, // Prevent text from overflowing
                           ),
                         ),
-                        Spacer(), // Takes up remaining space
-                        Icon(Icons.more_vert, color: Colors.white),
+                        DropdownButton<String>(
+                          icon:
+                              const Icon(Icons.more_vert, color: Colors.white),
+                          dropdownColor:
+                              Colors.white, // Dropdown menu background color
+                          underline: const SizedBox(), // Remove the underline
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'page1',
+                              child: Text('Employee Registration Form',
+                                  style: kText10BlueBlackColorStyle),
+                            ),
+                            DropdownMenuItem(
+                              value: 'page2',
+                              child: Text('FAQ',
+                                  style: kText10BlueBlackColorStyle),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            if (value == 'page1') {
+                              _showEmpRegistrationBottomSheet(context);
+                            } else if (value == 'page2') {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                       FAQPage(),
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),
+
                   const SizedBox(height: 8),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -67,8 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 170),
+                  68.height,
 
                   // Centering the logo and text
                   Center(
@@ -78,15 +116,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         Center(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: const Image(
-                              image: AssetImage('assets/logo.png'),
-                              height: 88,
-                              width: 88,
-                              fit: BoxFit.cover,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    50), // Use a high value for circular shape
+                              ),
+                              color: const Color(0xff5699c9),
+                              elevation: 6,
+                              child: const Image(
+                                image: AssetImage(Assets.imagesCglogo),
+                                height: 88,
+                                width: 88,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        10.height,
                         const Text(
                           "Secure and Smart Online Attendance System",
                           style: TextStyle(
@@ -95,13 +141,32 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 50),
-                        // Center the buttons
+                        30.height,
+                        Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    50), // Use a high value for circular shape
+                              ),
+                              color: const Color(0xff204867),
+                              elevation: 55,
+                              child: const Image(
+                                image: AssetImage('assets/logo.png'),
+                                height: 44,
+                                width: 44,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        5.height,
                         customButton(
                           context,
                           'LOGIN',
                           Colors.white,
-                          Colors.blueAccent,
+                          Colors.black,
                           Icons.login,
                           () {
                             if (mounted) {
@@ -109,13 +174,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             }
                           },
                         ),
-
-                        const SizedBox(height: 10),
+                        5.height,
                         customButton(
                           context,
                           'SIGN UP',
-                          Colors.blueAccent,
-                          Colors.white,
+                          AppColors.lighterBlue,
+                          Colors.black,
                           Icons.person_add,
                           () {
                             Navigator.push(
@@ -127,17 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             );
                           },
                         ),
-                        const SizedBox(height: 10),
-                        customButton(
-                          context,
-                          'EmpRegistration Form',
-                          Colors.blueAccent,
-                          Colors.white,
-                          Icons.person_add,
-                          () {
-                            _showEmpRegistrationBottomSheet(context);
-                          },
-                        ),
+                        5.height,
                       ],
                     ),
                   ),
@@ -174,20 +228,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
-                      "Check status",
+                      "Before Registration Check status",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    20.height,
                     TextInputField(
                       no: "1",
                       controller: empCodeController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter
+                            .digitsOnly, // Allows only digits
+                        LengthLimitingTextInputFormatter(17),
+                      ],
                       title: "Employee Code",
                       hintText: 'Fill details',
                     ),
-                    const SizedBox(height: 10),
+                    10.height,
                     TextInputField(
                       no: "2",
                       controller: contactController,
@@ -195,43 +254,45 @@ class _MyHomePageState extends State<MyHomePage> {
                       inputFormatters: [
                         FilteringTextInputFormatter
                             .digitsOnly, // Allows only digits
-                        LengthLimitingTextInputFormatter(
-                            10), // Limits input to 10 digits
+                        LengthLimitingTextInputFormatter(10),
                       ],
                       inputType: TextInputType.phone,
-                      validator: (value) => Utils.validateRequired(value),
                       hintText: 'Fill Contact Nu.',
                     ),
-                    const SizedBox(height: 20),
+                    20.height,
                     Obx(
-                      () => InkWell(
-                        onTap: () async {
-                          // Add form validation check before calling fetchEmployeeData
-                          if (_formKey.currentState?.validate() ?? false) {
-                            if (empCodeController.text.isNotEmpty &&
-                                contactController.text.isNotEmpty) {
-                              await employeeController.fetchEmployeeData(
-                                empCodeController.text
-                                    .trim(), // Pass trimmed text
-                                contactController.text.trim(),
-                              );
-                            } else {
-                              Get.snackbar(
-                                "Error",
-                                "Please fill in all fields",
-                                snackPosition:
-                                    SnackPosition.BOTTOM, // Snackbar position
-                                backgroundColor: Colors.red, // Background color
-                                colorText: Colors.white, // Text color
-                                borderRadius: 10, // Border radius
-                                margin: EdgeInsets.all(
-                                    10), // Margin around snackbar
-                              );
-                            }
-                          }
-                        },
-                      ),
+                      () => employeeController.isLoading.value
+                          ? const Center(child: CircularProgressIndicator())
+                          : CommonButton(
+                              text: "Check status",
+                              onPressed: employeeController.isLoading.value
+                                  ? null
+                                  : () async {
+                                      if (_formKey.currentState?.validate() ??
+                                          false) {
+                                        if (empCodeController.text.isNotEmpty &&
+                                            contactController.text.isNotEmpty) {
+                                          employeeController.isLoading.value =
+                                              true;
+                                          await employeeController
+                                              .fetchEmployeeData(
+                                            empCodeController.text.trim(),
+                                            contactController.text.trim(),
+                                          );
+                                          employeeController.isLoading.value =
+                                              false;
+                                        } else {
+                                          CustomSnackbarError.showSnackbar(
+                                            title: "Error",
+                                            message:
+                                                'Please fill in all fields',
+                                          );
+                                        }
+                                      }
+                                    },
+                            ),
                     ),
+                    40.height,
                   ],
                 ),
               ),

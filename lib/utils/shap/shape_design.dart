@@ -14,28 +14,7 @@ class Shape {
     );
   }
 
-  static BoxDecoration listDecoration(BuildContext context) {
-    return BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: AppColors.athensGray.withOpacity(0.3),
-          offset: const Offset(-2.0, -2.0),
-          blurRadius: 2.0,
-        ),
-        BoxShadow(
-          color: AppColors.athensGray.withOpacity(0.2),
-          offset: const Offset(2.0, 2.0),
-          blurRadius: 2.0,
-        ),
-      ],
-      color: const Color(0xFFD4EAEA),
-      border: Border.all(
-        color: Colors.white,
-        width: 1.0, // Set the border width here
-      ),
-      borderRadius: BorderRadius.circular(5.0),
-    );
-  }
+
 
   static BoxDecoration purpleContainerDecoration(BuildContext context) {
     return BoxDecoration(
@@ -105,7 +84,15 @@ class Shape {
   //error Container Red
   static BoxDecoration submitContainerRed(BuildContext context) {
     return BoxDecoration(
-      color: AppColors.white,
+      color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2), // Shadow positioning
+          ),
+        ],
       border: Border.all(
         color: Colors.white,
         width: 1.0,

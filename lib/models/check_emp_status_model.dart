@@ -1,4 +1,6 @@
-
+// To parse this JSON data, do
+//
+//     final checkStatusModel = checkStatusModelFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -14,15 +16,6 @@ class CheckStatusModel {
     required this.msg,
     required this.getEmployeeCode,
   });
-
-  CheckStatusModel copyWith({
-    String? msg,
-    GetEmployeeCode? getEmployeeCode,
-  }) =>
-      CheckStatusModel(
-        msg: msg ?? this.msg,
-        getEmployeeCode: getEmployeeCode ?? this.getEmployeeCode,
-      );
 
   factory CheckStatusModel.fromJson(Map<String, dynamic> json) => CheckStatusModel(
     msg: json["msg"],
@@ -42,7 +35,6 @@ class GetEmployeeCode {
   int contact;
   String college;
   bool status;
-  DateTime updatedAt;
 
   GetEmployeeCode({
     required this.id,
@@ -51,27 +43,7 @@ class GetEmployeeCode {
     required this.contact,
     required this.college,
     required this.status,
-    required this.updatedAt,
   });
-
-  GetEmployeeCode copyWith({
-    String? id,
-    String? empCode,
-    String? name,
-    int? contact,
-    String? college,
-    bool? status,
-    DateTime? updatedAt,
-  }) =>
-      GetEmployeeCode(
-        id: id ?? this.id,
-        empCode: empCode ?? this.empCode,
-        name: name ?? this.name,
-        contact: contact ?? this.contact,
-        college: college ?? this.college,
-        status: status ?? this.status,
-        updatedAt: updatedAt ?? this.updatedAt,
-      );
 
   factory GetEmployeeCode.fromJson(Map<String, dynamic> json) => GetEmployeeCode(
     id: json["_id"],
@@ -80,7 +52,6 @@ class GetEmployeeCode {
     contact: json["contact"],
     college: json["college"],
     status: json["status"],
-    updatedAt: DateTime.parse(json["updatedAt"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -90,6 +61,5 @@ class GetEmployeeCode {
     "contact": contact,
     "college": college,
     "status": status,
-    "updatedAt": updatedAt.toIso8601String(),
   };
 }
