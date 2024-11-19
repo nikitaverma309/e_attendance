@@ -17,7 +17,7 @@ class EmpController extends GetxController {
   var classList = <ClassModel>[].obs;
   var selectedClass = ''.obs;
   var designationList = <DesignationModel>[].obs;
-  var selectedDesignation = ''.obs;
+  var selDesignation = ''.obs;
   var college = <CollegeModel>[].obs;
   var selectedCollege = ''.obs;
   var divisions = <DivisionModel>[].obs;
@@ -187,12 +187,12 @@ class EmpController extends GetxController {
 
   void selectClass(String classS) {
     selectedClass.value = classS;
-    selectedDesignation.value = "";
+    selDesignation.value = "";
     designationList.clear();
   }
 
   void selectDesignationOOb(String designation) {
-    selectedDesignation.value = designation;
+    selDesignation.value = designation;
   }
 
   Future<void> addEmployee({

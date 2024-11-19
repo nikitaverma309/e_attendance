@@ -15,7 +15,8 @@ import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
 
 class LoginCameraTwo extends StatefulWidget {
-  const LoginCameraTwo({super.key});
+  final String attendanceId;
+  const LoginCameraTwo({super.key, required this.attendanceId});
 
   @override
   LoginCameraTwoState createState() => LoginCameraTwoState();
@@ -103,7 +104,8 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
           final imageFromCamera = convertCameraImage(cameraImage);
           final File imgFile = await convertImageToFile(imageFromCamera);
           if (mounted) {
-            Get.off(() => LoginCameraViewTwo(imageFile: imgFile));
+            Get.off(() => LoginCameraViewTwo(
+                imageFile: imgFile, attendanceId: widget.attendanceId));
           }
         }
       } catch (e) {

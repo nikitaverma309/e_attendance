@@ -10,9 +10,13 @@ import 'package:online/controllers/login_controller.dart';
 import 'package:online/widgets/common/custom_button.dart';
 import 'package:online/widgets/footer_widget.dart';
 
+import '../../../utils/utils.dart';
+
 class LoginCameraViewTwo extends StatefulWidget {
+  final String attendanceId;
   final File? imageFile;
-  const LoginCameraViewTwo({super.key, this.imageFile});
+  const LoginCameraViewTwo(
+      {super.key, this.imageFile, required this.attendanceId});
 
   @override
   State<LoginCameraViewTwo> createState() => _LoginCameraViewTwoState();
@@ -130,56 +134,86 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                       ),
                       child: widget.imageFile != null
                           ? Image.file(
-                        widget.imageFile!,
-                        fit: BoxFit.contain,
-                        height: screenHeight * 0.4,
-                      )
+                              widget.imageFile!,
+                              fit: BoxFit.contain,
+                              height: screenHeight * 0.4,
+                            )
                           : Icon(
-                        Icons.camera_alt,
-                        size: screenHeight * 0.09,
-                        color: const Color(0xffa2cccc),
-                      ),
+                              Icons.camera_alt,
+                              size: screenHeight * 0.09,
+                              color: const Color(0xffa2cccc),
+                            ),
                     ),
                   ),
-
                   SizedBox(height: screenHeight * 0.045),
                   if (widget.imageFile != null)
                     Center(
                       child: Obx(() {
                         return loginController.isLoading.value
-                            ? const Center(child: CircularProgressIndicator())
+                            ? const Center(child: CircularProgressIndicator())  // Show loader if loading
                             : CustomButton(
-                                onTap: () async {
-                                  if (!loginController.isLoading.value) {
-                                    loginController.isLoading.value =
-                                        true; // लोडिंग शुरू करें
+                          onTap: () async {
+                            // Proceed only if not already loading
+                            if (!loginController.isLoading.value) {
+                              loginController.isLoading.value = true;  // Start loading
 
-                                    if (widget.imageFile != null) {
-                                      setState(() => isMatching = true);
-                                      _playScanningAudio();
+                              // Check if the image file is not null
+                              if (widget.imageFile != null) {
+                                await loginController.uploadFileLogin(
+                                  context,
+                                  widget.imageFile!,  // Pass the file
+                                  widget.attendanceId, // Pass the attendance ID
+                                );
+                              } else {
+                                Utils.showErrorToast(message: 'Please select an image.');
+                              }
 
-                                      bool isAuthenticated =
-                                          await loginController.uploadFileLogin(
-                                              context, widget.imageFile!);
-
-                                      if (isAuthenticated) {
-                                        _playSuccessfulAudio(); // सफल ऑडियो प्ले करें
-                                      } else {
-                                        _playFailedAudio();
-                                      }
-
-                                      loginController.isLoading.value =
-                                          false; // लोडिंग रोकें
-                                    } else {
-                                      loginController.isLoading.value =
-                                          false; // लोडिंग रोकें
-                                    }
-                                  }
-                                },
-                                text: 'Authenticate',
-                              );
+                              loginController.isLoading.value = false;  // Stop loading
+                            }
+                          },
+                          text: 'Authenticate',
+                        );
                       }),
                     ),
+
+                  // Center(
+                  //   child: Obx(() {
+                  //     return loginController.isLoading.value
+                  //         ? const Center(child: CircularProgressIndicator())
+                  //         : CustomButton(
+                  //             onTap: () async {
+                  //               if (!loginController.isLoading.value) {
+                  //                 loginController.isLoading.value =
+                  //                     true; // लोडिंग शुरू करें
+                  //
+                  //                 if (widget.imageFile != null) {
+                  //                   setState(() => isMatching = true);
+                  //                   _playScanningAudio();
+                  //
+                  //                   bool isAuthenticated =
+                  //                       await loginController.uploadFileLogin(
+                  //                           context,
+                  //                           widget.imageFile!,
+                  //                           widget.attendanceId);
+                  //
+                  //                   if (isAuthenticated) {
+                  //                     _playSuccessfulAudio(); // सफल ऑडियो प्ले करें
+                  //                   } else {
+                  //                     _playFailedAudio();
+                  //                   }
+                  //
+                  //                   loginController.isLoading.value =
+                  //                       false; // लोडिंग रोकें
+                  //                 } else {
+                  //                   loginController.isLoading.value =
+                  //                       false; // लोडिंग रोकें
+                  //                 }
+                  //               }
+                  //             },
+                  //             text: 'Authenticate',
+                  //           );
+                  //   }),
+                  // ),
                 ],
               ),
             ),

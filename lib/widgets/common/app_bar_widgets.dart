@@ -41,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ? Center(
                     child: Text(
                       title!,
-                      textAlign: TextAlign.center,style: kText10BlueBlackColorStyle.copyWith(color: Colors.white),
+                      textAlign: TextAlign.center,style: kWhite.copyWith(color: Colors.white),
                     ),
                   )
                 : const SizedBox.shrink(),

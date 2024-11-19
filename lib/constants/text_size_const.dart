@@ -70,7 +70,7 @@ const kTextBaNaBoldBlackColorStyle = TextStyle(
 const kText15BaNaBoldBlackColorStyle = TextStyle(
     fontSize: 15.0,
     fontFamily: 'Roboto-Thin',
-    fontWeight: FontWeight.normal,
+    fontWeight: FontWeight.bold,
     color: AppColors.black);
 const k13BoldBlackColorStyle = TextStyle(
     fontSize: 13.0,
@@ -121,10 +121,10 @@ const kText16BoldRed = TextStyle(
     fontWeight: FontWeight.bold,
     color: AppColors.redShade4);
 const k13NormalGreyColorStyle = TextStyle(
-    fontSize: 13.0,
+    fontSize: 16.0,
     fontFamily: 'Roboto-Thin',
-    fontWeight: FontWeight.w400,
-    color: AppColors.bbTextSecondaryLightColor);
+    fontWeight: FontWeight.bold,
+    color: AppColors.green);
 const kTextBlue = TextStyle(
     fontSize: 14.0,
     fontFamily: 'Roboto-Thin',

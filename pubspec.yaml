@@ -42,22 +42,25 @@ dependencies:
   image: ^3.0.1
 #  image: ^3.0.2
   font_awesome_flutter: ^9.0.0
-  url_launcher: ^6.0.3
-  sqflite: ^2.0.2
+#  url_launcher: ^6.0.3
+#  sqflite: ^2.0.2
   get_it: ^8.0.0
 #  tflite_flutter: ^0.9.0
   get: ^4.3.8
   dio: ^5.7.0
   logger: ^2.4.0
-  image_picker: ^0.8.6
+#  image_picker: ^0.8.6
   poly_geofence_service: ^3.0.0
   geolocator: ^12.0.0
   permission_handler: ^9.1.0
   nb_utils: ^4.6.25
-  http_parser: ^4.0.2
-  mime: ^2.0.0
+#  http_parser: ^4.0.2
+#  mime: ^2.0.0
   audioplayers: ^3.0.1
-  htkc_utils: ^1.0.8
+  text_scroll: ^0.2.0
+#  htkc_utils: ^1.0.8
+#  marquee: ^2.2.3
+
 
 dev_dependencies:
   flutter_test:

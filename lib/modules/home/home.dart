@@ -8,6 +8,7 @@ import 'package:online/controllers/check_status_employee_controller.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/modules/auth/registration/registration_camera.dart';
+import 'package:online/modules/home/attendance_id_screen.dart';
 import 'package:online/screens/comman_screen/faq.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
@@ -25,7 +26,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final TextEditingController empCodeController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
-  final CheckStatusEmployeeController employeeController = Get.put(CheckStatusEmployeeController());
+  final CheckStatusEmployeeController employeeController =
+      Get.put(CheckStatusEmployeeController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -34,174 +36,159 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xff176daa),
-      body: !loading
-          ? SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const SizedBox(height: 50),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Row(
-                      children: [
-                        const Expanded(
-                          child: Text(
-                            "Welcome ",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+    return SafeArea(
+      child: Scaffold(
+        // backgroundColor: const Color(0xff176daa),
+        backgroundColor: Colors.white,
+        body: !loading
+            ? SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Row(
+                        children: [
+                          const Expanded(
+                            child: Text(
+                              "Welcome To",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow
+                                  .ellipsis, // Prevent text from overflowing
                             ),
-                            overflow: TextOverflow
-                                .ellipsis, // Prevent text from overflowing
                           ),
-                        ),
-                        DropdownButton<String>(
-                          icon:
-                              const Icon(Icons.more_vert, color: Colors.white),
-                          dropdownColor:
-                              Colors.white, // Dropdown menu background color
-                          underline: const SizedBox(), // Remove the underline
-                          items: const [
-                            DropdownMenuItem(
-                              value: 'page1',
-                              child: Text('Employee Registration Form',
-                                  style: kText10BlueBlackColorStyle),
+                          DropdownButton<String>(
+                            icon: const Icon(Icons.more_vert,
+                                color: Colors.black),
+                            dropdownColor:
+                                Colors.white, // Dropdown menu background color
+                            underline: const SizedBox(), // Remove the underline
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'page1',
+                                child: Text('Employee Registration Form',
+                                    style: kText10BlueBlackColorStyle),
+                              ),
+                              DropdownMenuItem(
+                                value: 'page2',
+                                child: Text('FAQ',
+                                    style: kText10BlueBlackColorStyle),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              if (value == 'page1') {
+                                _showEmpRegistrationBottomSheet(context);
+                              } else if (value == 'page2') {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FAQPage(),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    //
+                    // const Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 24.0),
+                    //   child: Text(
+                    //     "Higher Education Department's",
+                    //       style: kText15BaNaBoldBlackColorStyle
+                    //   ),
+                    // ),
+                    44.height,
+
+                    // Centering the logo and text
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      50), // Use a high value for circular shape
+                                ),
+                                color: Color(0xffb8cbd8),
+                                elevation: 6,
+                                child: const Image(
+                                  image: AssetImage(Assets.imagesCglogo),
+                                  height: 88,
+                                  width: 88,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
-                            DropdownMenuItem(
-                              value: 'page2',
-                              child: Text('FAQ',
-                                  style: kText10BlueBlackColorStyle),
+                          ),
+                          10.height,
+                          const Text("Higher Education Department's",
+                              style: kText15BaNaBoldBlackColorStyle),
+                          58.height,
+                          Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: const Image(
+                                image: AssetImage('assets/logo.png'),
+                                height: 48,
+                                width: 48,
+                                fit: BoxFit.contain,
+                              ),
                             ),
-                          ],
-                          onChanged: (value) {
-                            if (value == 'page1') {
-                              _showEmpRegistrationBottomSheet(context);
-                            } else if (value == 'page2') {
+                          ),
+                          5.height,
+                          customButton(
+                            context,
+                            'Face Attendance',
+                            AppColors.bbPrimaryColor,
+                            Colors.black,
+                            Icons.login,
+                            () {
+                              if (mounted) {
+                                Get.to(() => FaceAttendanceScreen());
+                                // Get.to(() => const LoginCameraTwo());
+                              }
+                            },
+                          ),
+                          5.height,
+                          customButton(
+                            context,
+                            'Face Registration',
+                            const Color(0xFF6894F8),
+                            Colors.black,
+                            Icons.person_add,
+                            () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                       FAQPage(),
+                                  builder: (BuildContext context) =>
+                                      const RegistrationScreen(),
                                 ),
                               );
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 8),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Text(
-                      "Higher Education Department's",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
+                            },
+                          ),
+                          5.height,
+                        ],
                       ),
                     ),
-                  ),
-                  68.height,
-
-                  // Centering the logo and text
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    50), // Use a high value for circular shape
-                              ),
-                              color: const Color(0xff5699c9),
-                              elevation: 6,
-                              child: const Image(
-                                image: AssetImage(Assets.imagesCglogo),
-                                height: 88,
-                                width: 88,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        10.height,
-                        const Text(
-                          "Secure and Smart Online Attendance System",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        30.height,
-                        Center(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    50), // Use a high value for circular shape
-                              ),
-                              color: const Color(0xff204867),
-                              elevation: 55,
-                              child: const Image(
-                                image: AssetImage('assets/logo.png'),
-                                height: 44,
-                                width: 44,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        5.height,
-                        customButton(
-                          context,
-                          'LOGIN',
-                          Colors.white,
-                          Colors.black,
-                          Icons.login,
-                          () {
-                            if (mounted) {
-                              Get.to(() => const LoginCameraTwo());
-                            }
-                          },
-                        ),
-                        5.height,
-                        customButton(
-                          context,
-                          'SIGN UP',
-                          AppColors.lighterBlue,
-                          Colors.black,
-                          Icons.person_add,
-                          () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    const RegistrationScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        5.height,
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
               ),
-            )
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
-      bottomSheet: FooterWidget(),
+        bottomSheet: FooterWidget(),
+      ),
     );
   }
 

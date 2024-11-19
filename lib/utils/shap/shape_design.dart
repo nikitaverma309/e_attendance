@@ -94,7 +94,7 @@ class Shape {
           ),
         ],
       border: Border.all(
-        color: Colors.white,
+        color: Colors.black,
         width: 1.0,
       ),
       borderRadius: BorderRadius.circular(2.0),

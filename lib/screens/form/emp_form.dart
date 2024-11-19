@@ -305,42 +305,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   title: '10',
                   subTitle: "Select Designation",
                 ),
-
-                Obx(() {
-                  if (controller.isLoading.value) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  if (controller.designations.isEmpty) {
-                    return Text('No designations available.');
-                  }
-
-                  // Print the designations list for debugging
-                  print('Designations List: ${controller.designations}');
-
-                  return ListView.builder(
-                    shrinkWrap: true, // Ensures ListView doesn't take infinite height inside other scrollable widgets
-                    itemCount: controller.designations.length,
-                    itemBuilder: (context, index) {
-                      final designation = controller.designations[index];
-
-                      // Print each designation item
-                      print('Designation at index $index: ${designation.designation}');
-
-                      return ListTile(
-                        title: Text(designation.designation), // Display designation name
-                        onTap: () {
-                          // Print the selected designation's ID
-                          print('Selected Designation ID: ${designation.id}');
-                          controller.selectDesignation(designation.id);
-                        },
-                        selected: controller.selectedDesignation.value == designation.id,
-                      );
-                    },
-                  );
-                }),
-
-
                 Obx(() {
                   if (empController.designationList.isEmpty) {
                     return DropDownSelectionMessage(
@@ -350,13 +314,13 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   return CustomDropdown<DesignationModel>(
                     items: empController.designationList,
                     selectedValue:
-                        empController.selectedDesignation.value.isEmpty
-                            ? null
-                            : empController.designationList.firstWhere(
-                                (college) =>
-                                    college.id ==
-                                    empController.selectedDesignation.value,
-                              ),
+                    empController.selDesignation.value.isEmpty
+                        ? null
+                        : empController.designationList.firstWhere(
+                          (college) =>
+                      college.id ==
+                          empController.selDesignation.value,
+                    ),
                     hint: 'Select DesignationList',
                     onChanged: (DesignationModel? newCass) {
                       if (newCass != null) {
@@ -367,6 +331,47 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     displayKey: 'designation',
                   );
                 }),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (controller.designations.isEmpty) {
+                      return Text('No designations available.');
+                    }
+
+                    // Print the designations list for debugging
+                    print('Designations List: ${controller.designations}');
+
+                    return ListView.builder(
+                      shrinkWrap:
+                          true, // Ensures ListView doesn't take infinite height inside other scrollable widgets
+                      itemCount: controller.designations.length,
+                      itemBuilder: (context, index) {
+                        final designation = controller.designations[index];
+
+                        // Print each designation item
+                        print(
+                            'Designation at index $index: ${designation.designation}');
+
+                        return ListTile(
+                          title: Text(designation
+                              .designation), // Display designation name
+                          onTap: () {
+                            // Print the selected designation's ID
+                            print('Selected Designation ID: ${designation.id}');
+                            controller.selectDesignation(designation.id);
+                          },
+                          selected: controller.selectedDesignation.value ==
+                              designation.id,
+                        );
+                      },
+                    );
+                  }),
+                ),
+
                 10.height,
                 TextInputField(
                   no: "11",
@@ -410,7 +415,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                                         classData:
                                             empController.selectedClass.value,
                                         designation: empController
-                                            .selectedDesignation.value,
+                                            .selDesignation.value,
                                         address: addressCtr.text.trim(),
                                         workType: workTypeCtr.text.trim(),
                                       );
