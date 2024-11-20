@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
+import 'package:online/controllers/profile_ctr/profile_controller.dart';
+import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/login/login_camera.dart';
+import 'package:online/modules/profile/prosc.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
@@ -18,7 +25,7 @@ class FaceAttendanceScreen extends StatefulWidget {
 
 class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
   bool isChecked = false;
-
+  final ProfileController profileController = Get.put(ProfileController());
   // Dummy Attendance IDs
   List<String> attendanceIds = [
     "1",
@@ -44,7 +51,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
         title: Strings.attendance,
         showBackButton: true,
         actionWidget: PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert, color: Colors.white),
+          icon: const Icon(Icons.more_vert, color: AppColors.primaryB),
           onSelected: (value) {
             if (value == 'option1') {
               print('Option 1 selected');
@@ -84,6 +91,30 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 ],
               ),
             ),
+            10.height,
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        50), // Use a high value for circular shape
+                  ),
+                  color: Color(0xffb8cbd8),
+                  elevation: 6,
+                  child: const Image(
+                    image: AssetImage(Assets.imagesCglogo),
+                    height: 88,
+                    width: 88,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            10.height,
+            const Text("Higher Education Department's",
+                style: kText15BaNaBoldBlackColorStyle),
+            10.height,
             Container(
               color: const Color(0xFFE3C998),
               height: 60,
@@ -107,9 +138,19 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                       decoration: Shape.submitContainerRed(context),
                       child: TextField(
                         controller: emailCtr,
+                        inputFormatters: [
+                          FilteringTextInputFormatter
+                              .digitsOnly, // Allows only digits
+                          LengthLimitingTextInputFormatter(
+                              11), // Limits input to 10 digits
+                        ],
+
                         readOnly: true, // Prevent manual input
                         decoration: const InputDecoration(
-                          hintText: 'Enter Attendance ID...',
+                          border: InputBorder.none, // Removes the underline
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 8), // Adjust padding if needed
                         ),
                       ),
                     ),
@@ -143,31 +184,121 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Checkbox(
-                    value: isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value ?? false;
-                      });
+                  Obx(() {
+                    if (profileController.isLoading.value) {
+                      return Center(
+                        child: CircularProgressIndicator(), // Show loading indicator while fetching data
+                      );
+                    }
 
-                      if (isChecked == true) {
-                        // Navigate to another page and pass the emailCtr.text value
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginCameraTwo(attendanceId: emailCtr.text),
-                          ),
-                        );
-                      }
+                    return ElevatedButton(
+                      onPressed: () async {
+                        profileController.isLoading.value = true; // Show loading state
 
-                    },
-                  ),
+                        // Trigger the fetchEmployeeProfile API call
+                         profileController.getApiProfile(emailCtr.text);
+
+                        profileController.isLoading.value = false; // Hide loading state
+
+                        if (profileController.employeeData.value != null) {
+                          // Show success dialog if data is fetched successfully
+                          Get.defaultDialog(
+                            title: "Success",
+                            middleText: "Employee data fetched successfully.",
+                            textConfirm: "OK",
+                            onConfirm: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Asddwed(data:profileController.employeeData.value ), // Replace with your target screen
+                              ),
+                            ),
+                          );
+
+                          // Navigate to the next screen if data is valid
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Asddwed(data:profileController.employeeData.value ), // Replace with your target screen
+                            ),
+                          );
+                        } else {
+                          // Show error dialog if data is null
+                          Get.defaultDialog(
+                            title: "Error",
+                            middleText: "Failed to fetch data. Status: ", // You can include the actual error message here
+                            textConfirm: "OK",
+                            onConfirm: () => Get.back(),
+                          );
+                        }
+                      },
+
+                      child: const Text(
+                        "ok", // Button text
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  }),
+
+               /*   Obx(() {
+                    if (profileController.isLoading.value) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return Checkbox(
+                      value: isChecked,
+                      onChanged: (bool? value) async {
+                        setState(() {
+                          isChecked = value ?? false;
+                        });
+
+                        if (isChecked) {
+                          profileController.isLoading.value = true; // Show loading state
+
+                          await profileController.fetchEmployeeProfile(emailCtr.text);
+
+                          profileController.isLoading.value = false; // Hide loading state
+
+                          if (profileController.employeeData.value != null) {
+                            Get.defaultDialog(
+                              title: "Success",
+                              middleText: "Employee data fetched successfully.",
+                              textConfirm: "OK",
+                              onConfirm: () => Get.back(),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Asddwed(),
+                              ),
+                            );
+                          } else {
+                            Get.defaultDialog(
+                              title: "Error",
+                              middleText: "Failed to fetch data. Status: ",
+                              textConfirm: "OK",
+                              onConfirm: () => Get.back(),
+                            );
+                            setState(() {
+                              isChecked = false; // Uncheck the box
+                            });
+                          }
+                        }
+                      },
+                    );
+                  })*/
+
+
                   const SizedBox(width: 5),
                   const Expanded(
                     child: Padding(
                       padding: EdgeInsets.all(4.0),
                       child: Text(
-                        "मैं उपस्थिति को चिन्हित करने के लिए अपने प्रमाण पत्र के लिए अपनी स्वीकृति देता हूँ \n I give my approval for my certificate to mark attendance",
+                        "मैं उपस्थिति को चिन्हित करने के लिए अपनी स्वीकृति देता हूँ \n I give my approval  to mark attendance",
                         style: k13BoldBlackColorStyle,
                       ),
                     ),

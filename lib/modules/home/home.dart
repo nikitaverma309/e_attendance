@@ -9,6 +9,8 @@ import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/modules/auth/registration/registration_camera.dart';
 import 'package:online/modules/home/attendance_id_screen.dart';
+import 'package:online/modules/profile/profile%20page.dart';
+import 'package:online/modules/profile/prosc.dart';
 import 'package:online/screens/comman_screen/faq.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
@@ -178,6 +180,16 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                           ),
                           5.height,
+                          customButton(
+                            context,
+                            'Pro Registration',
+                            const Color(0xFF6894F8),
+                            Colors.black,
+                            Icons.person_add,
+                                () {
+                                //  Get.to(() => Asddwed(data: "null",));
+                            },
+                          ),
                         ],
                       ),
                     ),

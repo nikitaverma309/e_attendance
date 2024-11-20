@@ -148,32 +148,18 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                   SizedBox(height: screenHeight * 0.045),
                   if (widget.imageFile != null)
                     Center(
-                      child: Obx(() {
-                        return loginController.isLoading.value
-                            ? const Center(child: CircularProgressIndicator())  // Show loader if loading
-                            : CustomButton(
-                          onTap: () async {
-                            // Proceed only if not already loading
-                            if (!loginController.isLoading.value) {
-                              loginController.isLoading.value = true;  // Start loading
-
-                              // Check if the image file is not null
-                              if (widget.imageFile != null) {
-                                await loginController.uploadFileLogin(
-                                  context,
-                                  widget.imageFile!,  // Pass the file
-                                  widget.attendanceId, // Pass the attendance ID
-                                );
-                              } else {
-                                Utils.showErrorToast(message: 'Please select an image.');
-                              }
-
-                              loginController.isLoading.value = false;  // Stop loading
-                            }
-                          },
-                          text: 'Authenticate',
-                        );
-                      }),
+                      child: CustomButton(
+                        onTap: () async {
+                          if (widget.imageFile != null) {
+                            await loginController.uploadFileLogin(
+                              context,
+                              widget.imageFile!,  // Pass the file
+                              widget.attendanceId, // Pass the attendance ID
+                            );
+                          }
+                        },
+                        text: 'Authenticate',
+                      ),
                     ),
 
                   // Center(

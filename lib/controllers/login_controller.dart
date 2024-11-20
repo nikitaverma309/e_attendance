@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dio/dio.dart' as dio_lib;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
@@ -11,10 +10,9 @@ import 'package:online/modules/profile/profile%20page.dart';
 import 'package:online/utils/utils.dart';
 
 class LoginController extends GetxController {
-  final dio_lib.Dio _dio = dio_lib.Dio();
   var isLoading = false.obs;
-  var imageFile = Rxn<File>(); // Use Rxn for nullable File
 
+  var imageFile = Rxn<File>();
   Future<void> uploadFileSignUp(int empCode, File file) async {
     final url = Uri.parse("${ApiStrings.register}$empCode");
     print("Request URL: $url");
@@ -28,7 +26,8 @@ class LoginController extends GetxController {
       ..fields['username'] = empCode.toString()
       ..files.add(
         http.MultipartFile(
-          'file',
+          'image',
+          // 'file',
           file.readAsBytes().asStream(),
           file.lengthSync(),
           filename: file.path.split('/').last,
@@ -51,50 +50,47 @@ class LoginController extends GetxController {
         // Handle messages from the backend
         String message =
             decodedResponse['message'] ?? 'Registration was successful!';
-        _showMessageDialog(message);
-        // Get.offAll(() => MyHomePage());
+        handleResponse(message);
       } else {
-        _showMessageErrorDialog('Failed to register. Try again later.');
-        // Get.offAll(() => MyHomePage());
+        _showMessageErrorDialog(
+          "Error",
+          "Failed to process your request. Please try again later.",
+        );
       }
     } catch (error) {
-      _showMessageDialog('An error occurred: $error');
+      _showMessageErrorDialog(
+        "Error",
+        "Failed to process your request. Please try again later.",
+      );
       Utils.printLog('Error: $error');
     }
   }
 
-  /// Helper method to show a dialog box
-  void _showMessageDialog(String message) {
-    Get.dialog(
-      AlertDialog(
-        title: Text(
-          "Employee Code Not Verifaid. Please Contact the Administrator.",
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Get.offAll(() => MyHomePage());
-              //  Get.back(); // Close the dialog
-            },
-            child: Text("OK"),
-          ),
-        ],
-      ),
-    );
+  void handleResponse(String message) {
+    if (message.contains("not exist")) {
+      _showMessageErrorDialog(
+        "Employee Code Not Registered. Please Contact the Administrator.",
+        message,
+      );
+    } else if (message.contains("not verified")) {
+      _showMessageErrorDialog(
+        "Employee Code Not Verified. Please Contact the Administrator.",
+        message,
+      );
+    } else {
+      _showMessageErrorDialog(
+        "Employee Code Not Verified. Please Contact the Administrator.",
+        message,
+      );
+    }
   }
 
-  /// Helper method to show a dialog box
-  void _showMessageErrorDialog(String message) {
+  void _showMessageErrorDialog(String title, String message) {
     Get.dialog(
       AlertDialog(
         title: Text(
-          "Employee Code Not Registered. Please Contact the Administrator.",
-          style: TextStyle(
+          title,
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
@@ -103,10 +99,9 @@ class LoginController extends GetxController {
         actions: [
           TextButton(
             onPressed: () {
-              Get.offAll(() => MyHomePage());
-              //  Get.back(); // Close the dialog
+              Get.off(() => MyHomePage()); // Navigate to home page
             },
-            child: Text("OK"),
+            child: const Text("OK"),
           ),
         ],
       ),
@@ -114,13 +109,13 @@ class LoginController extends GetxController {
   }
 
   // Future<void> uploadFileSignUp(int empCode, File file) async {
-  //   // final url = Uri.parse("http://192.168.197.1:5000/upload/training?username=$empCode");
   //   final url = Uri.parse("${ApiStrings.register}$empCode");
-  //   print(url);
+  //   print("Request URL: $url");
   //
   //   Map<String, String> headers = {
   //     'Content-Type': 'multipart/form-data',
   //   };
+  //
   //   var request = http.MultipartRequest('POST', url)
   //     ..headers.addAll(headers)
   //     ..fields['username'] = empCode.toString()
@@ -133,27 +128,66 @@ class LoginController extends GetxController {
   //         contentType: MediaType('image', 'jpeg'),
   //       ),
   //     );
-  //   var response = await request.send();
-  //   var responseData = await http.Response.fromStream(response);
-  //   print("responseData was $responseData");
-  //   Utils.printLog(
-  //       "response code was  =${response.statusCode} ${responseData.body}");
-  //   print("responseData was ${responseData.body}");
-  //   if (response.statusCode == 201) {
-  //     print("object");
-  //     Utils.printLog('Registration was successfully!');
-  //     Utils.showSuccessToast(message: 'Registration was successfully!');
   //
-  //     Get.offAll(() => MyHomePage());
-  //   } else {
-  //     Utils.showErrorToast(message: 'Failed to Registration was ');
+  //   try {
+  //     var response = await request.send();
+  //     var responseData = await http.Response.fromStream(response);
   //
-  //     Get.offAll(() => MyHomePage());
-  //     Utils.printLog('Failed to upload file: ${response.statusCode} $response');
+  //     print("Response Data: ${responseData.body}");
+  //     Utils.printLog(
+  //         "Response code: ${response.statusCode} ${responseData.body}");
+  //
+  //     // Decode the response body
+  //     var decodedResponse = json.decode(responseData.body);
+  //
+  //     if (response.statusCode == 201) {
+  //       // Handle messages from the backend
+  //       String message =
+  //           decodedResponse['message'] ?? 'Registration was successful!';
+  //       _showMessageDialog(
+  //           "Employee Code Not Verified. Please Contact the Administrator..",
+  //           message);
+  //     } else {
+  //       _showMessageDialog(
+  //           "Employee Code Not Registered. Please Contact the Administrator.",
+  //           "The provided employee code is not found in the system. Please check and try again.");
+  //     }
+  //   } catch (error) {
+  //     _showMessageDialog(
+  //         "Employee Code Not Registered. Please Contact the Administrator.",
+  //         'An error occurred: $error');
+  //
+  //     Utils.printLog('Error: $error');
   //   }
   // }
 
-//kam ka code
+  /// Helper method to show a dialog box
+/*
+  void _showMessageDialog(String title, String message) {
+    Get.dialog(
+      AlertDialog(
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.off(() => MyHomePage());
+              //Get.offAll(() => MyHomePage());
+            },
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+*/
+
   /* Future<void> uploadFileLogin(BuildContext context, File file) async {
     final url = Uri.parse(ApiStrings.login);
     Map<String, String> headers = {
@@ -208,55 +242,54 @@ class LoginController extends GetxController {
     }
   }*/
 
-
-
-
-
   Future<void> uploadFileLogin(
-      BuildContext context,
-      File file,
-      String empCode,
-      ) async {
-    var isLoading = true;
-    update(); // Update UI if you're using GetX
-    final url = Uri.parse(ApiStrings.login);
+    BuildContext context,
+    File file,
+    String empCode,
+  ) async {
+    print("username $empCode");
+    print("FIle Image $file");
+    update(); // Update UI if using GetX
+    final url = Uri.parse('http://164.100.150.78/attendance/api/recognize');
     print("API URL: $url");
 
-    var request = http.MultipartRequest('POST', url)
-      ..fields['username'] = empCode // Field name must match the server
-      ..files.add(
-        http.MultipartFile(
-          'file',
-          file.readAsBytes().asStream(),
-          file.lengthSync(),
-          filename: file.path.split('/').last,
-          contentType: MediaType('image', 'jpeg'),
-        ),
-      );
+    try {
+      var request = http.MultipartRequest('POST', url)
+        ..fields['username'] = empCode // Field name must match the server
+        ..files.add(
+          http.MultipartFile(
+            'image',
+            file.readAsBytes().asStream(),
+            file.lengthSync(),
+            filename: file.path.split('/').last,
+            contentType: MediaType('image', 'jpeg'),
+          ),
+        );
 
-    var response = await request.send();
-    var responseData = await http.Response.fromStream(response);
-    print("Response Status: ${response.statusCode}");
-    print("Response Body: ${responseData.body}");
+      var response = await request.send();
+      var responseData = await http.Response.fromStream(response);
+      print("username Data $empCode");
+      print("FIle Image Data $file");
+      print("Response Status: ${response.statusCode}");
+      print("Response Body: ${responseData.body}");
 
-    print("Response Status: ${response.statusCode}");
-    print("Response Body: ${responseData.body}");
-
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(responseData.body);
-      if (jsonResponse['recognized_user'] != null) {
-        print("Login Successful");
-        Get.to(() => const ProfilePage());
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(responseData.body);
+        if (jsonResponse['recognized_user'] != null) {
+          Get.to(() => const ProfilePage());
+        } else {
+          Utils.showErrorToast(
+              message: 'Face not recognized. Please try again.');
+        }
+      } else if (response.statusCode == 401) {
+        Utils.showErrorToast(message: 'Unauthorized: Face not recognized.');
       } else {
-        Utils.showErrorToast(message: 'Face not recognized. Please try again.');
+        Utils.showErrorToast(
+            message: 'Failed to recognize face: ${responseData.body}');
       }
-    } else if (response.statusCode == 401) {
-      Utils.showErrorToast(message: 'Unauthorized: Face not recognized.');
-    } else {
-      Utils.showErrorToast(
-          message: 'Failed to recognize face: ${responseData.body}');
+    } catch (e) {
+      print("Error occurred: $e");
+      Utils.showErrorToast(message: 'An unexpected error occurred.');
     }
   }
-
-
 }
