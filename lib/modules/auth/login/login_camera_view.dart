@@ -23,29 +23,7 @@ class LoginCameraViewTwo extends StatefulWidget {
 }
 
 class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
-  final AudioPlayer _audioPlayer = AudioPlayer();
   final LoginController loginController = Get.put(LoginController());
-  bool isMatching = false;
-
-  void _playScanningAudio() {
-    _audioPlayer
-      ..setReleaseMode(ReleaseMode.loop)
-      ..play(AssetSource("scan_beep.wav"));
-  }
-
-  void _playFailedAudio() {
-    _audioPlayer
-      ..stop()
-      ..setReleaseMode(ReleaseMode.release)
-      ..play(AssetSource("failed.mp3"));
-  }
-
-  void _playSuccessfulAudio() {
-    _audioPlayer
-      ..stop()
-      ..setReleaseMode(ReleaseMode.release)
-      ..play(AssetSource("success.mp3"));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +131,7 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                           if (widget.imageFile != null) {
                             await loginController.uploadFileLogin(
                               context,
-                              widget.imageFile!,  // Pass the file
+                              widget.imageFile!, // Pass the file
                               widget.attendanceId, // Pass the attendance ID
                             );
                           }
@@ -161,45 +139,6 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                         text: 'Authenticate',
                       ),
                     ),
-
-                  // Center(
-                  //   child: Obx(() {
-                  //     return loginController.isLoading.value
-                  //         ? const Center(child: CircularProgressIndicator())
-                  //         : CustomButton(
-                  //             onTap: () async {
-                  //               if (!loginController.isLoading.value) {
-                  //                 loginController.isLoading.value =
-                  //                     true; // लोडिंग शुरू करें
-                  //
-                  //                 if (widget.imageFile != null) {
-                  //                   setState(() => isMatching = true);
-                  //                   _playScanningAudio();
-                  //
-                  //                   bool isAuthenticated =
-                  //                       await loginController.uploadFileLogin(
-                  //                           context,
-                  //                           widget.imageFile!,
-                  //                           widget.attendanceId);
-                  //
-                  //                   if (isAuthenticated) {
-                  //                     _playSuccessfulAudio(); // सफल ऑडियो प्ले करें
-                  //                   } else {
-                  //                     _playFailedAudio();
-                  //                   }
-                  //
-                  //                   loginController.isLoading.value =
-                  //                       false; // लोडिंग रोकें
-                  //                 } else {
-                  //                   loginController.isLoading.value =
-                  //                       false; // लोडिंग रोकें
-                  //                 }
-                  //               }
-                  //             },
-                  //             text: 'Authenticate',
-                  //           );
-                  //   }),
-                  // ),
                 ],
               ),
             ),

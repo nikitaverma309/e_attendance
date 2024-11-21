@@ -9,12 +9,13 @@ import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/profile_ctr/profile_controller.dart';
 import 'package:online/generated/assets.dart';
-import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/modules/profile/prosc.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 import 'package:text_scroll/text_scroll.dart';
+
+import '../auth/login/login_camera.dart';
 
 class FaceAttendanceScreen extends StatefulWidget {
   const FaceAttendanceScreen({super.key});
@@ -47,48 +48,36 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xF5ECF4F5),
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: Strings.attendance,
         showBackButton: true,
-        actionWidget: PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert, color: AppColors.primaryB),
-          onSelected: (value) {
-            if (value == 'option1') {
-              print('Option 1 selected');
-            } else if (value == 'option2') {
-              print('Option 2 selected');
-            }
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'option1',
-              child: Text('Option 1'),
-            ),
-            const PopupMenuItem(
-              value: 'option2',
-              child: Text('Option 2'),
-            ),
-          ],
+        actionWidget: Icon(
+          Icons.more_vert,
+          color: Color(0xff176daa),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             10.height,
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Flexible(
-                    child: TextScroll(
-                      'App Version: Ap@36451 Organization: National Information Center (NIC) Chhattisgarh, Blinding: Mantralaya Naya Raipur ',
-                      style: kText15BaNaBoldBlackColorStyle,
-                      intervalSpaces: 10,
-                      velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
+            Container(
+              color: Colors.cyan.shade50,
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextScroll(
+                        'App Version: Ap@36451 Organization: National Information Center (NIC) Chhattisgarh, Blinding: Mantralaya Naya Raipur ',
+                        style: kText15BaNaBoldBlackColorStyle,
+                        intervalSpaces: 10,
+                        velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             10.height,
@@ -100,7 +89,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                     borderRadius: BorderRadius.circular(
                         50), // Use a high value for circular shape
                   ),
-                  color: Color(0xffb8cbd8),
+                  color: const Color(0xffb8cbd8),
                   elevation: 6,
                   child: const Image(
                     image: AssetImage(Assets.imagesCglogo),
@@ -117,7 +106,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
             10.height,
             Container(
               color: const Color(0xFFE3C998),
-              height: 60,
+              height: 70,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -126,7 +115,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                     child: Padding(
                       padding: EdgeInsets.all(4.0),
                       child: Text(
-                        "उपस्थिति आईडी            \n Attendance ID         ",
+                        "उपस्थिति आईडी           \nAttendance ID         ",
                         style: k13BoldBlackColorStyle,
                       ),
                     ),
@@ -134,7 +123,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                   Expanded(
                     child: Container(
                       width: 100,
-                      height: 40,
+                      height: 50,
                       decoration: Shape.submitContainerRed(context),
                       child: TextField(
                         controller: emailCtr,
@@ -178,122 +167,83 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
             ),
             10.height,
             Container(
-              color: const Color(0xFFBABACF),
+              color: Colors.cyan.shade50,
               height: 70,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Obx(() {
-                    if (profileController.isLoading.value) {
-                      return Center(
-                        child: CircularProgressIndicator(), // Show loading indicator while fetching data
-                      );
-                    }
+                  // Obx(() {
+                  //   if (profileController.isLoading.value) {
+                  //     return const Center(
+                  //       child: CircularProgressIndicator(),
+                  //     );
+                  //   }
+                  //
+                  //   return ElevatedButton(
+                  //     onPressed: (){
+                  //       Get.to(() => const FaceAttendanceScreen());
+                  //     },
+                  //     // onPressed: () async {
+                  //     //   profileController.isLoading.value = true; // Show loading state
+                  //     //
+                  //     //   // Trigger the fetchEmployeeProfile API call
+                  //     //    profileController.getApiProfile(emailCtr.text);
+                  //     //
+                  //     //   profileController.isLoading.value = false; // Hide loading state
+                  //     //
+                  //     //   if (profileController.employeeData.value != null) {
+                  //     //     // Show success dialog if data is fetched successfully
+                  //     //     Get.defaultDialog(
+                  //     //       title: "Success",
+                  //     //       middleText: "Employee data fetched successfully.",
+                  //     //       textConfirm: "OK",
+                  //     //       onConfirm: () => Navigator.push(
+                  //     //         context,
+                  //     //         MaterialPageRoute(
+                  //     //           builder: (context) => Asddwed(data:profileController.employeeData.value ), // Replace with your target screen
+                  //     //         ),
+                  //     //       ),
+                  //     //     );
+                  //     //
+                  //     //
+                  //     //   } else {
+                  //     //     // Show error dialog if data is null
+                  //     //     Get.defaultDialog(
+                  //     //       title: "Error",
+                  //     //       middleText: "Failed to fetch data. Status: ", // You can include the actual error message here
+                  //     //       textConfirm: "OK",
+                  //     //       onConfirm: () => Get.back(),
+                  //     //     );
+                  //     //   }
+                  //     // },
+                  //
+                  //     child: const Text(
+                  //       "ok", // Button text
+                  //       style: TextStyle(
+                  //         fontSize: 16,
+                  //         fontWeight: FontWeight.bold,
+                  //         color: Colors.white,
+                  //       ),
+                  //     ),
+                  //   );
+                  // }),
 
-                    return ElevatedButton(
-                      onPressed: () async {
-                        profileController.isLoading.value = true; // Show loading state
-
-                        // Trigger the fetchEmployeeProfile API call
-                         profileController.getApiProfile(emailCtr.text);
-
-                        profileController.isLoading.value = false; // Hide loading state
-
-                        if (profileController.employeeData.value != null) {
-                          // Show success dialog if data is fetched successfully
-                          Get.defaultDialog(
-                            title: "Success",
-                            middleText: "Employee data fetched successfully.",
-                            textConfirm: "OK",
-                            onConfirm: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Asddwed(data:profileController.employeeData.value ), // Replace with your target screen
-                              ),
-                            ),
-                          );
-
-                          // Navigate to the next screen if data is valid
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Asddwed(data:profileController.employeeData.value ), // Replace with your target screen
-                            ),
-                          );
-                        } else {
-                          // Show error dialog if data is null
-                          Get.defaultDialog(
-                            title: "Error",
-                            middleText: "Failed to fetch data. Status: ", // You can include the actual error message here
-                            textConfirm: "OK",
-                            onConfirm: () => Get.back(),
-                          );
-                        }
-                      },
-
-                      child: const Text(
-                        "ok", // Button text
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                  Checkbox(
+                    value: true, // Initial value, change as per your logic
+                    onChanged: (bool? newValue) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginCameraTwo(
+                            attendanceId: emailCtr.text,
+                          ), // Replace with your target screen
                         ),
-                      ),
-                    );
-                  }),
-
-               /*   Obx(() {
-                    if (profileController.isLoading.value) {
-                      return Center(
-                        child: CircularProgressIndicator(),
                       );
-                    }
-                    return Checkbox(
-                      value: isChecked,
-                      onChanged: (bool? value) async {
-                        setState(() {
-                          isChecked = value ?? false;
-                        });
+                    },
+                  ),
 
-                        if (isChecked) {
-                          profileController.isLoading.value = true; // Show loading state
-
-                          await profileController.fetchEmployeeProfile(emailCtr.text);
-
-                          profileController.isLoading.value = false; // Hide loading state
-
-                          if (profileController.employeeData.value != null) {
-                            Get.defaultDialog(
-                              title: "Success",
-                              middleText: "Employee data fetched successfully.",
-                              textConfirm: "OK",
-                              onConfirm: () => Get.back(),
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Asddwed(),
-                              ),
-                            );
-                          } else {
-                            Get.defaultDialog(
-                              title: "Error",
-                              middleText: "Failed to fetch data. Status: ",
-                              textConfirm: "OK",
-                              onConfirm: () => Get.back(),
-                            );
-                            setState(() {
-                              isChecked = false; // Uncheck the box
-                            });
-                          }
-                        }
-                      },
-                    );
-                  })*/
-
-
-                  const SizedBox(width: 5),
+                  const SizedBox(width: 12),
                   const Expanded(
                     child: Padding(
                       padding: EdgeInsets.all(4.0),
@@ -332,10 +282,28 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                               currentText.substring(0, currentText.length - 1);
                         }
                       } else {
-                        emailCtr.text += attendanceIds[index];
+                        // Check if the current length is less than 11 before adding more digits
+                        if (emailCtr.text.length < 11) {
+                          emailCtr.text += attendanceIds[index];
+                        }
                       }
                       setState(() {}); // Refresh UI if necessary
                     },
+
+                    // onTap: () {
+                    //   if (attendanceIds[index] == "Reset") {
+                    //     emailCtr.clear();
+                    //   } else if (attendanceIds[index] == "Back") {
+                    //     String currentText = emailCtr.text;
+                    //     if (currentText.isNotEmpty) {
+                    //       emailCtr.text =
+                    //           currentText.substring(0, currentText.length - 1);
+                    //     }
+                    //   } else {
+                    //     emailCtr.text += attendanceIds[index];
+                    //   }
+                    //   setState(() {}); // Refresh UI if necessary
+                    // },
                     child: Container(
                       decoration: BoxDecoration(
                         color: const Color(0xFFE3C998),

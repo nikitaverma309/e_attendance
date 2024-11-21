@@ -72,6 +72,11 @@ const kText15BaNaBoldBlackColorStyle = TextStyle(
     fontFamily: 'Roboto-Thin',
     fontWeight: FontWeight.bold,
     color: AppColors.black);
+const kText15BaNaBoldWhiteColorStyle = TextStyle(
+    fontSize: 15.0,
+    fontFamily: 'Roboto-Thin',
+    fontWeight: FontWeight.bold,
+    color: AppColors.white);
 const k13BoldBlackColorStyle = TextStyle(
     fontSize: 13.0,
     fontFamily: 'Roboto-Thin',

@@ -6,11 +6,9 @@ import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/check_status_employee_controller.dart';
 import 'package:online/generated/assets.dart';
-import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/modules/auth/registration/registration_camera.dart';
 import 'package:online/modules/home/attendance_id_screen.dart';
-import 'package:online/modules/profile/profile%20page.dart';
-import 'package:online/modules/profile/prosc.dart';
+import 'package:online/modules/home/registration_attendance_id.dart';
 import 'package:online/screens/comman_screen/faq.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
@@ -40,8 +38,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // backgroundColor: const Color(0xff176daa),
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xff176daa),
+        // backgroundColor: Colors.white,
         body: !loading
             ? SingleChildScrollView(
                 child: Column(
@@ -57,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "Welcome To",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -99,14 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                    //
-                    // const Padding(
-                    //   padding: EdgeInsets.symmetric(horizontal: 24.0),
-                    //   child: Text(
-                    //     "Higher Education Department's",
-                    //       style: kText15BaNaBoldBlackColorStyle
-                    //   ),
-                    // ),
+
                     44.height,
 
                     // Centering the logo and text
@@ -135,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           10.height,
                           const Text("Higher Education Department's",
-                              style: kText15BaNaBoldBlackColorStyle),
+                              style: kText15BaNaBoldWhiteColorStyle),
                           58.height,
                           Center(
                             child: ClipRRect(
@@ -152,12 +143,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           customButton(
                             context,
                             'Face Attendance',
-                            AppColors.bbPrimaryColor,
+                            const Color(0xFFCEEEEE),
                             Colors.black,
                             Icons.login,
                             () {
                               if (mounted) {
-                                Get.to(() => FaceAttendanceScreen());
+                                Get.to(() => const FaceAttendanceScreen());
                                 // Get.to(() => const LoginCameraTwo());
                               }
                             },
@@ -166,30 +157,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           customButton(
                             context,
                             'Face Registration',
-                            const Color(0xFF6894F8),
+                            const Color(0xFFD7DEEE),
                             Colors.black,
                             Icons.person_add,
                             () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      const RegistrationScreen(),
-                                ),
-                              );
+                              Get.to(
+                                  () => const RegisterFaceAttendanceScreen());
                             },
                           ),
                           5.height,
-                          customButton(
-                            context,
-                            'Pro Registration',
-                            const Color(0xFF6894F8),
-                            Colors.black,
-                            Icons.person_add,
-                                () {
-                                //  Get.to(() => Asddwed(data: "null",));
-                            },
-                          ),
                         ],
                       ),
                     ),

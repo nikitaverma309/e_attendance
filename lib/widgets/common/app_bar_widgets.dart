@@ -1,8 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
-
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showLogo, showDrawer, showBackButton;
@@ -27,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.primaryB,
+      backgroundColor: const Color(0xff176daa),
       automaticallyImplyLeading: true,
       elevation: 7,
       title: Row(
@@ -35,17 +32,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           if (showBackButton)
             leadingWidget ??
-
-          Expanded(
-            child: title != null
-                ? Center(
-                    child: Text(
-                      title!,
-                      textAlign: TextAlign.center,style: kWhite.copyWith(color: Colors.white),
-                    ),
-                  )
-                : const SizedBox.shrink(),
-          ),
+                Expanded(
+                  child: title != null
+                      ? Center(
+                          child: Text(
+                            title!,
+                            textAlign: TextAlign.center,
+                            style: kWhite.copyWith(color: Colors.white),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
           if (actionWidget != null)
             actionWidget!
           else if (onActionButtonTap != null)
@@ -60,10 +57,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       leading: showBackButton
           ? (leadingWidget ??
-          IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: onBackTap ?? () => Navigator.of(context).pop(),
-          ))
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: onBackTap ?? () => Navigator.of(context).pop(),
+              ))
           : null,
     );
   }
