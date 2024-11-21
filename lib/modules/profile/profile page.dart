@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'package:online/constants/string_res.dart';
+import 'package:online/modules/home/home.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -23,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
             icon: const Icon(Icons.arrow_back,
                 color: Colors.white), // Set the back icon color to white
             onPressed: () {
-              Navigator.pop(context); // Navigate back when the icon is pressed
+              Get.offAll(() => MyHomePage());
             },
           ),
           centerTitle: false,

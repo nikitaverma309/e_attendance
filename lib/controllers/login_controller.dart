@@ -26,8 +26,8 @@ class LoginController extends GetxController {
       ..fields['username'] = empCode.toString()
       ..files.add(
         http.MultipartFile(
-         // 'image',
-       'file',
+          // 'image',
+          'file',
           file.readAsBytes().asStream(),
           file.lengthSync(),
           filename: file.path.split('/').last,
@@ -242,64 +242,81 @@ class LoginController extends GetxController {
     }
   }*/
 
-  // Future<void> uploadFileLogin(
-  //   BuildContext context,
-  //   File file,
-  //   String empCode,
-  // ) async {
-  //   print("username $empCode");
-  //   print("FIle Image $file");
-  //   update(); // Update UI if using GetX
-  //   final url = Uri.parse('http://164.100.150.78/attendance/api/recognize');
-  //   print("API URL: $url");
-  //
-  //   try {
-  //     var request = http.MultipartRequest('POST', url)
-  //       ..fields['username'] = empCode // Field name must match the server
-  //       ..files.add(
-  //         http.MultipartFile(
-  //           'image',
-  //           file.readAsBytes().asStream(),
-  //           file.lengthSync(),
-  //           filename: file.path.split('/').last,
-  //           contentType: MediaType('image', 'jpeg'),
-  //         ),
-  //       );
-  //
-  //     var response = await request.send();
-  //     var responseData = await http.Response.fromStream(response);
-  //     print("username Data $empCode");
-  //     print("FIle Image Data $file");
-  //     print("Response Status: ${response.statusCode}");
-  //     print("Response Body: ${responseData.body}");
-  //
-  //     if (response.statusCode == 200) {
-  //       var jsonResponse = jsonDecode(responseData.body);
-  //       if (jsonResponse['recognized_user'] != null) {
-  //         Get.to(() => const ProfilePage());
-  //       } else {
-  //         Utils.showErrorToast(
-  //             message: 'Face not recognized. Please try again.');
-  //       }
-  //     } else if (response.statusCode == 401) {
-  //       Utils.showErrorToast(message: 'Unauthorized: Face not recognized.');
-  //     } else {
-  //       Utils.showErrorToast(
-  //           message: 'Failed to recognize face: ${responseData.body}');
-  //     }
-  //   } catch (e) {
-  //     print("Error occurred: $e");
-  //     Utils.showErrorToast(message: 'An unexpected error occurred.');
-  //   }
-  // }
-
-
-
   Future<void> uploadFileLogin(
-      BuildContext context,
-      File file,
-      String empCode,
-      ) async {
+    BuildContext context,
+    File file,
+    String empCode,
+  ) async {
+    print("Username: $empCode");
+    print("File: ${file.path}");
+
+    // Check if file exists
+    if (!file.existsSync()) {
+      Utils.showErrorToast(message: 'File does not exist.');
+      return;
+    }
+
+    final url = Uri.parse('http://164.100.150.78/attendance/api/recognize');
+    print("API URL: $url");
+
+    try {
+      var request = http.MultipartRequest('POST', url)
+        ..fields['username'] = empCode
+        ..files.add(
+          http.MultipartFile(
+            'image',
+            file.readAsBytes().asStream(),
+            file.lengthSync(),
+            filename: file.path.split('/').last,
+            contentType: MediaType('image', 'jpeg'),
+          ),
+        );
+
+      print("Sending request...");
+      var response = await request.send();
+      var responseData = await http.Response.fromStream(response);
+
+      print("Response Status: ${response.statusCode}");
+      print("Response Body: ${responseData.body}");
+
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(responseData.body);
+        if (jsonResponse['recognized_user'] != null) {
+          final msgCode = jsonResponse['msg_code'];
+          if (msgCode == 'user_does_not_exist') {
+            Utils.showErrorToast(
+                message: 'User does not exist. Please try again.');
+          } else if (msgCode == 'image_not_found') {
+            Utils.showErrorToast(
+                message: 'Image not found. Please upload a valid image.');
+          } else if (msgCode == 'employee_code') {
+            Utils.showErrorToast(
+                message: 'Invalid employee code. Please check and try again.');
+          } else {
+            print("User recognized. Navigating to Profile Page...");
+            Get.to(() => const ProfilePage());
+          }
+        } else {
+          Utils.showErrorToast(
+              message: 'Face not recognized. Please try again.');
+        }
+      } else if (response.statusCode == 401) {
+        Utils.showErrorToast(message: 'Unauthorized: Face not recognized.');
+      } else {
+        Utils.showErrorToast(
+            message: 'Failed to recognize face: ${responseData.body}');
+      }
+    } catch (e) {
+      print("Error occurred: ${e.toString()}");
+      Utils.showErrorToast(message: 'An unexpected error occurred.');
+    }
+  }
+
+  Future<void> uploadFileKLogin(
+    BuildContext context,
+    File file,
+    String empCode,
+  ) async {
     print("username $empCode");
     print("FIle Image $file");
     update(); // Update UI if using GetX
@@ -376,5 +393,4 @@ class LoginController extends GetxController {
       Utils.showErrorToast(message: 'An unexpected error occurred.');
     }
   }
-
 }
