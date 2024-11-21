@@ -27,7 +27,7 @@ class _ConfirmRegisterationScreenState extends State<ConfirmRegisterationScreen>
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
+    print("view page ${widget.attendanceId}");
     return Scaffold(
       backgroundColor: const Color(0xff176daa),
       appBar: AppBar(
@@ -138,7 +138,7 @@ class _ConfirmRegisterationScreenState extends State<ConfirmRegisterationScreen>
                                     int? employeeCode =
                                         int.tryParse( widget.attendanceId);
                                     await loginController.uploadFileSignUp(
-                                        employeeCode!, widget.imageFile!);
+                                        employeeCode!, widget.imageFile!,);
 
                                     loginController.isLoading.value = false;
                                   } else {

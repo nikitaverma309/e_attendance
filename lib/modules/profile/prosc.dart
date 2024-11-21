@@ -1,11 +1,9 @@
 import 'dart:convert'; // For base64Decode
 import 'dart:typed_data'; // For Uint8List
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:online/models/profile/profile_model.dart';
 import 'package:flutter/services.dart'; // For Image.memory
 
-import '../../controllers/profile_ctr/profile_controller.dart';
 
 class Asddwed extends StatelessWidget {
   final ProfileModel? data;

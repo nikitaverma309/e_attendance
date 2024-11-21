@@ -15,7 +15,9 @@ import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
 
 class RegistrationScreen extends StatefulWidget {
+
   final String attendanceId;
+
   const RegistrationScreen({super.key, required this.attendanceId});
 
   @override
@@ -103,6 +105,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
           final File imgFile = await convertImageToFile(imageFromCamera);
 
           if (mounted) {
+            print(widget.attendanceId);
             Get.off(() => ConfirmRegisterationScreen(imageFile: imgFile,attendanceId: widget.attendanceId));
           }
         }

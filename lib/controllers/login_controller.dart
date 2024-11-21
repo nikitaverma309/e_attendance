@@ -26,8 +26,8 @@ class LoginController extends GetxController {
       ..fields['username'] = empCode.toString()
       ..files.add(
         http.MultipartFile(
-          'image',
-          // 'file',
+         // 'image',
+       'file',
           file.readAsBytes().asStream(),
           file.lengthSync(),
           filename: file.path.split('/').last,
@@ -242,11 +242,64 @@ class LoginController extends GetxController {
     }
   }*/
 
+  // Future<void> uploadFileLogin(
+  //   BuildContext context,
+  //   File file,
+  //   String empCode,
+  // ) async {
+  //   print("username $empCode");
+  //   print("FIle Image $file");
+  //   update(); // Update UI if using GetX
+  //   final url = Uri.parse('http://164.100.150.78/attendance/api/recognize');
+  //   print("API URL: $url");
+  //
+  //   try {
+  //     var request = http.MultipartRequest('POST', url)
+  //       ..fields['username'] = empCode // Field name must match the server
+  //       ..files.add(
+  //         http.MultipartFile(
+  //           'image',
+  //           file.readAsBytes().asStream(),
+  //           file.lengthSync(),
+  //           filename: file.path.split('/').last,
+  //           contentType: MediaType('image', 'jpeg'),
+  //         ),
+  //       );
+  //
+  //     var response = await request.send();
+  //     var responseData = await http.Response.fromStream(response);
+  //     print("username Data $empCode");
+  //     print("FIle Image Data $file");
+  //     print("Response Status: ${response.statusCode}");
+  //     print("Response Body: ${responseData.body}");
+  //
+  //     if (response.statusCode == 200) {
+  //       var jsonResponse = jsonDecode(responseData.body);
+  //       if (jsonResponse['recognized_user'] != null) {
+  //         Get.to(() => const ProfilePage());
+  //       } else {
+  //         Utils.showErrorToast(
+  //             message: 'Face not recognized. Please try again.');
+  //       }
+  //     } else if (response.statusCode == 401) {
+  //       Utils.showErrorToast(message: 'Unauthorized: Face not recognized.');
+  //     } else {
+  //       Utils.showErrorToast(
+  //           message: 'Failed to recognize face: ${responseData.body}');
+  //     }
+  //   } catch (e) {
+  //     print("Error occurred: $e");
+  //     Utils.showErrorToast(message: 'An unexpected error occurred.');
+  //   }
+  // }
+
+
+
   Future<void> uploadFileLogin(
-    BuildContext context,
-    File file,
-    String empCode,
-  ) async {
+      BuildContext context,
+      File file,
+      String empCode,
+      ) async {
     print("username $empCode");
     print("FIle Image $file");
     update(); // Update UI if using GetX
@@ -275,11 +328,42 @@ class LoginController extends GetxController {
 
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(responseData.body);
-        if (jsonResponse['recognized_user'] != null) {
+
+        if (jsonResponse.containsKey('recognized_user') &&
+            jsonResponse['recognized_user'] == empCode) {
+          // Recognized User
           Get.to(() => const ProfilePage());
+        } else if (jsonResponse.containsKey('recognized_user') &&
+            jsonResponse['recognized_user'] == "no match found") {
+          // No match found
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: const Text("Error"),
+              content: const Text("No match found. Please try again."),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("OK"),
+                ),
+              ],
+            ),
+          );
         } else {
-          Utils.showErrorToast(
-              message: 'Face not recognized. Please try again.');
+          // Employee not registered
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: const Text("Error"),
+              content: const Text("Employee is not registered."),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("OK"),
+                ),
+              ],
+            ),
+          );
         }
       } else if (response.statusCode == 401) {
         Utils.showErrorToast(message: 'Unauthorized: Face not recognized.');
@@ -292,4 +376,5 @@ class LoginController extends GetxController {
       Utils.showErrorToast(message: 'An unexpected error occurred.');
     }
   }
+
 }
