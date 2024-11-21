@@ -125,20 +125,45 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                   ),
                   SizedBox(height: screenHeight * 0.045),
                   if (widget.imageFile != null)
-                    Center(
-                      child: CustomButton(
-                        onTap: () async {
-                          if (widget.imageFile != null) {
-                            await loginController.uploadFileLogin(
-                              context,
-                              widget.imageFile!, // Pass the file
-                              widget.attendanceId, // Pass the attendance ID
+                    Obx(() {
+                      return loginController.isLoading.value
+                          ? const Center(child: CircularProgressIndicator())
+                          : CustomButton(
+                              onTap: () async {
+                                if (!loginController.isLoading.value) {
+                                  loginController.isLoading.value = true;
+
+                                  if (widget.imageFile != null ||
+                                      widget.attendanceId != null) {
+                                    await loginController.uploadFileLogin(
+                                      context,
+                                      widget.imageFile!,
+                                      widget.attendanceId,
+                                    );
+
+                                    loginController.isLoading.value = false;
+                                  } else {
+                                    loginController.isLoading.value = false;
+                                  }
+                                }
+                              },
+                              text: 'Authenticate now',
                             );
-                          }
-                        },
-                        text: 'Authenticate',
-                      ),
-                    ),
+                    }),
+                  // Center(
+                  //   child: CustomButton(
+                  //     onTap: () async {
+                  //       if (widget.imageFile != null) {
+                  //         await loginController.uploadFileLogin(
+                  //           context,
+                  //           widget.imageFile!, // Pass the file
+                  //           widget.attendanceId, // Pass the attendance ID
+                  //         );
+                  //       }
+                  //     },
+                  //     text: 'Authenticate',
+                  //   ),
+                  // ),
                 ],
               ),
             ),

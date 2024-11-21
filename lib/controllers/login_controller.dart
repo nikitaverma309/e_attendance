@@ -282,115 +282,61 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(responseData.body);
         if (jsonResponse['recognized_user'] != null) {
-          final msgCode = jsonResponse['msg_code'];
-          if (msgCode == 'user_does_not_exist') {
-            Utils.showErrorToast(
-                message: 'User does not exist. Please try again.');
-          } else if (msgCode == 'image_not_found') {
-            Utils.showErrorToast(
-                message: 'Image not found. Please upload a valid image.');
-          } else if (msgCode == 'employee_code') {
-            Utils.showErrorToast(
-                message: 'Invalid employee code. Please check and try again.');
+          final recognizedUser = jsonResponse['recognized_user'];
+
+          // Handle specific conditions
+          if (recognizedUser == "11380050110") {
+            _showDialog(context, "Success", "User successfully matched.", true);
+          } else if (recognizedUser ==
+              "User with the given empCode does not exist.") {
+            _showDialog(context, "Error",
+                "User with the given empCode does not exist.", false);
           } else {
-            print("User recognized. Navigating to Profile Page...");
-            Get.to(() => const ProfilePage());
+            _showDialog(context, "Error",
+                "Face not recognized. Please try again.", false);
           }
         } else {
-          Utils.showErrorToast(
-              message: 'Face not recognized. Please try again.');
+          _showDialog(
+              context, "Recognition Failed", "Face not recognized.", false);
         }
       } else if (response.statusCode == 401) {
-        Utils.showErrorToast(message: 'Unauthorized: Face not recognized.');
+        _showDialog(context, "Unauthorized",
+            "Face not recognized and No match found.", false);
       } else {
-        Utils.showErrorToast(
-            message: 'Failed to recognize face: ${responseData.body}');
+        _showDialog(context, "Error",
+            "Failed to recognize face: ${responseData.body}", false);
       }
     } catch (e) {
       print("Error occurred: ${e.toString()}");
-      Utils.showErrorToast(message: 'An unexpected error occurred.');
+      _showDialog(
+          context, "Unexpected Error", "An unexpected error occurred.", false);
     }
   }
 
-  Future<void> uploadFileKLogin(
-    BuildContext context,
-    File file,
-    String empCode,
-  ) async {
-    print("username $empCode");
-    print("FIle Image $file");
-    update(); // Update UI if using GetX
-    final url = Uri.parse('http://164.100.150.78/attendance/api/recognize');
-    print("API URL: $url");
-
-    try {
-      var request = http.MultipartRequest('POST', url)
-        ..fields['username'] = empCode // Field name must match the server
-        ..files.add(
-          http.MultipartFile(
-            'image',
-            file.readAsBytes().asStream(),
-            file.lengthSync(),
-            filename: file.path.split('/').last,
-            contentType: MediaType('image', 'jpeg'),
-          ),
+// Updated Utility function to show dialog box
+  void _showDialog(BuildContext context, String title, String message,
+      bool navigateToProfile) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (navigateToProfile) {
+                  Get.to(() => const ProfilePage());
+                } else {
+                  Get.offAll(() => MyHomePage());
+                }
+              },
+            ),
+          ],
         );
-
-      var response = await request.send();
-      var responseData = await http.Response.fromStream(response);
-      print("username Data $empCode");
-      print("FIle Image Data $file");
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${responseData.body}");
-
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(responseData.body);
-
-        if (jsonResponse.containsKey('recognized_user') &&
-            jsonResponse['recognized_user'] == empCode) {
-          // Recognized User
-          Get.to(() => const ProfilePage());
-        } else if (jsonResponse.containsKey('recognized_user') &&
-            jsonResponse['recognized_user'] == "no match found") {
-          // No match found
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: const Text("Error"),
-              content: const Text("No match found. Please try again."),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("OK"),
-                ),
-              ],
-            ),
-          );
-        } else {
-          // Employee not registered
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: const Text("Error"),
-              content: const Text("Employee is not registered."),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("OK"),
-                ),
-              ],
-            ),
-          );
-        }
-      } else if (response.statusCode == 401) {
-        Utils.showErrorToast(message: 'Unauthorized: Face not recognized.');
-      } else {
-        Utils.showErrorToast(
-            message: 'Failed to recognize face: ${responseData.body}');
-      }
-    } catch (e) {
-      print("Error occurred: $e");
-      Utils.showErrorToast(message: 'An unexpected error occurred.');
-    }
+      },
+    );
   }
 }

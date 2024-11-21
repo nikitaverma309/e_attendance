@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/check_status_employee_controller.dart';
+import 'package:online/controllers/profile_ctr/profile_controller.dart';
 import 'package:online/generated/assets.dart';
-import 'package:online/modules/auth/registration/registration_camera.dart';
 import 'package:online/modules/home/attendance_id_screen.dart';
 import 'package:online/modules/home/registration_attendance_id.dart';
 import 'package:online/screens/comman_screen/faq.dart';
@@ -14,6 +13,8 @@ import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
+
+import '../profile/prosc.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -25,7 +26,9 @@ class _MyHomePageState extends State<MyHomePage> {
   bool loading = false;
 
   final TextEditingController empCodeController = TextEditingController();
+  final TextEditingController empCodeProController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
+  final ProfileController profileController = Get.put(ProfileController());
   final CheckStatusEmployeeController employeeController =
       Get.put(CheckStatusEmployeeController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -166,6 +169,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                           ),
                           5.height,
+                          customButton(
+                            context,
+                            'Profile Page',
+                            const Color(0xFFD7DEEE),
+                            Colors.black,
+                            Icons.person_add,
+                            () {
+                              _profileBottomSheet(context);
+                            },
+                          ),
+                          5.height,
                         ],
                       ),
                     ),
@@ -264,6 +278,149 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 'Please fill in all fields',
                                           );
                                         }
+                                      }
+                                    },
+                            ),
+                    ),
+                    40.height,
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              right: 10,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _profileBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            Form(
+              key: _formKey,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    40.height,
+                    const Text(
+                      "Before Open Your Profile Check status",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    20.height,
+                    TextInputField(
+                      no: "1",
+                      controller: empCodeProController,
+                      inputType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter
+                            .digitsOnly, // Allows only digits
+                        LengthLimitingTextInputFormatter(11),
+                      ],
+                      title: "Employee Code",
+                      hintText: 'Fill details',
+                    ),
+                    20.height,
+                    Obx(
+                      () => profileController.isLoading.value
+                          ? const Center(
+                              child:
+                                  CircularProgressIndicator()) // Show loading spinner
+                          : CommonButton(
+                              text: "Profile Page",
+                              onPressed: employeeController.isLoading.value
+                                  ? null // Disable the button if loading
+                                  : () async {
+                                      // Check if the email field is empty
+                                      if (empCodeProController.text.isEmpty) {
+                                        // Show an error if Attendance ID is not entered
+                                        Get.defaultDialog(
+                                          title: "Error",
+                                          middleText:
+                                              "Please enter your Attendance ID before proceeding.",
+                                          textConfirm: "OK",
+                                          onConfirm: () => Get.back(),
+                                        );
+                                        return;
+                                      }
+
+                                      // Show loading state
+                                      profileController.isLoading.value = true;
+
+                                      // Call the API to fetch profile data
+                                      await profileController.getApiProfile(
+                                          empCodeProController.text);
+
+                                      // Hide loading state (already handled inside getApiProfile)
+                                      profileController.isLoading.value = false;
+
+                                      // Handle API response
+                                      if (profileController
+                                              .employeeData.value !=
+                                          null) {
+                                        // Show success dialog if data is fetched successfully
+                                        Get.defaultDialog(
+                                          title: "Success",
+                                          middleText:
+                                              "Employee data fetched successfully.",
+                                          textConfirm: "OK",
+                                          onConfirm: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => Asddwed(
+                                                data: profileController
+                                                    .employeeData.value,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        // Show error dialog if data is null
+                                        Get.defaultDialog(
+                                          title: "Error",
+                                          middleText:
+                                              "Your Attendance ID was incorrect. Please try again.",
+                                          textConfirm: "OK",
+                                          onConfirm: () {
+                                            // Close the dialog and navigate back to the previous screen
+                                            Get.back();
+
+                                            // Clear the controller value if the ID is incorrect
+                                            empCodeProController.clear();
+                                          },
+                                        );
                                       }
                                     },
                             ),

@@ -58,6 +58,7 @@ dependencies:
 #  mime: ^2.0.0
   audioplayers: ^3.0.1
   text_scroll: ^0.2.0
+  intl: ^0.19.0
 #  htkc_utils: ^1.0.8
 #  marquee: ^2.2.3
 

@@ -9,6 +9,8 @@ class ProfileController extends GetxController {
   final isChecked = false.obs;
   var employeeData = Rx<ProfileModel?>(null); // Rx<ProfileModel?> to handle nullable state.
 
+
+
   Future<void> getApiProfile(String empCode) async {
     isLoading(true);
     final response = await http.get(
@@ -20,19 +22,32 @@ class ProfileController extends GetxController {
 
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
-      employeeData.value = ProfileModel.fromJson(jsonData);
-      print(employeeData);
 
-      // Show success dialog if data is fetched successfully
-      if (employeeData.value != null) {
-        Utils.showSuccessToast(message: 'Login');
+      // Check if the API response contains an error message or if employee data exists
+      if (jsonData['msg'] == 'Employee Not Exists') {
+        Utils.showErrorToast(message: 'Employee not found');
+        isLoading(false);
+        return; // Early return if employee doesn't exist
+      }
+
+      try {
+        employeeData.value = ProfileModel.fromJson(jsonData);
+        print(employeeData);
+
+        // Show success dialog if data is fetched successfully
+        if (employeeData.value != null) {
+          Utils.showSuccessToast(message: 'Employee data fetched successfully');
+        }
+      } catch (e) {
+        print("Error parsing employee data: $e");
+        Utils.showErrorToast(message: 'Failed to parse employee data');
       }
     } else {
-      print("Error occurred: ");
+      print("Error occurred: ${response.statusCode}");
       Utils.showErrorToast(message: 'An unexpected error occurred.');
-      isLoading(false);
     }
     isLoading(false);
   }
 
 }
+

@@ -25,6 +25,7 @@ class RegisterFaceAttendanceScreen extends StatefulWidget {
 class _RegisterFaceAttendanceScreenState
     extends State<RegisterFaceAttendanceScreen> {
   final ProfileController profileController = Get.put(ProfileController());
+  TextEditingController emailCtr = TextEditingController();
   List<String> attendanceIds = [
     "1",
     "2",
@@ -39,7 +40,6 @@ class _RegisterFaceAttendanceScreenState
     "0",
     "Back"
   ];
-  TextEditingController emailCtr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -139,18 +139,97 @@ class _RegisterFaceAttendanceScreenState
                 ),
                 child: Row(
                   children: [
-                    Checkbox(
-                      value: true,
-                      onChanged: (bool? newValue) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                RegistrationScreen(attendanceId: emailCtr.text),
-                          ),
-                        );
-                      },
-                    ),
+                    Obx(() {
+                      bool isButtonDisabled = profileController.isLoading.value;
+
+                      return isButtonDisabled
+                          ? const Center(
+                              child:
+                                  CircularProgressIndicator(), // Show loading spinner
+                            )
+                          : Checkbox(
+                              value: profileController.isChecked.value,
+                              onChanged: (bool? newValue) async {
+                                if (emailCtr.text.isEmpty) {
+                                  // Show an error if Attendance ID is not entered
+                                  Get.defaultDialog(
+                                    title: "Error",
+                                    middleText:
+                                        "Please enter your Attendance ID before proceeding.",
+                                    textConfirm: "OK",
+                                    onConfirm: () => Get.back(),
+                                  );
+                                  return;
+                                }
+
+                                profileController.isChecked.value =
+                                    newValue ?? false;
+
+                                if (profileController.isChecked.value) {
+                                  // Show loading state
+                                  profileController.isLoading.value = true;
+
+                                  // Call the API to fetch profile data
+                                  await profileController
+                                      .getApiProfile(emailCtr.text);
+
+                                  // Hide loading state (already handled inside getApiProfile)
+                                  profileController.isLoading.value = false;
+                                  profileController.isChecked.value = false;
+
+                                  // Handle API response
+                                  if (profileController.employeeData.value !=
+                                      null) {
+                                    // Show success dialog if data is fetched successfully
+                                    Get.defaultDialog(
+                                      title: "Success",
+                                      middleText:
+                                          "Employee data fetched successfully.",
+                                      textConfirm: "OK",
+                                      onConfirm: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              RegistrationScreen(
+                                                  attendanceId: emailCtr.text),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    // Show error dialog if data is null
+                                    Get.defaultDialog(
+                                      title: "Error",
+                                      middleText:
+                                          "Your Attendance ID was incorrect. Please try again.",
+                                      textConfirm: "OK",
+                                      onConfirm: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              RegisterFaceAttendanceScreen(
+                                                 ),
+                                        ),
+                                      ),
+                                    );
+                                    profileController.isChecked.value = false;
+                                    profileController.isLoading.value = false;
+                                  }
+                                }
+                              },
+                            );
+                    }),
+                    // Checkbox(
+                    //   value: true,
+                    //   onChanged: (bool? newValue) {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) =>
+                    //             RegistrationScreen(attendanceId: emailCtr.text),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
                     10.width,
                     const Expanded(
                       child: Text(
