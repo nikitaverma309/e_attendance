@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:online/api/api_strings.dart';
 import 'package:online/modules/home/home.dart';
 import 'package:online/modules/profile/profile%20page.dart';
@@ -287,35 +288,36 @@ class LoginController extends GetxController {
 
           // Handle specific conditions
           if (recognizedUser == "11380050110") {
-            _showDialog(context, "Success", "User successfully matched.", true);
+            _showDialog(context, "Attendance was Success", "User Attendance Was Successfully .", true);
+
+            // _showDialog(context, "Success", "User successfully matched.", true);
           } else if (recognizedUser ==
               "User with the given empCode does not exist.") {
-            _showDialog(context, "Error",
+            _showPDialog(context, "Error",
                 "User with the given empCode does not exist.", false);
           } else {
-            _showDialog(context, "Error",
+            _showPDialog(context, "Error",
                 "Face not recognized. Please try again.", false);
           }
         } else {
-          _showDialog(
+          _showPDialog(
               context, "Recognition Failed", "Face not recognized.", false);
         }
       } else if (response.statusCode == 401) {
-        _showDialog(context, "Unauthorized",
+        _showPDialog(context, "Unauthorized",
             "Face not recognized and No match found.", false);
       } else {
-        _showDialog(context, "Error",
+        _showPDialog(context, "Error",
             "Failed to recognize face: ${responseData.body}", false);
       }
     } catch (e) {
       print("Error occurred: ${e.toString()}");
-      _showDialog(
+      _showPDialog(
           context, "Unexpected Error", "An unexpected error occurred.", false);
     }
   }
 
-// Updated Utility function to show dialog box
-  void _showDialog(BuildContext context, String title, String message,
+  void _showPDialog(BuildContext context, String title, String message,
       bool navigateToProfile) {
     showDialog(
       context: context,
@@ -340,4 +342,33 @@ class LoginController extends GetxController {
       },
     );
   }
+  void _showDialog(BuildContext context, String title, String message,
+      bool navigateToProfile) {
+    String currentDateTime =
+    DateFormat('yyyy-MM-dd    HH:mm:ss').format(DateTime.now());
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text('$message\n\n Login Time: $currentDateTime'),
+          actions: [
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (navigateToProfile) {
+                  Get.to(() => MyHomePage());
+                } else {
+                  Get.offAll(() => MyHomePage());
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
