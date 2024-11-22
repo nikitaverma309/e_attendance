@@ -4,17 +4,19 @@ import 'package:http/http.dart' as http;
 import 'package:online/models/profile/profile_model.dart';
 import 'package:online/utils/utils.dart';
 
+import '../../modules/profile/prosc.dart';
+
 class ProfileController extends GetxController {
   var isLoading = false.obs;
   final isChecked = false.obs;
-  var employeeData = Rx<ProfileModel?>(null); // Rx<ProfileModel?> to handle nullable state.
-
-
+  var employeeData =
+      Rx<ProfileModel?>(null); // Rx<ProfileModel?> to handle nullable state.
 
   Future<void> getApiProfile(String empCode) async {
     isLoading(true);
     final response = await http.get(
-      Uri.parse('http://10.132.34.99/lmsbackend/api/employee/get?empCode=$empCode'),
+      Uri.parse(
+          'http://10.132.34.99/lmsbackend/api/employee/get?empCode=$empCode'),
     );
 
     // Print the response body for debugging
@@ -48,6 +50,4 @@ class ProfileController extends GetxController {
     }
     isLoading(false);
   }
-
 }
-

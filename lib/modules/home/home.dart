@@ -383,14 +383,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                       await profileController.getApiProfile(
                                           empCodeProController.text);
 
-                                      // Hide loading state (already handled inside getApiProfile)
+
                                       profileController.isLoading.value = false;
 
                                       // Handle API response
                                       if (profileController
                                               .employeeData.value !=
                                           null) {
-                                        // Show success dialog if data is fetched successfully
+                                        Get.to(() =>  Asddwed(
+                                          data: profileController
+                                              .employeeData.value,
+                                        ),);
                                         Get.defaultDialog(
                                           title: "Success",
                                           middleText:

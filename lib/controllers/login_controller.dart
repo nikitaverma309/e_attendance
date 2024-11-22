@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:online/api/api_strings.dart';
 import 'package:online/modules/home/home.dart';
 import 'package:online/modules/profile/profile%20page.dart';
+import 'package:online/modules/profile/prosc.dart';
 import 'package:online/utils/utils.dart';
 
 class LoginController extends GetxController {
@@ -328,7 +329,7 @@ class LoginController extends GetxController {
               onPressed: () {
                 Navigator.of(context).pop();
                 if (navigateToProfile) {
-                  Get.to(() => const ProfilePage());
+                  Get.to(() => MyHomePage());
                 } else {
                   Get.offAll(() => MyHomePage());
                 }
