@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
-import '../../module_controllers.dart';
-import '../../utils/utils.dart';
+import 'package:online/module_controllers.dart';
+import 'package:online/utils/utils.dart';
 
 Future<void> showRestrictionAlert(BuildContext context,
     {String message = 'As of now we do not support your location.',
@@ -36,8 +35,7 @@ Future<void> showRestrictionAlert(BuildContext context,
 
 Future<void> showLocationAlert(BuildContext context,
     {String message = "Please enable location service and try again",
-    bottomMessage =
-        "We are only available in Specified region.",
+    bottomMessage = "We are only available in Specified region.",
     bool showButton = false}) async {
   return showDialog<void>(
       context: Utils.appNavigatorKey.currentContext!,
@@ -69,14 +67,6 @@ Future<void> showLocationAlert(BuildContext context,
                         child: const Text("Continue"),
                       )
                     ]
-                    // AppSimpleButton(
-                    //   nameText: "Continue",
-                    //   onDoneFuction: () {
-                    //     Geolocator.openLocationSettings();
-                    //   },
-                    //   buttonBackgroundColor:
-                    //       AppColors.primaryColor.withOpacity(0.8),
-                    // ),
                   ],
                 ),
               ),

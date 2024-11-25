@@ -121,10 +121,10 @@ class CustomDropdown<T> extends StatelessWidget {
 class DropDownSelectionMessage extends StatelessWidget {
   final String message;
 
-  DropDownSelectionMessage({
-    Key? key,
+  const DropDownSelectionMessage({
+    super.key,
     required this.message,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

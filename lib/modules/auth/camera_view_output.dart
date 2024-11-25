@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -7,16 +6,19 @@ import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/login_controller.dart';
-import 'package:online/widgets/common/custom_button.dart';
+import 'package:online/enum/enum_screen.dart';
+import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/footer_widget.dart';
 
-import '../../../utils/utils.dart';
-
 class LoginCameraViewTwo extends StatefulWidget {
-  final String attendanceId;
+  final CameraAction action;
+  final String? attendanceId;
   final File? imageFile;
   const LoginCameraViewTwo(
-      {super.key, this.imageFile, required this.attendanceId});
+      {super.key,
+      this.imageFile,
+      required this.action,
+      required this.attendanceId});
 
   @override
   State<LoginCameraViewTwo> createState() => _LoginCameraViewTwoState();
@@ -127,43 +129,40 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                   if (widget.imageFile != null)
                     Obx(() {
                       return loginController.isLoading.value
-                          ? const Center(child: CircularProgressIndicator())
-                          : CustomButton(
-                              onTap: () async {
-                                if (!loginController.isLoading.value) {
-                                  loginController.isLoading.value = true;
+                          ? const CircularProgressIndicator()
+                          : CommonButton(
+                        onPressed: () async {
+                                loginController.isLoading.value = true;
 
-                                  if (widget.imageFile != null ||
-                                      widget.attendanceId != null) {
+                                // फ़ाइल और एक्शन चेक करें
+                                if (widget.imageFile != null) {
+                                  if (widget.action ==
+                                      CameraAction.attendance) {
+                                    // अटेंडेंस के लिए API कॉल
                                     await loginController.uploadFileLogin(
                                       context,
                                       widget.imageFile!,
-                                      widget.attendanceId,
+                                      widget.attendanceId!,
                                     );
-
-                                    loginController.isLoading.value = false;
-                                  } else {
-                                    loginController.isLoading.value = false;
+                                  } else if (widget.action ==
+                                      CameraAction.registration) {
+                                    // लॉगिन के लिए API कॉल
+                                    int? employeeCode =
+                                        int.tryParse(widget.attendanceId!);
+                                    await loginController.uploadFileSignUp(
+                                      employeeCode!,
+                                      widget.imageFile!,
+                                    );
                                   }
                                 }
+
+                                loginController.isLoading.value = false;
                               },
-                              text: 'Authenticate now',
+                              text: widget.action == CameraAction.attendance
+                                  ? 'Mark Attendance'
+                                  : 'Registration Now',
                             );
                     }),
-                  // Center(
-                  //   child: CustomButton(
-                  //     onTap: () async {
-                  //       if (widget.imageFile != null) {
-                  //         await loginController.uploadFileLogin(
-                  //           context,
-                  //           widget.imageFile!, // Pass the file
-                  //           widget.attendanceId, // Pass the attendance ID
-                  //         );
-                  //       }
-                  //     },
-                  //     text: 'Authenticate',
-                  //   ),
-                  // ),
                 ],
               ),
             ),

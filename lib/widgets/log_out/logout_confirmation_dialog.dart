@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
 
 class LogoutConfirmationDialog extends StatelessWidget {
   const LogoutConfirmationDialog({super.key});
 
-  Future<void> clearLoginStatus() async {
-
-  }
+  Future<void> clearLoginStatus() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +14,7 @@ class LogoutConfirmationDialog extends StatelessWidget {
         TextButton(
           onPressed: () async {
             await clearLoginStatus();
-           // Get.offAll(() => const UlbLoginPage());
+            // Get.offAll(() => const UlbLoginPage());
           },
           child: const Text("Yes"),
         ),
@@ -27,7 +23,8 @@ class LogoutConfirmationDialog extends StatelessWidget {
             Navigator.pop(context, false);
           },
           style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white, backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Colors.white,
+            backgroundColor: Theme.of(context).primaryColor,
           ),
           child: const Text("No"),
         ),

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
-import '../../constants/string_res.dart';
 
-class FAQPage extends StatelessWidget {
+class FaqScreen extends StatelessWidget {
   final List<Map<String, dynamic>> faqData = [
     {
       'category': 'General Questions',
@@ -41,6 +41,8 @@ class FAQPage extends StatelessWidget {
     },
   ];
 
+  FaqScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,8 +58,7 @@ class FAQPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        50),
+                    borderRadius: BorderRadius.circular(50),
                   ),
                   color: const Color(0xff5699c9),
                   elevation: 6,
@@ -94,12 +95,9 @@ class FAQPage extends StatelessWidget {
                       childrenPadding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
                       tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-                      backgroundColor:
-                          Colors.grey[200],
-                      collapsedBackgroundColor:
-                          Colors.white,
-                      collapsedIconColor:
-                          Colors.blue,
+                      backgroundColor: Colors.grey[200],
+                      collapsedBackgroundColor: Colors.white,
+                      collapsedIconColor: Colors.blue,
                       iconColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         // Add border to the tile
@@ -111,14 +109,10 @@ class FAQPage extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(vertical: 4),
                           decoration: Shape.submitContainerRed(context),
                           child: ListTile(
-                            title: Text(
-                              q['question'],
-                                style: k13BoldBlackColorStyle
-                            ),
-                            subtitle: Text(
-                              q['answer'],
-                                style: k13NormalGreyColorStyle
-                            ),
+                            title: Text(q['question'],
+                                style: k13BoldBlackColorStyle),
+                            subtitle: Text(q['answer'],
+                                style: k13NormalGreyColorStyle),
                             leading: const Icon(Icons.help_outline,
                                 color: Colors.blue),
                           ),

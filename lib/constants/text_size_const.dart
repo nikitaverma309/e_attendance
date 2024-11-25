@@ -135,8 +135,4 @@ const kTextBlue = TextStyle(
     fontFamily: 'Roboto-Thin',
     fontWeight: FontWeight.bold,
     color: AppColors.primary);
-const kText19BoldBluekColorStyle = TextStyle(
-    fontSize: 14.0,
-    fontFamily: 'Roboto-Thin',
-    fontWeight: FontWeight.bold,
-    color: AppColors.bbAppColor1);
+

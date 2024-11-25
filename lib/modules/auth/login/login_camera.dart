@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:online/enum/enum_screen.dart';
 import 'package:online/locator.dart';
-import 'package:online/modules/auth/login/login_camera_view.dart';
+import 'package:online/modules/auth/camera_view_output.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/services/image_converter.dart';
@@ -105,7 +106,10 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
           final File imgFile = await convertImageToFile(imageFromCamera);
           if (mounted) {
             Get.off(() => LoginCameraViewTwo(
-                imageFile: imgFile, attendanceId: widget.attendanceId));
+                  imageFile: imgFile,
+                  attendanceId: widget.attendanceId,
+                  action: CameraAction.attendance,
+                ));
           }
         }
       } catch (e) {

@@ -47,7 +47,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   void initState() {
     super.initState();
 
-    // Initialize controllers in initState with data from widget.employeeData
     empCodeCtr = TextEditingController(text: widget.employeeData.empCode);
     nameCtr = TextEditingController(text: widget.employeeData.name);
     mobCtr =
@@ -123,8 +122,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   inputFormatters: [
                     FilteringTextInputFormatter
                         .digitsOnly, // Allows only digits
-                    LengthLimitingTextInputFormatter(
-                        10), // Limits input to 10 digits
+                    LengthLimitingTextInputFormatter(10),
                   ],
                   inputType: TextInputType.phone,
                   validator: (value) => Utils.validateRequired(value),
@@ -138,13 +136,13 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 10.height,
                 Obx(() {
                   if (empController.divisions.isEmpty) {
-                    return DropDownSelectionMessage(
+                    return const DropDownSelectionMessage(
                       message: 'Please Select Division',
                     );
                   }
 
                   return CustomDropdown<DivisionModel>(
-                    items: empController.divisions, // Pass VidhanModel list
+                    items: empController.divisions,
                     selectedValue: empController.selectedDivision.value.isEmpty
                         ? null
                         : empController.divisions.firstWhere((vs) =>
@@ -159,7 +157,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                             .selectDivision(Value.divisionCode.toString());
                         empController.fetchDistrictsByDivision(
                             int.parse(Value.divisionCode.toString()));
-                        print('Selected division Name: ${Value.name}');
                       }
                     },
                   );
@@ -171,14 +168,13 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 ),
                 Obx(() {
                   if (empController.districts.isEmpty) {
-                    return DropDownSelectionMessage(
+                    return const DropDownSelectionMessage(
                       message: 'Please Select District',
                     );
                   }
 
                   return CustomDropdown<DistrictModel>(
-                    items: empController
-                        .districts, // Pass DistrictModel list directly
+                    items: empController.districts,
                     selectedValue: empController.selectedDistrict.value.isEmpty
                         ? null
                         : empController.districts.firstWhere(
@@ -210,7 +206,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 10.height,
                 Obx(() {
                   if (empController.vidhanSabha.isEmpty) {
-                    return DropDownSelectionMessage(
+                    return const DropDownSelectionMessage(
                       message: 'Please Select Vidhan Sabha',
                     );
                   }
@@ -231,8 +227,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                       if (newVidhan != null) {
                         empController.selectVidhanSabha(
                             newVidhan.constituencyNumber.toString());
-                        print(
-                            'Selected Vidhan Sabha Name: ${newVidhan.constituencyName}');
                       }
                     },
                   );
@@ -245,7 +239,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 10.height,
                 Obx(() {
                   if (empController.college.isEmpty) {
-                    return DropDownSelectionMessage(
+                    return const DropDownSelectionMessage(
                       message: 'Please Select college',
                     );
                   }
@@ -275,7 +269,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 ),
                 Obx(() {
                   if (empController.classList.isEmpty) {
-                    return DropDownSelectionMessage(
+                    return const DropDownSelectionMessage(
                       message: 'Please Select Class',
                     );
                   }
@@ -307,20 +301,19 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 ),
                 Obx(() {
                   if (empController.designationList.isEmpty) {
-                    return DropDownSelectionMessage(
+                    return const DropDownSelectionMessage(
                       message: 'Please Select DesignationList',
                     );
                   }
                   return CustomDropdown<DesignationModel>(
                     items: empController.designationList,
-                    selectedValue:
-                    empController.selDesignation.value.isEmpty
+                    selectedValue: empController.selDesignation.value.isEmpty
                         ? null
                         : empController.designationList.firstWhere(
-                          (college) =>
-                      college.id ==
-                          empController.selDesignation.value,
-                    ),
+                            (college) =>
+                                college.id ==
+                                empController.selDesignation.value,
+                          ),
                     hint: 'Select DesignationList',
                     onChanged: (DesignationModel? newCass) {
                       if (newCass != null) {
@@ -335,24 +328,19 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   padding: const EdgeInsets.all(20.0),
                   child: Obx(() {
                     if (controller.isLoading.value) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     if (controller.designations.isEmpty) {
-                      return Text('No designations available.');
+                      return const Text('No designations available.');
                     }
 
-                    // Print the designations list for debugging
-                    print('Designations List: ${controller.designations}');
-
                     return ListView.builder(
-                      shrinkWrap:
-                          true, // Ensures ListView doesn't take infinite height inside other scrollable widgets
+                      shrinkWrap: true,
                       itemCount: controller.designations.length,
                       itemBuilder: (context, index) {
                         final designation = controller.designations[index];
 
-                        // Print each designation item
                         print(
                             'Designation at index $index: ${designation.designation}');
 
@@ -360,7 +348,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                           title: Text(designation
                               .designation), // Display designation name
                           onTap: () {
-                            // Print the selected designation's ID
                             print('Selected Designation ID: ${designation.id}');
                             controller.selectDesignation(designation.id);
                           },
@@ -371,7 +358,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     );
                   }),
                 ),
-
                 10.height,
                 TextInputField(
                   no: "11",
@@ -414,8 +400,8 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                                             empController.selectedCollege.value,
                                         classData:
                                             empController.selectedClass.value,
-                                        designation: empController
-                                            .selDesignation.value,
+                                        designation:
+                                            empController.selDesignation.value,
                                         address: addressCtr.text.trim(),
                                         workType: workTypeCtr.text.trim(),
                                       );

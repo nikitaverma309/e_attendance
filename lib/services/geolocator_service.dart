@@ -1,14 +1,11 @@
 import 'dart:math';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart'
-as PermissionHandler;
+    as PermissionHandler;
 
 import '../utils/utils.dart';
 
 class GeoLocatorService {
-  // GeoLocatorService();
-
-  // make this class single ton
   static final GeoLocatorService _instance = GeoLocatorService._internal();
 
   factory GeoLocatorService() {

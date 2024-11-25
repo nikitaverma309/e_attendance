@@ -7,17 +7,17 @@ import 'package:online/controllers/check_status_employee_controller.dart';
 import 'package:online/controllers/profile_ctr/profile_controller.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/home/attendance_id_screen.dart';
-import 'package:online/modules/home/registration_attendance_id.dart';
-import 'package:online/screens/comman_screen/faq.dart';
+import 'package:online/modules/home/registration_id_screen.dart';
+import 'package:online/screens/comman_screen/faq_screen.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
-import '../profile/prosc.dart';
+import '../profile/profile_screen.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => FAQPage(),
+                                    builder: (context) => FaqScreen(),
                                   ),
                                 );
                               }
@@ -383,17 +383,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                       await profileController.getApiProfile(
                                           empCodeProController.text);
 
-
                                       profileController.isLoading.value = false;
 
                                       // Handle API response
                                       if (profileController
                                               .employeeData.value !=
                                           null) {
-                                        Get.to(() =>  Asddwed(
-                                          data: profileController
-                                              .employeeData.value,
-                                        ),);
+                                        Get.to(
+                                          () => ProfileScreen(
+                                            data: profileController
+                                                .employeeData.value,
+                                          ),
+                                        );
                                         Get.defaultDialog(
                                           title: "Success",
                                           middleText:
@@ -402,7 +403,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           onConfirm: () => Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => Asddwed(
+                                              builder: (context) =>
+                                                  ProfileScreen(
                                                 data: profileController
                                                     .employeeData.value,
                                               ),

@@ -3,8 +3,6 @@ import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/modules/profile/profile%20page.dart';
 
-import '../../modules/profile/profile.dart';
-
 class CmoDrawerScreen extends StatelessWidget {
   const CmoDrawerScreen({super.key});
 
@@ -55,26 +53,7 @@ class CmoDrawerScreen extends StatelessWidget {
                 // Navigate to AnotherScreen
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const Profile(
-                      'John Doe', // Pass username
-                      imagePath: 'assets/images/cglogo.png', // Pass imagePath
-                    ),
-                  ), // Replace AnotherScreen with your target screen
-                );
-              },
-            ),
-            ListTile(
-              title: const Text('Go to Another Page',
-                  style: TextStyle(color: Colors.black)),
-              leading: const Icon(Icons.arrow_forward, color: Colors.black),
-              onTap: () {
-                // Navigate to AnotherScreen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfilePage()
-                  ),
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
               },
             ),

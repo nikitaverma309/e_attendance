@@ -5,8 +5,7 @@ import 'package:get/get.dart';
 import 'dart:convert';
 
 class ApiServices {
-
-  static Future<List<DivisionModel>?> getApidemoServices() async {
+  static Future<List<DivisionModel>?> getApiServices() async {
     final url =
         Uri.parse('https://heonline.cg.nic.in/lmsbackend/api/division/get-all');
     try {
@@ -26,7 +25,7 @@ class ApiServices {
     }
   }
 
-  static Future<List<DistrictModel>?> getApiDemoDistrictsByDivision(
+  static Future<List<DistrictModel>?> getApiServicesDistrictsByDivision(
       int divisionCode) async {
     final url = Uri.parse(
         'https://heonline.cg.nic.in/lmsbackend/api/district/get-division-district/$divisionCode');
@@ -34,10 +33,8 @@ class ApiServices {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        // Decode the JSON and cast it to a List<Map<String, dynamic>>
         List<dynamic> jsonResponse = jsonDecode(response.body);
 
-        // Map each JSON object in the list to a DistrictModel instance
         List<DistrictModel> data = jsonResponse
             .map((data) => DistrictModel.fromJson(data as Map<String, dynamic>))
             .toList();

@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:online/api/api_strings.dart';
 import 'package:online/modules/home/home.dart';
 import 'package:online/modules/profile/profile%20page.dart';
-import 'package:online/modules/profile/prosc.dart';
+import 'package:online/modules/profile/profile_screen.dart';
 import 'package:online/utils/utils.dart';
 
 class LoginController extends GetxController {

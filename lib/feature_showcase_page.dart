@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online/constants/colors_res.dart';
@@ -36,7 +35,6 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
           duration: const Duration(microseconds: 9000), curve: Curves.easeIn);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +133,7 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
                             backgroundColor: AppColors.primary,
                           ),
                           onPressed: () {
-                            Get.to(() =>  MyHomePage());
+                            Get.to(() => const MyHomePage());
                           },
                           child: const Text(
                             'Get Started',
@@ -146,7 +144,7 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
                       children: [
                         TextButton(
                             onPressed: () {
-                              Get.to(() =>  MyHomePage());
+                              Get.to(() => const MyHomePage());
                             },
                             child: Text(
                               "Skip",
@@ -175,7 +173,7 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
                                             color: Colors.blue.shade700
                                                 .withOpacity(.15 + index * .13),
                                           ),
-                                        ))).toList(),
+                                        ))),
                                 Positioned(
                                     right: 3 * 10,
                                     child: Container(

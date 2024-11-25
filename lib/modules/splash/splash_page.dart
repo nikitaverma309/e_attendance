@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:online/feature_showcase_page.dart';
+import 'package:online/locator.dart';
+import 'package:online/module_controllers.dart';
+import 'package:online/modules/restriction_dialog/loading_manager.dart';
+import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
+import 'package:online/services/geofencing/controller/geofencing_service.dart';
+import 'package:online/services/geolocator_service.dart';
+import 'package:online/utils/utils.dart';
 import 'package:poly_geofence_service/poly_geofence_service.dart';
 
 import 'package:permission_handler/permission_handler.dart'
     as PermissionHandler;
 
-import '../../locator.dart';
-import '../../module_controllers.dart';
-import '../../services/geofencing/controller/geofencing_service.dart';
-import '../../services/geolocator_service.dart';
-import '../../utils/utils.dart';
-import '../restriction_dialog/loading_manager.dart';
-import '../restriction_dialog/restrict_user_dialog.dart';
+
 
 class SplashScreenOne extends StatefulWidget {
   const SplashScreenOne({super.key});
@@ -48,13 +49,11 @@ class _SplashScreenOneState extends State<SplashScreenOne>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // Initialize animation controller for scaling
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     );
 
-    // Create a bounce animation for the logo scale
     _animation = CurvedAnimation(
       parent: _controller,
       curve: Curves.bounceOut,

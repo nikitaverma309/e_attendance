@@ -26,20 +26,6 @@ class _RegisterFaceAttendanceScreenState
     extends State<RegisterFaceAttendanceScreen> {
   final ProfileController profileController = Get.put(ProfileController());
   TextEditingController emailCtr = TextEditingController();
-  List<String> attendanceIds = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "Reset",
-    "0",
-    "Back"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -61,13 +47,10 @@ class _RegisterFaceAttendanceScreenState
             children: [
               // Scrolling Text
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.cyan.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: Shape.scrollText(context),
                 padding: const EdgeInsets.all(8.0),
                 child: const TextScroll(
-                  'App Version: Ap@36451 Organization: National Information Center (NIC) Chhattisgarh, Building: Mantralaya Naya Raipur',
+                  Strings.version,
                   style: kText15BaNaBoldBlackColorStyle,
                   velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
                 ),
@@ -86,7 +69,7 @@ class _RegisterFaceAttendanceScreenState
               ),
               16.height,
               const Text(
-                "Higher Education Department's",
+                Strings.higherEducation,
                 style: kText15BaNaBoldBlackColorStyle,
                 textAlign: TextAlign.center,
               ),
@@ -95,15 +78,12 @@ class _RegisterFaceAttendanceScreenState
               // Attendance ID Section
               Container(
                 padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE3C998),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: Shape.chooseCheckBox(context),
                 child: Row(
                   children: [
                     const Flexible(
                       child: Text(
-                        "उपस्थिति आईडी\nAttendance ID",
+                        Strings.attendanceId,
                         style: k13BoldBlackColorStyle,
                       ),
                     ),
@@ -130,13 +110,9 @@ class _RegisterFaceAttendanceScreenState
               ),
               20.height,
 
-              // Instruction Section
               Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF1EBD2),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: Shape.chooseCheckBox(context),
                 child: Row(
                   children: [
                     Obx(() {
@@ -154,8 +130,7 @@ class _RegisterFaceAttendanceScreenState
                                   // Show an error if Attendance ID is not entered
                                   Get.defaultDialog(
                                     title: "Error",
-                                    middleText:
-                                        "Please enter your Attendance ID before proceeding.",
+                                    middleText: Strings.attendanceAlert,
                                     textConfirm: "OK",
                                     onConfirm: () => Get.back(),
                                   );
@@ -166,25 +141,16 @@ class _RegisterFaceAttendanceScreenState
                                     newValue ?? false;
 
                                 if (profileController.isChecked.value) {
-                                  // Show loading state
                                   profileController.isLoading.value = true;
-
-                                  // Call the API to fetch profile data
                                   await profileController
                                       .getApiProfile(emailCtr.text);
-
-                                  // Hide loading state (already handled inside getApiProfile)
                                   profileController.isLoading.value = false;
                                   profileController.isChecked.value = false;
-
-                                  // Handle API response
                                   if (profileController.employeeData.value !=
                                       null) {
-                                    // Show success dialog if data is fetched successfully
                                     Get.defaultDialog(
                                       title: "Success",
-                                      middleText:
-                                          "Employee data fetched successfully.",
+                                      middleText: Strings.dataSuccess,
                                       textConfirm: "OK",
                                       onConfirm: () => Navigator.push(
                                         context,
@@ -199,15 +165,13 @@ class _RegisterFaceAttendanceScreenState
                                     // Show error dialog if data is null
                                     Get.defaultDialog(
                                       title: "Error",
-                                      middleText:
-                                          "Your Attendance ID was incorrect. Please try again.",
+                                      middleText: Strings.attendanceIDIncorrect,
                                       textConfirm: "OK",
                                       onConfirm: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              RegisterFaceAttendanceScreen(
-                                                 ),
+                                              const RegisterFaceAttendanceScreen(),
                                         ),
                                       ),
                                     );
@@ -218,22 +182,10 @@ class _RegisterFaceAttendanceScreenState
                               },
                             );
                     }),
-                    // Checkbox(
-                    //   value: true,
-                    //   onChanged: (bool? newValue) {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) =>
-                    //             RegistrationScreen(attendanceId: emailCtr.text),
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
                     10.width,
                     const Expanded(
                       child: Text(
-                        "जिन उपयोगकर्ताओं का कर्मचारी कोड मौजूद है, कृपया अपनी उपस्थिति दर्ज करने के लिए अपना चेहरा पंजीकृत करें।",
+                        Strings.notRegistration,
                         style: k13BoldBlackColorStyle,
                       ),
                     ),
@@ -242,51 +194,49 @@ class _RegisterFaceAttendanceScreenState
               ),
               20.height,
 
-              // Attendance ID Grid
-              GridView.builder(
-                itemCount: attendanceIds.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 2.5,
-                ),
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (attendanceIds[index] == "Reset") {
-                        emailCtr.clear();
-                      } else if (attendanceIds[index] == "Back") {
-                        String currentText = emailCtr.text;
-                        if (currentText.isNotEmpty) {
-                          emailCtr.text =
-                              currentText.substring(0, currentText.length - 1);
+              Obx(() {
+                return GridView.builder(
+                  itemCount: profileController.attendanceIds.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 2.5,
+                  ),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        String selectedValue =
+                            profileController.attendanceIds[index];
+                        if (selectedValue == "Reset") {
+                          emailCtr.clear();
+                        } else if (selectedValue == "Back") {
+                          String currentText = emailCtr.text;
+                          if (currentText.isNotEmpty) {
+                            emailCtr.text = currentText.substring(
+                                0, currentText.length - 1);
+                          }
+                        } else if (emailCtr.text.length < 11) {
+                          emailCtr.text += selectedValue;
                         }
-                      } else if (emailCtr.text.length < 11) {
-                        emailCtr.text += attendanceIds[index];
-                      }
-                      setState(() {});
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE3C998),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        attendanceIds[index],
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE3C998),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          profileController.attendanceIds[index],
+                          style: k13BoldBlackColorStyle,
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                );
+              }),
             ],
           ),
         ),

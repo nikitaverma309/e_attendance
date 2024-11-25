@@ -25,4 +25,15 @@ class Strings {
   static const String login = "Login Screen";
   static const String attendance = "Attendance Id";
   static const String faq = "FAQs - Online Attendance";
+  static const String attendanceId =  "उपस्थिति आईडी\nAttendance ID";
+  static const String higherEducation =   "Higher Education Department's";
+  //error Alert
+  static const String attendanceAlert =   "Please enter your Attendance ID before proceeding.";
+  static const String attendanceIDIncorrect =   "Your Attendance ID was incorrect. Please try again.";
+  // success alert
+  static const String dataSuccess =   "Employee data fetched successfully.";
+  //screen note
+  static const String notRegistration =  "जिन उपयोगकर्ताओं का कर्मचारी कोड मौजूद है, कृपया अपनी उपस्थिति दर्ज करने के लिए अपना चेहरा पंजीकृत करें।";
+  static const String notAttendance =  "मैं उपस्थिति को चिन्हित करने के लिए अपनी स्वीकृति देता हूँ \n I give my approval  to mark attendance";
+  static const String version = "App Version: Ap@36451 Organization: National Information Center (NIC) Chhattisgarh, Building: Mantralaya Naya Raipur";
 }

@@ -1,0 +1,1 @@
+enum CameraAction { attendance, registration }

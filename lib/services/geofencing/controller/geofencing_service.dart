@@ -2,12 +2,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:online/locator.dart';
+import 'package:online/module_controllers.dart';
+import 'package:online/modules/restriction_dialog/loading_manager.dart';
+import 'package:online/utils/utils.dart';
 import 'package:poly_geofence_service/poly_geofence_service.dart';
-
-import '../../../locator.dart';
-import '../../../module_controllers.dart';
-import '../../../modules/restriction_dialog/loading_manager.dart';
-import '../../../utils/utils.dart';
 
 class GeoFencingService extends GetxController {
   final alertDialogKey = GlobalKey();

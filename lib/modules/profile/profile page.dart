@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import 'package:online/constants/string_res.dart';
 import 'package:online/modules/home/home.dart';
 
@@ -23,22 +21,21 @@ class _ProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
           backgroundColor: const Color(0xff176daa),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back,
-                color: Colors.white), // Set the back icon color to white
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              Get.offAll(() => MyHomePage());
+              Get.offAll(() => const MyHomePage());
             },
           ),
           centerTitle: false,
           title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center, // Center the title
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: Text(
                   "Hi Nikita Verma",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white, // Set the title color to white
+                    color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -58,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               CircleAvatar(
                 radius: _width < _height ? _width / 3.5 : _height / 4,
-                backgroundImage: NetworkImage(imgUrl),
+                backgroundImage: const NetworkImage(imgUrl),
               ),
               SizedBox(
                 height: _height / 25.0,
@@ -145,17 +142,4 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ));
   }
-
-  Widget rowCell(int count, String type) => Expanded(
-          child: Column(
-        children: <Widget>[
-          Text(
-            '$count',
-            style: const TextStyle(color: Colors.white),
-          ),
-          Text(type,
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.normal))
-        ],
-      ));
 }

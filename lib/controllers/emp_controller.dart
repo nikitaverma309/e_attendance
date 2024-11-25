@@ -44,11 +44,11 @@ class EmpController extends GetxController {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        print(response.body);
-        print(response.statusCode);
+        Utils.printLog("Response  Body ${response.body}");
+        Utils.printLog("Response statusCode ${response.statusCode}");
         classList.value = classModelFromJson(response.body);
-        print('Response Class Body: ${response.body}');
-        print('Status Class Code: ${response.statusCode}');
+        Utils.printLog("Response  Body ${response.body}");
+        Utils.printLog("Response statusCode ${response.statusCode}");
       } else {
         CustomSnackbarError.showSnackbar(
           title: "Error",
@@ -56,7 +56,7 @@ class EmpController extends GetxController {
         );
       }
     } catch (e) {
-      print(classList);
+      Utils.printLog("classList ${classList.value}");
       CustomSnackbarError.showSnackbar(
         title: "Error",
         message: 'An error occurred: $e',
@@ -71,9 +71,8 @@ class EmpController extends GetxController {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       designationList.value = designationModelFromMap(response.body);
-
-      print('Response Designation Body: ${response.body}');
-      print('Status Designation Code: ${response.statusCode}');
+      Utils.printLog("Response Designation Body ${response.body}");
+      Utils.printLog("Response statusCode ${response.statusCode}");
     } else {
       CustomSnackbarError.showSnackbar(
         title: "Error",

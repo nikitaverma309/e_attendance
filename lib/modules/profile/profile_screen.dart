@@ -2,20 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
+import 'package:online/constants/colors_res.dart';
+import 'package:online/constants/string_res.dart';
+import 'package:online/models/profile/profile_model.dart';
+import 'package:online/modules/home/home.dart';
+import 'package:online/widgets/app_button.dart';
+import 'package:online/widgets/footer_widget.dart';
 
-import '../../constants/colors_res.dart';
-import '../../constants/string_res.dart';
-import '../../models/profile/profile_model.dart';
-import '../../widgets/app_button.dart';
-import '../../widgets/footer_widget.dart';
-import '../home/home.dart';
-
-class Asddwed extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
   final ProfileModel? data;
 
-  const Asddwed({Key? key, required this.data}) : super(key: key);
+  const ProfileScreen({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +30,7 @@ class Asddwed extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.black, // Set the background color
+                    color: Colors.black,
                   ),
                   margin: const EdgeInsets.all(20),
                   width: 50,
@@ -41,17 +39,16 @@ class Asddwed extends StatelessWidget {
                     child: IconButton(
                       icon: const Icon(
                         Icons.arrow_back,
-                        color: Colors.white, // Set the back icon color to white
+                        color: Colors.white,
                       ),
                       onPressed: () {
-                        Get.offAll(
-                            () => MyHomePage()); // Navigate to the homepage
+                        Get.offAll(() => MyHomePage());
                       },
                     ),
                   ),
                 ),
                 Text(
-                  'Hi ${data?.name.toString()}!', // Use dynamic username
+                  'Hi ${data?.name.toString()}!',
                   style: const TextStyle(
                       fontSize: 22, fontWeight: FontWeight.w600),
                 ),

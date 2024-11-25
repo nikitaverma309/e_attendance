@@ -5,8 +5,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:online/enum/enum_screen.dart';
 import 'package:online/locator.dart';
-import 'package:online/modules/auth/registration/registration_camera_view.dart';
+import 'package:online/modules/auth/camera_view_output.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/services/image_converter.dart';
@@ -15,7 +16,6 @@ import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
 
 class RegistrationScreen extends StatefulWidget {
-
   final String attendanceId;
 
   const RegistrationScreen({super.key, required this.attendanceId});
@@ -105,8 +105,11 @@ class RegistrationScreenState extends State<RegistrationScreen> {
           final File imgFile = await convertImageToFile(imageFromCamera);
 
           if (mounted) {
-            print(widget.attendanceId);
-            Get.off(() => ConfirmRegisterationScreen(imageFile: imgFile,attendanceId: widget.attendanceId));
+            Get.off(() => LoginCameraViewTwo(
+                  imageFile: imgFile,
+                  attendanceId: widget.attendanceId,
+                  action: CameraAction.registration,
+                ));
           }
         }
       } catch (e) {

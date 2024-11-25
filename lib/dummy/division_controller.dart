@@ -25,11 +25,10 @@ class DivisionController extends GetxController {
 
   Future<void> fetchDivisions() async {
     try {
-      final dataDivision = await ApiServices.getApidemoServices();
+      final dataDivision = await ApiServices.getApiServices();
       if (dataDivision != null) {
         divisionList.value = dataDivision;
         print(dataDivision);
-        // Set default division code and fetch corresponding districts
         selectedDivisionCode.value = dataDivision.first.divisionCode;
         // Set default division code if available
         await fetchDistrictsByDivision(selectedDivisionCode.value!);
@@ -44,7 +43,7 @@ class DivisionController extends GetxController {
   Future<void> fetchDistrictsByDivision(int selectedDivisionCode) async {
     isLoading.value = true;
     final fetchedDistricts =
-        await ApiServices.getApiDemoDistrictsByDivision(selectedDivisionCode);
+        await ApiServices.getApiServicesDistrictsByDivision(selectedDivisionCode);
     if (fetchedDistricts != null && fetchedDistricts.isNotEmpty) {
       districtList.value = fetchedDistricts;
       selectedDistrictCode.value = fetchedDistricts.first.lgdCode;

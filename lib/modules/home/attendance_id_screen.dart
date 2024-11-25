@@ -1,15 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/profile_ctr/profile_controller.dart';
 import 'package:online/generated/assets.dart';
-import 'package:online/modules/profile/prosc.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
@@ -25,23 +21,7 @@ class FaceAttendanceScreen extends StatefulWidget {
 }
 
 class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
-  bool isChecked = false;
   final ProfileController profileController = Get.put(ProfileController());
-  // Dummy Attendance IDs
-  List<String> attendanceIds = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "Reset",
-    "0",
-    "Back"
-  ];
   TextEditingController emailCtr = TextEditingController();
 
   @override
@@ -64,13 +44,10 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.cyan.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: Shape.scrollText(context),
                 padding: const EdgeInsets.all(8.0),
                 child: const TextScroll(
-                  'App Version: Ap@36451 Organization: National Information Center (NIC) Chhattisgarh, Building: Mantralaya Naya Raipur',
+                  Strings.version,
                   style: kText15BaNaBoldBlackColorStyle,
                   velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
                 ),
@@ -89,22 +66,19 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
               ),
               10.height,
               const Text(
-                "Higher Education Department's",
+                Strings.higherEducation,
                 style: kText15BaNaBoldBlackColorStyle,
                 textAlign: TextAlign.center,
               ),
               10.height,
               Container(
                 padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE3C998),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: Shape.chooseCheckBox(context),
                 child: Row(
                   children: [
                     const Flexible(
                       child: Text(
-                        "उपस्थिति आईडी\nAttendance ID",
+                        Strings.attendanceId,
                         style: k13BoldBlackColorStyle,
                       ),
                     ),
@@ -133,33 +107,26 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
 
               Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF1EBD2),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: Shape.chooseCheckBox(context),
                 height: 111,
                 child: Row(
                   children: [
                     11.width,
-
                     Obx(() {
-                      bool isButtonDisabled =
-                          profileController.isLoading.value ;
+                      bool isButtonDisabled = profileController.isLoading.value;
 
                       return isButtonDisabled
                           ? const Center(
-                              child:
-                                  CircularProgressIndicator(), // Show loading spinner
+                              child: CircularProgressIndicator(),
                             )
                           : Checkbox(
                               value: profileController.isChecked.value,
                               onChanged: (bool? newValue) async {
                                 if (emailCtr.text.isEmpty) {
-                                  // Show an error if Attendance ID is not entered
                                   Get.defaultDialog(
                                     title: "Error",
                                     middleText:
-                                        "Please enter your Attendance ID before proceeding.",
+                                    Strings.attendanceAlert,
                                     textConfirm: "OK",
                                     onConfirm: () => Get.back(),
                                   );
@@ -179,7 +146,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
 
                                   // Hide loading state (already handled inside getApiProfile)
                                   profileController.isLoading.value = false;
-                                  profileController.isChecked.value=false;
+                                  profileController.isChecked.value = false;
 
                                   // Handle API response
                                   if (profileController.employeeData.value !=
@@ -188,7 +155,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                     Get.defaultDialog(
                                       title: "Success",
                                       middleText:
-                                          "Employee data fetched successfully.",
+                                      Strings.dataSuccess,
                                       textConfirm: "OK",
                                       onConfirm: () => Navigator.push(
                                         context,
@@ -206,27 +173,25 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                       middleText:
                                           "Your Attendance ID was incorrect. Please try again.",
                                       textConfirm: "OK",
-                                      onConfirm: () =>Navigator.push(
+                                      onConfirm: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const FaceAttendanceScreen(
-
-                                          ),
+                                          builder: (context) =>
+                                              const FaceAttendanceScreen(),
                                         ),
                                       ),
                                     );
-                                    profileController.isChecked.value=false;
+                                    profileController.isChecked.value = false;
                                     profileController.isLoading.value = false;
                                   }
                                 }
                               },
                             );
                     }),
-
                     17.width,
                     const Expanded(
                       child: Text(
-                        "मैं उपस्थिति को चिन्हित करने के लिए अपनी स्वीकृति देता हूँ \n I give my approval  to mark attendance",
+                        Strings.notAttendance,
                         style: k13BoldBlackColorStyle,
                       ),
                     ),
@@ -234,50 +199,49 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 ),
               ),
               10.height,
-              GridView.builder(
-                itemCount: attendanceIds.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 2.5,
-                ),
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (attendanceIds[index] == "Reset") {
-                        emailCtr.clear();
-                      } else if (attendanceIds[index] == "Back") {
-                        String currentText = emailCtr.text;
-                        if (currentText.isNotEmpty) {
-                          emailCtr.text =
-                              currentText.substring(0, currentText.length - 1);
+              Obx(() {
+                return GridView.builder(
+                  itemCount: profileController.attendanceIds.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 2.5,
+                  ),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        String selectedValue =
+                            profileController.attendanceIds[index];
+                        if (selectedValue == "Reset") {
+                          emailCtr.clear();
+                        } else if (selectedValue == "Back") {
+                          String currentText = emailCtr.text;
+                          if (currentText.isNotEmpty) {
+                            emailCtr.text = currentText.substring(
+                                0, currentText.length - 1);
+                          }
+                        } else if (emailCtr.text.length < 11) {
+                          emailCtr.text += selectedValue;
                         }
-                      } else if (emailCtr.text.length < 11) {
-                        emailCtr.text += attendanceIds[index];
-                      }
-                      setState(() {});
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE3C998),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        attendanceIds[index],
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE3C998),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          profileController.attendanceIds[index],
+                          style: k13BoldBlackColorStyle,
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                );
+              }),
             ],
           ),
         ),

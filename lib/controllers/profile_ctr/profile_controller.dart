@@ -4,13 +4,26 @@ import 'package:http/http.dart' as http;
 import 'package:online/models/profile/profile_model.dart';
 import 'package:online/utils/utils.dart';
 
-import '../../modules/profile/prosc.dart';
+import '../../modules/profile/profile_screen.dart';
 
 class ProfileController extends GetxController {
   var isLoading = false.obs;
   final isChecked = false.obs;
-  var employeeData =
-      Rx<ProfileModel?>(null); // Rx<ProfileModel?> to handle nullable state.
+  var employeeData = Rx<ProfileModel?>(null);
+  var attendanceIds = <String>[
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "Reset",
+    "0",
+    "Back"
+  ].obs;
 
   Future<void> getApiProfile(String empCode) async {
     isLoading(true);
@@ -19,24 +32,18 @@ class ProfileController extends GetxController {
           'http://10.132.34.99/lmsbackend/api/employee/get?empCode=$empCode'),
     );
 
-    // Print the response body for debugging
     print('Response Body: ${response.body}');
 
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
-
-      // Check if the API response contains an error message or if employee data exists
       if (jsonData['msg'] == 'Employee Not Exists') {
         Utils.showErrorToast(message: 'Employee not found');
         isLoading(false);
-        return; // Early return if employee doesn't exist
+        return;
       }
-
       try {
         employeeData.value = ProfileModel.fromJson(jsonData);
         print(employeeData);
-
-        // Show success dialog if data is fetched successfully
         if (employeeData.value != null) {
           Utils.showSuccessToast(message: 'Employee data fetched successfully');
         }

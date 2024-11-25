@@ -2,9 +2,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:online/locator.dart';
+import 'package:online/utils/utils.dart';
 
-import '../locator.dart';
-import '../utils/utils.dart';
 import 'camera.service.dart';
 
 class FaceDetectorService {
@@ -57,8 +57,7 @@ class FaceDetectorService {
     );
 
     _faces = await _faceDetector.processImage(firebaseVisionImage);
-    print(
-        'Faces detected: ${_faces.length}'); // Log the number of detected faces
+    print('Faces detected: ${_faces.length}');
   }
 
   dispose() {
