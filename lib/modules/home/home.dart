@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController empCodeController = TextEditingController();
   final TextEditingController empCodeProController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
-  final ProfileController profileController = Get.put(ProfileController());
+  final CheckStatusController profileController = Get.put(CheckStatusController());
   final CheckStatusEmployeeController employeeController =
       Get.put(CheckStatusEmployeeController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -353,83 +353,83 @@ class _MyHomePageState extends State<MyHomePage> {
                       hintText: 'Fill details',
                     ),
                     20.height,
-                    Obx(
-                      () => profileController.isLoading.value
-                          ? const Center(
-                              child:
-                                  CircularProgressIndicator()) // Show loading spinner
-                          : CommonButton(
-                              text: "Profile Page",
-                              onPressed: employeeController.isLoading.value
-                                  ? null // Disable the button if loading
-                                  : () async {
-                                      // Check if the email field is empty
-                                      if (empCodeProController.text.isEmpty) {
-                                        // Show an error if Attendance ID is not entered
-                                        Get.defaultDialog(
-                                          title: "Error",
-                                          middleText:
-                                              "Please enter your Attendance ID before proceeding.",
-                                          textConfirm: "OK",
-                                          onConfirm: () => Get.back(),
-                                        );
-                                        return;
-                                      }
-
-                                      // Show loading state
-                                      profileController.isLoading.value = true;
-
-                                      // Call the API to fetch profile data
-                                      await profileController.getApiProfile(
-                                          empCodeProController.text);
-
-                                      profileController.isLoading.value = false;
-
-                                      // Handle API response
-                                      if (profileController
-                                              .employeeData.value !=
-                                          null) {
-                                        Get.to(
-                                          () => ProfileScreen(
-                                            data: profileController
-                                                .employeeData.value,
-                                          ),
-                                        );
-                                        Get.defaultDialog(
-                                          title: "Success",
-                                          middleText:
-                                              "Employee data fetched successfully.",
-                                          textConfirm: "OK",
-                                          onConfirm: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProfileScreen(
-                                                data: profileController
-                                                    .employeeData.value,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        // Show error dialog if data is null
-                                        Get.defaultDialog(
-                                          title: "Error",
-                                          middleText:
-                                              "Your Attendance ID was incorrect. Please try again.",
-                                          textConfirm: "OK",
-                                          onConfirm: () {
-                                            // Close the dialog and navigate back to the previous screen
-                                            Get.back();
-
-                                            // Clear the controller value if the ID is incorrect
-                                            empCodeProController.clear();
-                                          },
-                                        );
-                                      }
-                                    },
-                            ),
-                    ),
+                    // Obx(
+                    //   () => profileController.isLoading.value
+                    //       ? const Center(
+                    //           child:
+                    //               CircularProgressIndicator()) // Show loading spinner
+                    //       : CommonButton(
+                    //           text: "Profile Page",
+                    //           onPressed: employeeController.isLoading.value
+                    //               ? null // Disable the button if loading
+                    //               : () async {
+                    //                   // Check if the email field is empty
+                    //                   if (empCodeProController.text.isEmpty) {
+                    //                     // Show an error if Attendance ID is not entered
+                    //                     Get.defaultDialog(
+                    //                       title: "Error",
+                    //                       middleText:
+                    //                           "Please enter your Attendance ID before proceeding.",
+                    //                       textConfirm: "OK",
+                    //                       onConfirm: () => Get.back(),
+                    //                     );
+                    //                     return;
+                    //                   }
+                    //
+                    //                   // Show loading state
+                    //                   profileController.isLoading.value = true;
+                    //
+                    //                   // Call the API to fetch profile data
+                    //                   await profileController.getCheckStatus(
+                    //                       empCodeProController.text);
+                    //
+                    //                   profileController.isLoading.value = false;
+                    //
+                    //                   // Handle API response
+                    //                   if (profileController
+                    //                           .employeeData.value !=
+                    //                       null) {
+                    //                     Get.to(
+                    //                       () => ProfileScreen(
+                    //                         data: profileController
+                    //                             .employeeData.value,
+                    //                       ),
+                    //                     );
+                    //                     Get.defaultDialog(
+                    //                       title: "Success",
+                    //                       middleText:
+                    //                           "Employee data fetched successfully.",
+                    //                       textConfirm: "OK",
+                    //                       onConfirm: () => Navigator.push(
+                    //                         context,
+                    //                         MaterialPageRoute(
+                    //                           builder: (context) =>
+                    //                               ProfileScreen(
+                    //                             data: profileController
+                    //                                 .employeeData.value,
+                    //                           ),
+                    //                         ),
+                    //                       ),
+                    //                     );
+                    //                   } else {
+                    //                     // Show error dialog if data is null
+                    //                     Get.defaultDialog(
+                    //                       title: "Error",
+                    //                       middleText:
+                    //                           "Your Attendance ID was incorrect. Please try again.",
+                    //                       textConfirm: "OK",
+                    //                       onConfirm: () {
+                    //                         // Close the dialog and navigate back to the previous screen
+                    //                         Get.back();
+                    //
+                    //                         // Clear the controller value if the ID is incorrect
+                    //                         empCodeProController.clear();
+                    //                       },
+                    //                     );
+                    //                   }
+                    //                 },
+                    //         ),
+                    // ),
                     40.height,
                   ],
                 ),

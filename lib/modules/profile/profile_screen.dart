@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +5,7 @@ import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/models/profile/profile_model.dart';
 import 'package:online/modules/home/home.dart';
+import 'package:online/utils/utils.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/footer_widget.dart';
 
@@ -42,13 +41,13 @@ class ProfileScreen extends StatelessWidget {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        Get.offAll(() => MyHomePage());
+                        Get.offAll(() => const MyHomePage());
                       },
                     ),
                   ),
                 ),
                 Text(
-                  'Hi ${data?.name.toString()}!',
+                  'Hi ${data?.attendance!.name!}!',
                   style: const TextStyle(
                       fontSize: 22, fontWeight: FontWeight.w600),
                 ),
@@ -61,10 +60,11 @@ class ProfileScreen extends StatelessWidget {
                 color: Colors.black,
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: FileImage(File(data!.image)), // Use dynamic imagePath
+                  image: MemoryImage(Utils.getImageFromBase64(data!
+                      .employeeData!.encodedImage!)), // Use dynamic imagePath
                 ),
               ),
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width * 0.4,
               height: MediaQuery.of(context).size.height * 0.21,
             ),
@@ -75,19 +75,19 @@ class ProfileScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             Text(
-              'Name  :  ${data!.name}', // Displays current date and time
+              'Name  :  ${data!.employeeData!.name}', // Displays current date and time
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             Text(
-              'Email  : ${data!.email}', // Use dynamic inTime
+              'Email  : ${data!.employeeData!.email}', // Use dynamic inTime
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             Text(
-              'Contact  : ${data!.contact}', // Use dynamic inTime
+              'Contact  : ${data!.employeeData!.contact}', // Use dynamic inTime
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             Text(
-              'Work Type  : ${data!.workType}', // Use dynamic inTime
+              'Work Type  : ${data!.employeeData!.workType}', // Use dynamic inTime
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             const Spacer(),

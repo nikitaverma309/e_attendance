@@ -24,7 +24,7 @@ class RegisterFaceAttendanceScreen extends StatefulWidget {
 
 class _RegisterFaceAttendanceScreenState
     extends State<RegisterFaceAttendanceScreen> {
-  final ProfileController profileController = Get.put(ProfileController());
+  final CheckStatusController profileController = Get.put(CheckStatusController());
   TextEditingController emailCtr = TextEditingController();
 
   @override
@@ -143,7 +143,7 @@ class _RegisterFaceAttendanceScreenState
                                 if (profileController.isChecked.value) {
                                   profileController.isLoading.value = true;
                                   await profileController
-                                      .getApiProfile(emailCtr.text);
+                                      .getCheckStatus(emailCtr.text);
                                   profileController.isLoading.value = false;
                                   profileController.isChecked.value = false;
                                   if (profileController.employeeData.value !=

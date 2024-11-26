@@ -1,15 +1,13 @@
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:online/models/profile/profile_model.dart';
+import 'package:online/models/profile/check_status_profile_model.dart';
 import 'package:online/utils/utils.dart';
 
-import '../../modules/profile/profile_screen.dart';
-
-class ProfileController extends GetxController {
+class CheckStatusController extends GetxController {
   var isLoading = false.obs;
   final isChecked = false.obs;
-  var employeeData = Rx<ProfileModel?>(null);
+  var employeeData = Rx<CheckStatusModelProfile?>(null);
   var attendanceIds = <String>[
     "1",
     "2",
@@ -25,11 +23,11 @@ class ProfileController extends GetxController {
     "Back"
   ].obs;
 
-  Future<void> getApiProfile(String empCode) async {
+  Future<void> getCheckStatus(String empCode) async {
     isLoading(true);
     final response = await http.get(
       Uri.parse(
-          'http://10.132.34.99/lmsbackend/api/employee/get?empCode=$empCode'),
+          'http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode'),
     );
 
     print('Response Body: ${response.body}');
@@ -42,7 +40,7 @@ class ProfileController extends GetxController {
         return;
       }
       try {
-        employeeData.value = ProfileModel.fromJson(jsonData);
+        employeeData.value = CheckStatusModelProfile.fromJson(jsonData);
         print(employeeData);
         if (employeeData.value != null) {
           Utils.showSuccessToast(message: 'Employee data fetched successfully');

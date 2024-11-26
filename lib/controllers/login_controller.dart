@@ -6,8 +6,8 @@ import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:online/api/api_strings.dart';
+import 'package:online/models/profile/profile_model.dart';
 import 'package:online/modules/home/home.dart';
-import 'package:online/modules/profile/profile%20page.dart';
 import 'package:online/modules/profile/profile_screen.dart';
 import 'package:online/utils/utils.dart';
 
@@ -15,6 +15,7 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
 
   var imageFile = Rxn<File>();
+
   Future<void> uploadFileSignUp(int empCode, File file) async {
     final url = Uri.parse("${ApiStrings.register}$empCode");
     print("Request URL: $url");
@@ -101,7 +102,7 @@ class LoginController extends GetxController {
         actions: [
           TextButton(
             onPressed: () {
-              Get.off(() => MyHomePage()); // Navigate to home page
+              Get.off(() => const MyHomePage()); // Navigate to home page
             },
             child: const Text("OK"),
           ),
@@ -249,9 +250,6 @@ class LoginController extends GetxController {
     File file,
     String empCode,
   ) async {
-    print("Username: $empCode");
-    print("File: ${file.path}");
-
     // Check if file exists
     if (!file.existsSync()) {
       Utils.showErrorToast(message: 'File does not exist.');
@@ -259,7 +257,6 @@ class LoginController extends GetxController {
     }
 
     final url = Uri.parse('http://164.100.150.78/attendance/api/recognize');
-    print("API URL: $url");
 
     try {
       var request = http.MultipartRequest('POST', url)
@@ -274,12 +271,8 @@ class LoginController extends GetxController {
           ),
         );
 
-      print("Sending request...");
       var response = await request.send();
       var responseData = await http.Response.fromStream(response);
-
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${responseData.body}");
 
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(responseData.body);
@@ -287,10 +280,10 @@ class LoginController extends GetxController {
           final recognizedUser = jsonResponse['recognized_user'];
 
           // Handle specific conditions
-          if (recognizedUser == "11380050110") {
-            _showDialog(context, "Attendance was Success", "User Attendance Was Successfully .", true);
-
-            // _showDialog(context, "Success", "User successfully matched.", true);
+          if (recognizedUser == empCode) {
+            await fetchAttendance(context, recognizedUser);
+            Utils.showErrorToast(
+                message: 'User Attendance Was Successfully Registered');
           } else if (recognizedUser ==
               "User with the given empCode does not exist.") {
             _showPDialog(context, "Error",
@@ -317,58 +310,84 @@ class LoginController extends GetxController {
     }
   }
 
-  void _showPDialog(BuildContext context, String title, String message,
-      bool navigateToProfile) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: [
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                if (navigateToProfile) {
-                  Get.to(() => MyHomePage());
-                } else {
-                  Get.offAll(() => MyHomePage());
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-  void _showDialog(BuildContext context, String title, String message,
-      bool navigateToProfile) {
-    String currentDateTime =
-    DateFormat('yyyy-MM-dd    HH:mm:ss').format(DateTime.now());
+  Future<void> fetchAttendance(BuildContext context, String empCode) async {
+    final url = Uri.parse(
+        'http://164.100.150.78/lmsbackend/api/attendance/add?empCode=$empCode');
+    try {
+      var response = await http.get(url);
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text('$message\n\n Login Time: $currentDateTime'),
-          actions: [
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                if (navigateToProfile) {
-                  Get.to(() => MyHomePage());
-                } else {
-                  Get.offAll(() => MyHomePage());
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
 
+        if (jsonResponse is Map<String, dynamic> &&
+            jsonResponse['attendance'] != null) {
+          _showPDialog(context, "सफलता", "उपस्थिति सफलतापूर्वक दर्ज।", true);
+          final resData = ProfileModel.fromJson(jsonResponse);
+          Get.to(() => ProfileScreen(data: resData));
+        } else {
+          _showPDialog(context, "त्रुटि", "अमान्य उपस्थिति डेटा।", false);
+        }
+      } else {
+        _showPDialog(context, "त्रुटि",
+            "उपस्थिति प्राप्त करने में विफल: ${response.body}", false);
+      }
+    } catch (e) {
+      print("त्रुटि: $e");
+      _showPDialog(context, "त्रुटि", "अप्रत्याशित त्रुटि।", false);
+    }
+  }
+}
+
+//dialog box
+void _showPDialog(BuildContext context, String title, String message,
+    bool navigateToProfile) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              if (navigateToProfile) {
+                Get.to(() => MyHomePage());
+              } else {
+                Get.offAll(() => MyHomePage());
+              }
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showDicxalog(BuildContext context, String title, String message,
+    bool navigateToProfile) {
+  String currentDateTime =
+      DateFormat('yyyy-MM-dd    HH:mm:ss').format(DateTime.now());
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title),
+        content: Text('$message\n\n Login Time: $currentDateTime'),
+        actions: [
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              if (navigateToProfile) {
+                //  Get.to(() => ProfileScreen(data: profileData));
+              } else {}
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

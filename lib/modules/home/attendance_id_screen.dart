@@ -21,7 +21,7 @@ class FaceAttendanceScreen extends StatefulWidget {
 }
 
 class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
-  final ProfileController profileController = Get.put(ProfileController());
+  final CheckStatusController profileController = Get.put(CheckStatusController());
   TextEditingController emailCtr = TextEditingController();
 
   @override
@@ -112,82 +112,92 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 child: Row(
                   children: [
                     11.width,
-                    Obx(() {
-                      bool isButtonDisabled = profileController.isLoading.value;
+                    Checkbox(
+                      value: profileController.isChecked.value,
+                      onChanged: (bool? newValue) async {
+                        if (emailCtr.text.isEmpty) {
+                          Get.defaultDialog(
+                            title: "Error",
+                            middleText: Strings.attendanceAlert,
+                            textConfirm: "OK",
+                            onConfirm: () => Get.back(),
+                          );
+                          return;
+                        }
 
-                      return isButtonDisabled
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Checkbox(
-                              value: profileController.isChecked.value,
-                              onChanged: (bool? newValue) async {
-                                if (emailCtr.text.isEmpty) {
-                                  Get.defaultDialog(
-                                    title: "Error",
-                                    middleText:
-                                    Strings.attendanceAlert,
-                                    textConfirm: "OK",
-                                    onConfirm: () => Get.back(),
-                                  );
-                                  return;
-                                }
-
-                                profileController.isChecked.value =
-                                    newValue ?? false;
-
-                                if (profileController.isChecked.value) {
-                                  // Show loading state
-                                  profileController.isLoading.value = true;
-
-                                  // Call the API to fetch profile data
-                                  await profileController
-                                      .getApiProfile(emailCtr.text);
-
-                                  // Hide loading state (already handled inside getApiProfile)
-                                  profileController.isLoading.value = false;
-                                  profileController.isChecked.value = false;
-
-                                  // Handle API response
-                                  if (profileController.employeeData.value !=
-                                      null) {
-                                    // Show success dialog if data is fetched successfully
-                                    Get.defaultDialog(
-                                      title: "Success",
-                                      middleText:
-                                      Strings.dataSuccess,
-                                      textConfirm: "OK",
-                                      onConfirm: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => LoginCameraTwo(
-                                            attendanceId: emailCtr.text,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    // Show error dialog if data is null
-                                    Get.defaultDialog(
-                                      title: "Error",
-                                      middleText:
-                                          "Your Attendance ID was incorrect. Please try again.",
-                                      textConfirm: "OK",
-                                      onConfirm: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const FaceAttendanceScreen(),
-                                        ),
-                                      ),
-                                    );
-                                    profileController.isChecked.value = false;
-                                    profileController.isLoading.value = false;
-                                  }
-                                }
-                              },
-                            );
-                    }),
+                        Get.to(
+                          () =>  LoginCameraTwo(
+                            attendanceId: emailCtr.text,
+                          ),
+                        );
+                      },
+                    ),
+                    // Obx(() {
+                    //   bool isButtonDisabled = profileController.isLoading.value;
+                    //
+                    //   return isButtonDisabled
+                    //       ? const Center(
+                    //           child: CircularProgressIndicator(),
+                    //         )
+                    //       : Checkbox(
+                    //           value: profileController.isChecked.value,
+                    //           onChanged: (bool? newValue) async {
+                    //             if (emailCtr.text.isEmpty) {
+                    //               Get.defaultDialog(
+                    //                 title: "Error",
+                    //                 middleText: Strings.attendanceAlert,
+                    //                 textConfirm: "OK",
+                    //                 onConfirm: () => Get.back(),
+                    //               );
+                    //               return;
+                    //             }
+                    //
+                    //             profileController.isChecked.value =
+                    //                 newValue ?? false;
+                    //
+                    //             if (profileController.isChecked.value) {
+                    //               profileController.isLoading.value = true;
+                    //               await profileController
+                    //                   .getApiProfile(emailCtr.text);
+                    //               profileController.isLoading.value = false;
+                    //               profileController.isChecked.value = false;
+                    //               if (profileController.employeeData.value !=
+                    //                   null) {
+                    //                 Get.defaultDialog(
+                    //                   title: "Success",
+                    //                   middleText: Strings.dataSuccess,
+                    //                   textConfirm: "OK",
+                    //                   onConfirm: () => Navigator.push(
+                    //                     context,
+                    //                     MaterialPageRoute(
+                    //                       builder: (context) => LoginCameraTwo(
+                    //                         attendanceId: emailCtr.text,
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                 );
+                    //               } else {
+                    //                 // Show error dialog if data is null
+                    //                 Get.defaultDialog(
+                    //                   title: "Error",
+                    //                   middleText:
+                    //                       "Your Attendance ID was incorrect. Please try again.",
+                    //                   textConfirm: "OK",
+                    //                   onConfirm: () => Navigator.push(
+                    //                     context,
+                    //                     MaterialPageRoute(
+                    //                       builder: (context) =>
+                    //                           const FaceAttendanceScreen(),
+                    //                     ),
+                    //                   ),
+                    //                 );
+                    //                 profileController.isChecked.value = false;
+                    //                 profileController.isLoading.value = false;
+                    //               }
+                    //             }
+                    //           },
+                    //         );
+                    // }),
                     17.width,
                     const Expanded(
                       child: Text(
