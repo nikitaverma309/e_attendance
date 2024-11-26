@@ -128,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           10.height,
-                          const Text("Higher Education Department's",
+                          const Text("Higher Education Department",
                               style: kText15BaNaBoldWhiteColorStyle),
                           58.height,
                           Center(

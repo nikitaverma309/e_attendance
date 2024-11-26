@@ -13,8 +13,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
-    final _height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     const String imgUrl = 'https://i.imgur.com/wXFHbEN.png';
     return Scaffold(
         backgroundColor: const Color(0xff176daa),
@@ -51,36 +51,36 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: _height / 12,
+                height: height / 12,
               ),
               CircleAvatar(
-                radius: _width < _height ? _width / 3.5 : _height / 4,
+                radius: width < height ? width / 3.5 : height / 4,
                 backgroundImage: const NetworkImage(imgUrl),
               ),
               SizedBox(
-                height: _height / 25.0,
+                height: height / 25.0,
               ),
               Text(
                 'Nikita Verma',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: _width / 15,
+                    fontSize: width / 15,
                     color: Colors.white),
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: _height / 30, left: _width / 8, right: _width / 8),
+                    top: height / 30, left: width / 8, right: width / 8),
                 child: Text(
                   'Shift Name \\ ${Strings.shiftName} !  : ${Strings.morning}',
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
-                      fontSize: _width / 25,
+                      fontSize: width / 25,
                       color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
               ),
               Divider(
-                  height: _height / 30, color: Colors.white.withOpacity(0.3)),
+                  height: height / 30, color: Colors.white.withOpacity(0.3)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -88,13 +88,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     '${Strings.inTime}  : ${Strings.morning}',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: _width / 25,
+                        fontSize: width / 25,
                         color: Colors.white),
                   ),
                 ],
               ),
               Divider(
-                  height: _height / 30, color: Colors.white.withOpacity(0.3)),
+                  height: height / 30, color: Colors.white.withOpacity(0.3)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -102,13 +102,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     '${Strings.outTime}   : ${Strings.morning}',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: _width / 25,
+                        fontSize: width / 25,
                         color: Colors.white),
                   ),
                 ],
               ),
               Divider(
-                  height: _height / 30, color: Colors.white.withOpacity(0.3)),
+                  height: height / 30, color: Colors.white.withOpacity(0.3)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -116,15 +116,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     '${Strings.responseTime}  \\ Response Time:  11:254',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: _width / 25,
+                        fontSize: width / 25,
                         color: Colors.white),
                   ),
                 ],
               ),
               new Divider(
-                  height: _height / 30, color: Colors.white.withOpacity(0.3)),
+                  height: height / 30, color: Colors.white.withOpacity(0.3)),
               new Padding(
-                padding: EdgeInsets.only(left: _width / 8, right: _width / 8),
+                padding: EdgeInsets.only(left: width / 8, right: width / 8),
                 child: MaterialButton(
                   onPressed: () {},
                   color: Colors.blue[50],
