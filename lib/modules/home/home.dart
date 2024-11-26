@@ -169,16 +169,16 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                           ),
                           5.height,
-                          customButton(
-                            context,
-                            'Profile Page',
-                            const Color(0xFFD7DEEE),
-                            Colors.black,
-                            Icons.person_add,
-                            () {
-                              _profileBottomSheet(context);
-                            },
-                          ),
+                          // customButton(
+                          //   context,
+                          //   'Profile Page',
+                          //   const Color(0xFFD7DEEE),
+                          //   Colors.black,
+                          //   Icons.person_add,
+                          //   () {
+                          //     _profileBottomSheet(context);
+                          //   },
+                          // ),
                           5.height,
                         ],
                       ),

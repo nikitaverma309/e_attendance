@@ -31,9 +31,9 @@ class Strings {
   static const String attendanceAlert =   "Please enter your Attendance ID before proceeding.";
   static const String attendanceIDIncorrect =   "Your Attendance ID was incorrect. Please try again.";
   // success alert
-  static const String dataSuccess =   "Employee data fetched successfully.";
+  static const String dataSuccess =   "Employee Code registered.The Employee Code has been verified in the database.";
   //screen note
   static const String notRegistration =  "जिन उपयोगकर्ताओं का कर्मचारी कोड मौजूद है, कृपया अपनी उपस्थिति दर्ज करने के लिए अपना चेहरा पंजीकृत करें।";
   static const String notAttendance =  "मैं उपस्थिति को चिन्हित करने के लिए अपनी स्वीकृति देता हूँ \n I give my approval  to mark attendance";
-  static const String version = "App Version: Ap@36451 Organization: National Information Center (NIC) Chhattisgarh, Building: Mantralaya Naya Raipur";
+  static const String version = "App Version: 0.01 Organization: National Information Center (NIC) Chhattisgarh, Building: Mantralaya Naya Raipur";
 }

@@ -43,7 +43,7 @@ class CheckStatusController extends GetxController {
         employeeData.value = CheckStatusModelProfile.fromJson(jsonData);
         print(employeeData);
         if (employeeData.value != null) {
-          Utils.showSuccessToast(message: 'Employee data fetched successfully');
+          Utils.showSuccessToast(message: 'Employee data has been successfully fetched and Matched');
         }
       } catch (e) {
         print("Error parsing employee data: $e");
