@@ -66,8 +66,11 @@ class GeoFencingService extends GetxController {
     bool isUserInLocation = false;
     try {
       isUserInLocation = PolyUtils.containsLatLng(
-          LatLng(location.latitude, location.longitude),
-          Utils.restrictionBoundary);
+              LatLng(location.latitude, location.longitude),
+              Utils.restrictionBoundary) ||
+          PolyUtils.containsLatLng(
+              LatLng(location.latitude, location.longitude),
+              Utils.cgCollegeBoundary);
     } on Exception catch (e) {
       Utils.printLog('error: $e');
       return false;
