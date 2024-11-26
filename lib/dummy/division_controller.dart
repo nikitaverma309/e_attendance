@@ -48,7 +48,6 @@ class DivisionController extends GetxController {
       districtList.value = fetchedDistricts;
       selectedDistrictCode.value = fetchedDistricts.first.lgdCode;
     } else {
-      // Handle empty or null fetchedDistricts
       Get.snackbar('Error', 'No districts found for the selected division');
     }
 

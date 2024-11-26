@@ -8,14 +8,15 @@ import 'dart:convert';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 
-class CheckStatusEmployeeController extends GetxController {
+class CheckStatusRegistrationEmployeeController extends GetxController {
   var isLoading = false.obs;
   var employeeData = {GetEmployeeCode}.obs;
   var employeeDataA = Rxn<CheckStatusModel>();
 
-  Future<void> fetchEmployeeData(String empCode, String contact) async {
+  Future<void> checkRegisterEmployeeData(String empCode, String contact) async {
     isLoading(true);
     final url = '${ApiStrings.checkStatus}empCode=$empCode&contact=$contact';
+    print(url);
     final response = await http.get(Uri.parse(url));
     print("API Response: ${response.body}");
 

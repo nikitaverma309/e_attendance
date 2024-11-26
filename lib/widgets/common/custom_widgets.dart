@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/utils/shap/shape_design.dart';
+import 'package:online/widgets/common/card_button.dart';
 
 Widget customButton(BuildContext context, String label, Color bgColor,
     Color textColor, IconData icon, VoidCallback onTap) {
@@ -182,4 +184,73 @@ class CustomSnackbarSuccessfully {
       margin: margin,
     );
   }
+}
+
+void showSuccessDialog({
+  required BuildContext context,
+  required String subTitle,
+  required String textHeading,
+  required VoidCallback onPressed,
+}) {
+  Get.defaultDialog(
+    title: textHeading, // Dialog title
+    titleStyle: const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.green,
+    ),
+    middleText: subTitle,
+    middleTextStyle: const TextStyle(
+      fontSize: 12,
+      color: Colors.black87,
+    ),
+    radius: 8.0, // Rounded corners for dialog box
+    contentPadding: const EdgeInsets.all(16.0),
+    barrierDismissible: false, // Prevent dismissing by tapping outside
+    actions: [
+      ElevatedButton.icon(
+        onPressed: onPressed, // Use the custom action passed as a parameter
+        icon: const Icon(Icons.check_circle, color: Colors.white),
+        label: const Text("Proceed"),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          textStyle: const TextStyle(fontSize: 16),
+        ),
+      ),
+    ],
+  );
+}
+
+void showErrorDialog({
+  required BuildContext context,
+  required String subTitle,
+  required String textHeading,
+  required VoidCallback onPressed,
+}) {
+  Get.defaultDialog(
+    title: textHeading, // Dialog title
+    titleStyle: const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.red,
+    ),
+    middleText: subTitle,
+    middleTextStyle: const TextStyle(
+      fontSize: 12,
+      color: Colors.black87,
+    ),
+    radius: 8.0,
+
+    barrierDismissible: false,
+    actions: [
+      ButtonCard(
+        color: Colors.red,
+        width: 110,
+        height: 40,
+        text: "Proceed  ",
+        onPressed: onPressed,
+      ),
+    ],
+  );
 }

@@ -3,11 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/colors_res.dart';
-import 'package:online/controllers/check_status_employee_controller.dart';
+import 'package:online/controllers/check_status_Register_emp_controller.dart';
 import 'package:online/controllers/emp_controller.dart';
-import 'package:online/controllers/hgh.dart';
 import 'package:online/models/check_emp_status_model.dart';
-import 'package:online/models/class_model.dart';
 import 'package:online/models/college_model.dart';
 import 'package:online/models/designation_model.dart';
 import 'package:online/models/district_model.dart';
@@ -35,9 +33,8 @@ class EmployeeRegistrationForm extends StatefulWidget {
 class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final EmpController empController = Get.put(EmpController());
-  final CheckStatusEmployeeController empCheckController =
-      Get.put(CheckStatusEmployeeController());
-  final DesignationController controller = Get.put(DesignationController());
+  final CheckStatusRegistrationEmployeeController empCheckController =
+      Get.put(CheckStatusRegistrationEmployeeController());
   late TextEditingController empCodeCtr;
   late TextEditingController nameCtr;
 
@@ -267,33 +264,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   title: '9',
                   subTitle: "Select Class",
                 ),
-                Obx(() {
-                  if (empController.classList.isEmpty) {
-                    return const DropDownSelectionMessage(
-                      message: 'Please Select Class',
-                    );
-                  }
 
-                  return CustomDropdown<ClassModel>(
-                    items: empController.classList,
-                    selectedValue: empController.selectedClass.value.isEmpty
-                        ? null
-                        : empController.classList.firstWhere(
-                            (vs) => vs.id == empController.selectedClass.value),
-                    hint: 'Select Class  ',
-                    idKey: '_id',
-                    displayKey: 'className',
-                    onChanged: (ClassModel? newValue) {
-                      if (newValue != null) {
-                        empController.selectClass(newValue.id);
-                        print('Class ID: ${newValue.id}');
-                        print('Class Name: ${newValue.className}');
-
-                        controller.fetchDesignations(newValue.id);
-                      }
-                    },
-                  );
-                }),
                 10.height,
                 const TitleValueTextFormData(
                   title: '10',
@@ -324,40 +295,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     displayKey: 'designation',
                   );
                 }),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Obx(() {
-                    if (controller.isLoading.value) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
 
-                    if (controller.designations.isEmpty) {
-                      return const Text('No designations available.');
-                    }
-
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: controller.designations.length,
-                      itemBuilder: (context, index) {
-                        final designation = controller.designations[index];
-
-                        print(
-                            'Designation at index $index: ${designation.designation}');
-
-                        return ListTile(
-                          title: Text(designation
-                              .designation), // Display designation name
-                          onTap: () {
-                            print('Selected Designation ID: ${designation.id}');
-                            controller.selectDesignation(designation.id);
-                          },
-                          selected: controller.selectedDesignation.value ==
-                              designation.id,
-                        );
-                      },
-                    );
-                  }),
-                ),
                 10.height,
                 TextInputField(
                   no: "11",

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/controllers/check_status_employee_controller.dart';
+import 'package:online/controllers/check_status_Register_emp_controller.dart';
 import 'package:online/controllers/profile_ctr/profile_controller.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/home/attendance_id_screen.dart';
@@ -14,7 +14,6 @@ import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
-import '../profile/profile_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -28,9 +27,10 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController empCodeController = TextEditingController();
   final TextEditingController empCodeProController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
-  final CheckStatusController profileController = Get.put(CheckStatusController());
-  final CheckStatusEmployeeController employeeController =
-      Get.put(CheckStatusEmployeeController());
+  final CheckStatusController profileController =
+      Get.put(CheckStatusController());
+  final CheckStatusRegistrationEmployeeController employeeController =
+      Get.put(CheckStatusRegistrationEmployeeController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -52,50 +52,47 @@ class _MyHomePageState extends State<MyHomePage> {
                     const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Row(
+                      child: Column(
                         children: [
-                          const Expanded(
-                            child: Text(
-                              "Welcome To",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                          Row(
+                            children: [
+                              const Expanded(
+                                child: Text("Welcome To \n   Attendance",
+                                    style: kText15whiteColorStyle),
                               ),
-                              overflow: TextOverflow
-                                  .ellipsis, // Prevent text from overflowing
-                            ),
-                          ),
-                          DropdownButton<String>(
-                            icon: const Icon(Icons.more_vert,
-                                color: Colors.black),
-                            dropdownColor:
-                                Colors.white, // Dropdown menu background color
-                            underline: const SizedBox(), // Remove the underline
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'page1',
-                                child: Text('Employee Registration Form',
-                                    style: kText10BlueBlackColorStyle),
-                              ),
-                              DropdownMenuItem(
-                                value: 'page2',
-                                child: Text('FAQ',
-                                    style: kText10BlueBlackColorStyle),
+                              DropdownButton<String>(
+                                icon: const Icon(Icons.more_vert,
+                                    color: Colors.black),
+                                dropdownColor: Colors
+                                    .white, // Dropdown menu background color
+                                underline:
+                                    const SizedBox(), // Remove the underline
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: 'page1',
+                                    child: Text('Employee Registration Form',
+                                        style: kText10BlueBlackColorStyle),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'page2',
+                                    child: Text('FAQ',
+                                        style: kText10BlueBlackColorStyle),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  if (value == 'page1') {
+                                    _showEmpRegistrationBottomSheet(context);
+                                  } else if (value == 'page2') {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FaqScreen(),
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ],
-                            onChanged: (value) {
-                              if (value == 'page1') {
-                                _showEmpRegistrationBottomSheet(context);
-                              } else if (value == 'page2') {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FaqScreen(),
-                                  ),
-                                );
-                              }
-                            },
                           ),
                         ],
                       ),
@@ -265,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           employeeController.isLoading.value =
                                               true;
                                           await employeeController
-                                              .fetchEmployeeData(
+                                              .checkRegisterEmployeeData(
                                             empCodeController.text.trim(),
                                             contactController.text.trim(),
                                           );

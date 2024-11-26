@@ -20,11 +20,7 @@ const textBoldTitleTextColor = TextStyle(
 const kText14whiteColorStyle =
     TextStyle(fontSize: 14.0, color: AppColors.white);
 
-const kText16BoldBlueColorStyle = TextStyle(
-    fontSize: 11.0,
-    fontFamily: 'Roboto-Thin',
-    fontWeight: FontWeight.bold,
-    color: AppColors.bbAppColor1);
+
 const kText16RobotoStyle = TextStyle(
     fontSize: 14.0,
     fontFamily: 'RobotoMono',
@@ -47,10 +43,10 @@ const textwhiteColorStyle = TextStyle(
     fontWeight: FontWeight.w500,
     color: AppColors.white);
 const kText15whiteColorStyle = TextStyle(
-    fontSize: 14.0,
+    fontSize: 18.0,
     fontFamily: 'Roboto-Thin',
-    fontWeight: FontWeight.w500,
-    color: AppColors.white);
+    fontWeight: FontWeight.bold,
+    color: Colors.white);
 const kWhite = TextStyle(
     fontSize: 17.0,
     fontFamily: 'Roboto-Thin',

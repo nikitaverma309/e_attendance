@@ -4,6 +4,8 @@ class ApiStrings {
   static const String register = '$baseUrl/upload/training?username=';
   // static const String login = '$baseUrl:5000/api/recognize';
   static const String login = '$baseUrl/recognize';
+  static const String profile = 'http://164.100.150.78/lmsbackend/api/attendance/add?empCode=';
+
 
   //live server
   static const String lBaseUrl = 'https://heonline.cg.nic.in/lmsbackend/api';

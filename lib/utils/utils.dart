@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:poly_geofence_service/models/lat_lng.dart';
@@ -97,7 +98,7 @@ class Utils {
     }
   }
 
-  Future<DateTime?> showDatePickerDialog(
+  static Future<DateTime?> showDatePickerDialog(
       BuildContext context, DateTime selectedDate) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -181,5 +182,42 @@ class Utils {
       textColor: Colors.white,
       fontSize: fontSize,
     );
+  }
+
+
+
+  static String formatDay(dynamic dateTime) {
+    try {
+      if (dateTime is String) {
+        // If it's a string, parse it to DateTime
+        DateTime parsedDate = DateTime.parse(dateTime);
+        return DateFormat('dd/MM/yyyy ').format(parsedDate);
+      } else if (dateTime is DateTime) {
+        // If it's already a DateTime object
+        return DateFormat('dd/MM/yyyy ').format(dateTime);
+      } else {
+        // If dateTime is not valid
+        return 'Invalid Date';
+      }
+    } catch (e) {
+      return 'Invalid Date';
+    }
+  }
+  static String formatTime(dynamic dateTime) {
+    try {
+      if (dateTime is String) {
+        // If it's a string, parse it to DateTime
+        DateTime parsedDate = DateTime.parse(dateTime);
+        return DateFormat('HH:mm:ss').format(parsedDate);
+      } else if (dateTime is DateTime) {
+        // If it's already a DateTime object
+        return DateFormat('HH:mm:ss').format(dateTime);
+      } else {
+        // If dateTime is not valid
+        return 'Invalid Date';
+      }
+    } catch (e) {
+      return 'Invalid Date';
+    }
   }
 }

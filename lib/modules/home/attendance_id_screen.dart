@@ -8,6 +8,7 @@ import 'package:online/controllers/profile_ctr/profile_controller.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
+import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 import 'package:text_scroll/text_scroll.dart';
 
@@ -21,7 +22,8 @@ class FaceAttendanceScreen extends StatefulWidget {
 }
 
 class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
-  final CheckStatusController profileController = Get.put(CheckStatusController());
+  final CheckStatusController profileController =
+      Get.put(CheckStatusController());
   TextEditingController emailCtr = TextEditingController();
 
   @override
@@ -112,26 +114,6 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 child: Row(
                   children: [
                     11.width,
-                    // Checkbox(
-                    //   value: profileController.isChecked.value,
-                    //   onChanged: (bool? newValue) async {
-                    //     if (emailCtr.text.isEmpty) {
-                    //       Get.defaultDialog(
-                    //         title: "Error",
-                    //         middleText: Strings.attendanceAlert,
-                    //         textConfirm: "OK",
-                    //         onConfirm: () => Get.back(),
-                    //       );
-                    //       return;
-                    //     }
-                    //
-                    //     Get.to(
-                    //       () =>  LoginCameraTwo(
-                    //         attendanceId: emailCtr.text,
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
                     Obx(() {
                       bool isButtonDisabled = profileController.isLoading.value;
 
@@ -143,12 +125,16 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                               value: profileController.isChecked.value,
                               onChanged: (bool? newValue) async {
                                 if (emailCtr.text.isEmpty) {
-                                  Get.defaultDialog(
-                                    title: "Error",
-                                    middleText: Strings.attendanceAlert,
-                                    textConfirm: "OK",
-                                    onConfirm: () => Get.back(),
+                                  showErrorDialog(
+                                    context: context,
+                                    subTitle:
+                                    Strings.attendanceAlert,
+                                    textHeading: "Error",
+                                    onPressed: () {
+                                      Get.back();
+                                    },
                                   );
+
                                   return;
                                 }
 
@@ -158,41 +144,51 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                 if (profileController.isChecked.value) {
                                   profileController.isLoading.value = true;
                                   await profileController
-                                      .getCheckStatus(emailCtr.text);
+                                      .getCheckStatusLatLong(emailCtr.text);
                                   profileController.isLoading.value = false;
                                   profileController.isChecked.value = false;
                                   if (profileController.employeeData.value !=
                                       null) {
-                                    Get.defaultDialog(
-                                      title: "Success",
-                                      middleText: Strings.dataSuccess,
-                                      textConfirm: "OK",
-                                      onConfirm: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => LoginCameraTwo(
-                                            attendanceId: emailCtr.text,
+                                    showSuccessDialog(
+                                      context: context,
+                                      subTitle:Strings.dataSuccess,
+                                      textHeading: "Employee Code registered",
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                LoginCameraTwo(
+                                              attendanceId: emailCtr.text,
+                                            ),
                                           ),
-                                        ),
-                                      ),
+                                        );
+                                        profileController.isChecked.value =
+                                            false;
+                                        profileController.isLoading.value =
+                                            false;
+                                      },
                                     );
                                   } else {
-                                    // Show error dialog if data is null
-                                    Get.defaultDialog(
-                                      title: "Error",
-                                      middleText:
+                                    showErrorDialog(
+                                      context: context,
+                                      subTitle:
                                           "Your Attendance ID was incorrect. Please try again.",
-                                      textConfirm: "OK",
-                                      onConfirm: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const FaceAttendanceScreen(),
-                                        ),
-                                      ),
+                                      textHeading: "Error",
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const FaceAttendanceScreen(),
+                                          ),
+                                        );
+                                        profileController.isChecked.value =
+                                            false;
+                                        profileController.isLoading.value =
+                                            false;
+                                      },
                                     );
-                                    profileController.isChecked.value = false;
-                                    profileController.isLoading.value = false;
                                   }
                                 }
                               },

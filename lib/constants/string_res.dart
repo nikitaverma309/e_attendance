@@ -31,7 +31,7 @@ class Strings {
   static const String attendanceAlert =   "Please enter your Attendance ID before proceeding.";
   static const String attendanceIDIncorrect =   "Your Attendance ID was incorrect. Please try again.";
   // success alert
-  static const String dataSuccess =   "Employee Code registered.The Employee Code has been verified in the database.";
+  static const String dataSuccess =   "This Employee Code is already present and verified in our records.";
   //screen note
   static const String notRegistration =  "जिन उपयोगकर्ताओं का कर्मचारी कोड मौजूद है, कृपया अपनी उपस्थिति दर्ज करने के लिए अपना चेहरा पंजीकृत करें।";
   static const String notAttendance =  "मैं उपस्थिति को चिन्हित करने के लिए अपनी स्वीकृति देता हूँ \n I give my approval  to mark attendance";
