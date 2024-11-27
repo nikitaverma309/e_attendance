@@ -84,7 +84,6 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
           return;
         }
 
-        // Parse the first employee data
         employeeData.value =
             CheckStatusModelProfileLatLong.fromJson(jsonList[0]);
 
@@ -99,7 +98,6 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
           double apiLat = double.tryParse(employeeData.value!.collegeDetails!.lat!) ?? 0.0;
           double apiLong = double.tryParse(employeeData.value!.collegeDetails!.long!) ?? 0.0;
 
-          // Calculate Distance
           double distanceInMeters = Geolocator.distanceBetween(
             currentLat,
             currentLong,
@@ -107,12 +105,7 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
             apiLong,
           );
 
-          print("Current Location: ($currentLat, $currentLong)");
-          print("API Location: ($apiLat, $apiLong)");
-          print("Distance: $distanceInMeters meters");
-
-          // Match Threshold
-          if (distanceInMeters <= 160) {
+          if (distanceInMeters <= 150) {
             Utils.showSuccessToast(
                 message: 'Location Matched. You can proceed.');
             isChecked.value = true; // Enable checkbox

@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:online/feature_showcase_page.dart';
 import 'package:online/locator.dart';
 import 'package:online/module_controllers.dart';
 import 'package:online/modules/restriction_dialog/loading_manager.dart';
 import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
-import 'package:online/services/geofencing/controller/geofencing_service.dart';
-import 'package:online/services/geolocator_service.dart';
 import 'package:online/utils/utils.dart';
 import 'package:poly_geofence_service/poly_geofence_service.dart';
 
 import 'package:permission_handler/permission_handler.dart'
     as PermissionHandler;
-
-
 
 class SplashScreenOne extends StatefulWidget {
   const SplashScreenOne({super.key});
@@ -138,40 +133,12 @@ class _SplashScreenOneState extends State<SplashScreenOne>
   }
 
   pageNavigation() async {
-    Utils.showToast("Please wait while we check your location");
-    Position? currentLocation;
-    try {
-      currentLocation = await GeoLocatorService.getCurrentCoords();
-    } on Exception catch (e) {
-      Utils.printLog("exception $e");
-    }
+    await Future.delayed(const Duration(seconds: 2));
+    Widget screen = const FeatureShowCasePage();
 
-    bool isUserInLocation = false;
-
-    if (currentLocation == null) {
-      Utils.showToast("Please enable location service and try again");
-      isUserInLocation = false;
-    } else {
-      isUserInLocation = GeoFencingService.isUserInDefinedBoundary(
-        LatLng(currentLocation.latitude, currentLocation.longitude),
-      );
-    }
-
-    if (!isUserInLocation) {
-      if (geoFencingService.alertDialogKey.currentContext == null) {
-        loadingManager.showLoading();
-      }
-    } else {
-      if (geoFencingService.alertDialogKey.currentContext != null) {
-        Navigator.of(geoFencingService.alertDialogKey.currentContext!).pop();
-      }
-      await Future.delayed(const Duration(seconds: 2));
-      Widget screen = const FeatureShowCasePage();
-
-      initGeoLocation();
-      if (mounted) {
-       Get.offAll(() => screen);
-      }
+    initGeoLocation();
+    if (mounted) {
+      Get.offAll(() => screen);
     }
   }
 
