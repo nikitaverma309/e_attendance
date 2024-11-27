@@ -122,82 +122,80 @@ class _RegisterFaceAttendanceScreenState
 
                       return isButtonDisabled
                           ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
+                              child: CircularProgressIndicator(),
+                            )
                           : Checkbox(
-                        value: profileController.isChecked.value,
-                        onChanged: (bool? newValue) async {
-                          if (emailCtr.text.isEmpty) {
-                            showErrorDialog(
-                              context: context,
-                              subTitle:
-                              Strings.attendanceAlert,
-                              textHeading: "Error",
-                              onPressed: () {
-                                Get.back();
+                              value: profileController.isChecked.value,
+                              onChanged: (bool? newValue) async {
+                                if (emailCtr.text.isEmpty) {
+                                  showErrorDialog(
+                                    context: context,
+                                    subTitle: Strings.attendanceAlert,
+                                    textHeading: "Error",
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                  );
+
+                                  return;
+                                }
+
+                                profileController.isChecked.value =
+                                    newValue ?? false;
+
+                                if (profileController.isChecked.value) {
+                                  profileController.isLoading.value = true;
+                                  await profileController.getCheckStatusLatLong(
+                                      emailCtr.text, context);
+                                  profileController.isLoading.value = false;
+                                  profileController.isChecked.value = false;
+                                  if (profileController.employeeData.value !=
+                                      null) {
+                                    showSuccessDialog(
+                                      context: context,
+                                      subTitle: Strings.dataSuccess,
+                                      textHeading: "Employee Code registered",
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegistrationScreen(
+                                              attendanceId: emailCtr.text,
+                                            ),
+                                          ),
+                                        );
+                                        profileController.isChecked.value =
+                                            false;
+                                        profileController.isLoading.value =
+                                            false;
+                                      },
+                                    );
+                                  } else {
+                                    showErrorDialog(
+                                      context: context,
+                                      subTitle:
+                                          "Your Attendance ID was incorrect. Please try again.",
+                                      textHeading: "Error",
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const RegisterFaceAttendanceScreen(),
+                                          ),
+                                        );
+                                        profileController.isChecked.value =
+                                            false;
+                                        profileController.isLoading.value =
+                                            false;
+                                      },
+                                    );
+                                  }
+                                }
                               },
                             );
-
-                            return;
-                          }
-
-                          profileController.isChecked.value =
-                              newValue ?? false;
-
-                          if (profileController.isChecked.value) {
-                            profileController.isLoading.value = true;
-                            await profileController
-                                .getCheckStatusLatLong(emailCtr.text);
-                            profileController.isLoading.value = false;
-                            profileController.isChecked.value = false;
-                            if (profileController.employeeData.value !=
-                                null) {
-                              showSuccessDialog(
-                                context: context,
-                                subTitle:Strings.dataSuccess,
-                                textHeading: "Employee Code registered",
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          RegistrationScreen(
-                                            attendanceId: emailCtr.text,
-                                          ),
-                                    ),
-                                  );
-                                  profileController.isChecked.value =
-                                  false;
-                                  profileController.isLoading.value =
-                                  false;
-                                },
-                              );
-                            } else {
-                              showErrorDialog(
-                                context: context,
-                                subTitle:
-                                "Your Attendance ID was incorrect. Please try again.",
-                                textHeading: "Error",
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                      const RegisterFaceAttendanceScreen(),
-                                    ),
-                                  );
-                                  profileController.isChecked.value =
-                                  false;
-                                  profileController.isLoading.value =
-                                  false;
-                                },
-                              );
-                            }
-                          }
-                        },
-                      );
                     }),
-
                     10.width,
                     const Expanded(
                       child: Text(

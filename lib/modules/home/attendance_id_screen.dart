@@ -114,6 +114,89 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 child: Row(
                   children: [
                     11.width,
+                    // Obx(() {
+                    //   bool isButtonDisabled = profileController.isLoading.value;
+                    //
+                    //   return isButtonDisabled
+                    //       ? const Center(
+                    //     child: CircularProgressIndicator(),
+                    //   )
+                    //       : Checkbox(
+                    //     value: profileController.isChecked.value,
+                    //     onChanged: (bool? newValue) async {
+                    //       if (emailCtr.text.isEmpty) {
+                    //         showErrorDialog(
+                    //           context: context,
+                    //           subTitle: Strings.attendanceAlert,
+                    //           textHeading: "Error",
+                    //           onPressed: () {
+                    //             Get.back();
+                    //           },
+                    //         );
+                    //         return;
+                    //       }
+                    //
+                    //       profileController.isChecked.value = newValue ?? false;
+                    //
+                    //       if (profileController.isChecked.value) {
+                    //         profileController.isLoading.value = true;
+                    //         await profileController.getCheckStatusLatLong(emailCtr.text, context);
+                    //         profileController.isLoading.value = false;
+                    //
+                    //         // Only show dialog and navigate if employee data is not null and location matched
+                    //         if (profileController.employeeData.value != null && profileController.isLocationMatched.value) {
+                    //           showSuccessDialog(
+                    //             context: context,
+                    //             subTitle: Strings.dataSuccess,
+                    //             textHeading: "Employee Code registered",
+                    //             onPressed: () {
+                    //               Navigator.push(
+                    //                 context,
+                    //                 MaterialPageRoute(
+                    //                   builder: (context) => LoginCameraTwo(
+                    //                     attendanceId: emailCtr.text,
+                    //                   ),
+                    //                 ),
+                    //               );
+                    //               profileController.isChecked.value = false;
+                    //               profileController.isLoading.value = false;
+                    //             },
+                    //           );
+                    //
+                    //           // Automatically navigate after 2 seconds
+                    //           Future.delayed(const Duration(seconds: 2), () {
+                    //             Navigator.pushReplacement(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                 builder: (context) => LoginCameraTwo(
+                    //                   attendanceId: emailCtr.text,
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           });
+                    //         } else {
+                    //           // Show error dialog if the location doesn't match or employee data is invalid
+                    //           showErrorDialog(
+                    //             context: context,
+                    //             subTitle: "Your Attendance ID was incorrect. Please try again.",
+                    //             textHeading: "Error",
+                    //             onPressed: () {
+                    //               Navigator.push(
+                    //                 context,
+                    //                 MaterialPageRoute(
+                    //                   builder: (context) => const FaceAttendanceScreen(),
+                    //                 ),
+                    //               );
+                    //               profileController.isChecked.value = false;
+                    //               profileController.isLoading.value = false;
+                    //             },
+                    //           );
+                    //         }
+                    //       }
+                    //     },
+                    //   );
+                    // }),
+
                     Obx(() {
                       bool isButtonDisabled = profileController.isLoading.value;
 
@@ -127,8 +210,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                 if (emailCtr.text.isEmpty) {
                                   showErrorDialog(
                                     context: context,
-                                    subTitle:
-                                    Strings.attendanceAlert,
+                                    subTitle: Strings.attendanceAlert,
                                     textHeading: "Error",
                                     onPressed: () {
                                       Get.back();
@@ -143,15 +225,18 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
 
                                 if (profileController.isChecked.value) {
                                   profileController.isLoading.value = true;
-                                  await profileController
-                                      .getCheckStatusLatLong(emailCtr.text);
+                                  await profileController.getCheckStatusLatLong(
+                                      emailCtr.text, context);
                                   profileController.isLoading.value = false;
                                   profileController.isChecked.value = false;
                                   if (profileController.employeeData.value !=
-                                      null) {
+                                          null ||
+                                      profileController
+                                              .isLocationMatched.value !=
+                                          false) {
                                     showSuccessDialog(
                                       context: context,
-                                      subTitle:Strings.dataSuccess,
+                                      subTitle: Strings.dataSuccess,
                                       textHeading: "Employee Code registered",
                                       onPressed: () {
                                         Navigator.push(
@@ -169,6 +254,17 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                             false;
                                       },
                                     );
+                                    Future.delayed(const Duration(seconds: 2),
+                                        () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => LoginCameraTwo(
+                                            attendanceId: emailCtr.text,
+                                          ),
+                                        ),
+                                      );
+                                    });
                                   } else {
                                     showErrorDialog(
                                       context: context,
