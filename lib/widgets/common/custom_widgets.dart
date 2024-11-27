@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/card_button.dart';
 

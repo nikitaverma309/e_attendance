@@ -101,7 +101,7 @@ class _TextInputFieldState extends State<TextInputField> {
               widget.onChanged!(value);
             }
             // Trigger validation when the text changes
-            Form.of(context)?.validate();
+            Form.of(context).validate();
           },
           inputFormatters: widget.inputFormatters,
           keyboardType: widget.inputType,

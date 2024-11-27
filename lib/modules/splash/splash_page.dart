@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:online/feature_showcase_page.dart';
 import 'package:online/locator.dart';
@@ -10,6 +11,8 @@ import 'package:poly_geofence_service/poly_geofence_service.dart';
 
 import 'package:permission_handler/permission_handler.dart'
     as PermissionHandler;
+
+import '../../services/geolocator_service.dart';
 
 class SplashScreenOne extends StatefulWidget {
   const SplashScreenOne({super.key});
@@ -133,12 +136,36 @@ class _SplashScreenOneState extends State<SplashScreenOne>
   }
 
   pageNavigation() async {
+    Utils.showToast("Please wait while we check your location");
+    Position? currentLocation;
+    try {
+      currentLocation = await GeoLocatorService.getCurrentCoords();
+    } on Exception catch (e) {
+      Utils.printLog("exception $e");
+    }
+
+    if (geoFencingService.alertDialogKey.currentContext != null) {
+      Navigator.of(geoFencingService.alertDialogKey.currentContext!).pop();
+    }
     await Future.delayed(const Duration(seconds: 2));
     Widget screen = const FeatureShowCasePage();
 
     initGeoLocation();
     if (mounted) {
       Get.offAll(() => screen);
+    }
+  }
+
+  showLocationDialog({bool showButton = false}) async {
+    if (Utils.locationDialogKey.currentContext == null) {
+      showLocationAlert(Utils.appNavigatorKey.currentContext!,
+          showButton: showButton);
+    }
+  }
+
+  hideLocationDialog() {
+    if (Utils.locationDialogKey.currentContext != null) {
+      Navigator.of(Utils.locationDialogKey.currentContext!).pop();
     }
   }
 
@@ -162,19 +189,6 @@ class _SplashScreenOneState extends State<SplashScreenOne>
     } else {
       hideLocationDialog();
       pageNavigation();
-    }
-  }
-
-  showLocationDialog({bool showButton = false}) async {
-    if (Utils.locationDialogKey.currentContext == null) {
-      showLocationAlert(Utils.appNavigatorKey.currentContext!,
-          showButton: showButton);
-    }
-  }
-
-  hideLocationDialog() {
-    if (Utils.locationDialogKey.currentContext != null) {
-      Navigator.of(Utils.locationDialogKey.currentContext!).pop();
     }
   }
 }
