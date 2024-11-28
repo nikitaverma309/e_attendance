@@ -140,6 +140,7 @@ class _SplashScreenOneState extends State<SplashScreenOne>
     Position? currentLocation;
     try {
       currentLocation = await GeoLocatorService.getCurrentCoords();
+      Utils.printLog("currentLocation $currentLocation");
     } on Exception catch (e) {
       Utils.printLog("exception $e");
     }
@@ -152,7 +153,7 @@ class _SplashScreenOneState extends State<SplashScreenOne>
 
     initGeoLocation();
     if (mounted) {
-      Get.offAll(() => screen);
+      // Get.offAll(() => screen);
     }
   }
 

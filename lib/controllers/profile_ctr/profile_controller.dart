@@ -55,11 +55,6 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
     isLoading(false);
   }*/
 
-
-
-
-
-
   Future<void> getCheckStatusLatLong(String empCode) async {
     isLoading(true);
 
@@ -69,7 +64,8 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
           'http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode'),
     );
 
-    print("API URL: http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
+    print(
+        "API URL: http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
     print('Response Body: ${response.body}');
 
     if (response.statusCode == 200) {
@@ -95,8 +91,10 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
         // Validate location data
         if (employeeData.value?.collegeDetails?.lat != null &&
             employeeData.value?.collegeDetails?.long != null) {
-          double apiLat = double.tryParse(employeeData.value!.collegeDetails!.lat!) ?? 0.0;
-          double apiLong = double.tryParse(employeeData.value!.collegeDetails!.long!) ?? 0.0;
+          double apiLat =
+              double.tryParse(employeeData.value!.collegeDetails!.lat!) ?? 0.0;
+          double apiLong =
+              double.tryParse(employeeData.value!.collegeDetails!.long!) ?? 0.0;
 
           double distanceInMeters = Geolocator.distanceBetween(
             currentLat,
@@ -115,7 +113,8 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
             isChecked.value = false; // Disable checkbox
           }
         } else {
-          Utils.showErrorToast(message: 'Invalid or missing location data from API.');
+          Utils.showErrorToast(
+              message: 'Invalid or missing location data from API.');
           isChecked.value = false;
         }
       } catch (e) {
@@ -128,8 +127,6 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
 
     isLoading(false);
   }
-
-
 
 // Function to determine the current position
   Future<Position> _determinePosition() async {
@@ -161,5 +158,4 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
       desiredAccuracy: LocationAccuracy.high,
     );
   }
-
 }
