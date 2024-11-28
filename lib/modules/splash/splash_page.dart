@@ -151,9 +151,9 @@ class _SplashScreenOneState extends State<SplashScreenOne>
     await Future.delayed(const Duration(seconds: 2));
     Widget screen = const FeatureShowCasePage();
 
-    initGeoLocation();
+    // initGeoLocation();
     if (mounted) {
-      // Get.offAll(() => screen);
+      Get.offAll(() => screen);
     }
   }
 
