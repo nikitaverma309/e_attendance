@@ -12,7 +12,7 @@ class AppColors {
   static const warningColor = Color(0xFFF3BB1C);
   static const kErrorColor = Color(0xFFF03738);
   static const Color primary = Color(0xff1d3a69);
-  static const Color primaryC = Color(0xff1d3a69);
+
   static const Color primaryB = Color(0xff04183b);
   static const Color primary_80 = Color(0xCC311629);
   static const Color white = Color(0xffffffff);

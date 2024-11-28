@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:online/modules/home/home.dart';
+import 'package:online/modules/home/attendance_id_screen.dart';
+import 'package:online/modules/home/registration_id_screen.dart';
 import 'package:online/widgets/common/card_button.dart';
 
 void showMessageErrorDialog(String title, String message) {
@@ -30,7 +31,7 @@ void showMessageErrorDialog(String title, String message) {
           height: 50,
           text: "Ok  ",
           onPressed: () {
-            Get.off(() => const MyHomePage());
+            Get.off(() => const RegisterFaceAttendanceScreen());
           },
         ),
       ],
@@ -38,10 +39,7 @@ void showMessageErrorDialog(String title, String message) {
   );
 }
 
-
-
-
-void showPDialog(BuildContext context, String title, String message,
+void showErrorLoginDialog(BuildContext context, String title, String message,
     bool navigateToProfile) {
   showDialog(
     context: context,
@@ -55,9 +53,9 @@ void showPDialog(BuildContext context, String title, String message,
             onPressed: () {
               Navigator.of(context).pop();
               if (navigateToProfile) {
-                Get.to(() => const MyHomePage());
+                Navigator.pop(context);
               } else {
-                Get.offAll(() => const MyHomePage());
+                Navigator.pop(context);
               }
             },
           ),

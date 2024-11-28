@@ -139,7 +139,7 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                                   if (widget.action ==
                                       CameraAction.attendance) {
                                     // अटेंडेंस के लिए API कॉल
-                                    await loginController.uploadFileLogin(
+                                    await loginController.uploadLogin(
                                       context,
                                       widget.imageFile!,
                                       widget.attendanceId!,

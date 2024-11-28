@@ -64,7 +64,7 @@ const kTextBaNaBoldBlackColorStyle = TextStyle(
     fontWeight: FontWeight.normal,
     color: AppColors.black);
 const kText15BaNaBoldBlackColorStyle = TextStyle(
-    fontSize: 15.0,
+    fontSize: 14.0,
     fontFamily: 'Roboto-Thin',
     fontWeight: FontWeight.bold,
     color: AppColors.black);

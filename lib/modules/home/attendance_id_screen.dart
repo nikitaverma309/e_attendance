@@ -25,6 +25,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
   final CheckStatusController profileController =
       Get.put(CheckStatusController());
   TextEditingController emailCtr = TextEditingController();
+  FocusNode _focusNode = FocusNode(); // TextField पर Focus देने के लिए
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +55,11 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                   velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
                 ),
               ),
-              20.height,
+              10.height,
 
               // Logo Section
               const CircleAvatar(
-                backgroundColor: Color(0xffb8cbd8),
+                backgroundColor: Colors.white,
                 radius: 44,
                 child: Image(
                   image: AssetImage(Assets.imagesCglogo),
@@ -66,12 +67,22 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                   width: 64,
                 ),
               ),
-              10.height,
-              const Text(
-                Strings.higherEducation,
-                style: kText15BaNaBoldBlackColorStyle,
-                textAlign: TextAlign.center,
+              5.height,
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                decoration: Shape.cCheckBox(context),
+                child: const Column(
+                  children: [
+                    Text(
+                      Strings.higherEducation,
+                      style: kText15BaNaBoldBlackColorStyle,
+                    ),
+                    Text("Government Of Chhattisgarh",
+                        style: kText15BaNaBoldBlackColorStyle),
+                  ],
+                ),
               ),
+
               10.height,
               Container(
                 padding: const EdgeInsets.all(10.0),
@@ -95,7 +106,8 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                             FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(11),
                           ],
-                          readOnly: true,
+                          readOnly:
+                              profileController.incorrectAttempts.value >= 3,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                           ),
@@ -105,12 +117,11 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                   ],
                 ),
               ),
-              10.height,
+              20.height,
 
               Container(
-                padding: const EdgeInsets.all(12),
-                decoration: Shape.chooseCheckBox(context),
-                height: 111,
+                padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 4),
+                decoration: Shape.scrollText(context),
                 child: Row(
                   children: [
                     11.width,
@@ -127,8 +138,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                 if (emailCtr.text.isEmpty) {
                                   showErrorDialog(
                                     context: context,
-                                    subTitle:
-                                    Strings.attendanceAlert,
+                                    subTitle: Strings.attendanceAlert,
                                     textHeading: "Error",
                                     onPressed: () {
                                       Get.back();
@@ -143,17 +153,18 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
 
                                 if (profileController.isChecked.value) {
                                   profileController.isLoading.value = true;
-                                  await profileController
-                                      .getCheckStatusLatLong(emailCtr.text);
+                                  await profileController.getCheckStatusLatLong(
+                                      emailCtr.text, context);
                                   profileController.isLoading.value = false;
                                   profileController.isChecked.value = false;
                                   if (profileController.employeeData.value !=
                                       null) {
                                     showSuccessDialog(
                                       context: context,
-                                      subTitle:Strings.dataSuccess,
+                                      subTitle: Strings.dataSuccess,
                                       textHeading: "Employee Code registered",
                                       onPressed: () {
+                                        Navigator.pop(context);
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -163,6 +174,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                             ),
                                           ),
                                         );
+
                                         profileController.isChecked.value =
                                             false;
                                         profileController.isLoading.value =
@@ -176,13 +188,10 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                           "Your Attendance ID was incorrect. Please try again.",
                                       textHeading: "Error",
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const FaceAttendanceScreen(),
-                                          ),
-                                        );
+                                        if (Navigator.canPop(context)) {
+                                          Navigator.pop(
+                                              context); // केवल वापस जाने का प्रयास करें, नया स्क्रीन न बनाएं
+                                        }
                                         profileController.isChecked.value =
                                             false;
                                         profileController.isLoading.value =
@@ -204,7 +213,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                   ],
                 ),
               ),
-              10.height,
+              20.height,
               Obx(() {
                 return GridView.builder(
                   itemCount: profileController.attendanceIds.length,
@@ -232,6 +241,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                         } else if (emailCtr.text.length < 11) {
                           emailCtr.text += selectedValue;
                         }
+                        FocusScope.of(context).requestFocus(_focusNode);
                       },
                       child: Container(
                         decoration: BoxDecoration(

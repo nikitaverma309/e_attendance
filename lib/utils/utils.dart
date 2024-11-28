@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
@@ -9,7 +8,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:poly_geofence_service/models/lat_lng.dart';
 
 class Utils {
-  static final Dio dio = Dio();
+
   static final Logger _logger = Logger();
   static final appNavigatorKey = GlobalKey<NavigatorState>();
   static final locationDialogKey = GlobalKey();

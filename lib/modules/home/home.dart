@@ -14,7 +14,6 @@ import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
   @override
@@ -42,151 +41,129 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xff176daa),
-        // backgroundColor: Colors.white,
-        body: !loading
-            ? SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              const Expanded(
-                                child: Text("Welcome To \n   Attendance",
-                                    style: kText15whiteColorStyle),
-                              ),
-                              DropdownButton<String>(
-                                icon: const Icon(Icons.more_vert,
-                                    color: Colors.black),
-                                dropdownColor: Colors
-                                    .white, // Dropdown menu background color
-                                underline:
-                                    const SizedBox(), // Remove the underline
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: 'page1',
-                                    child: Text('Employee Registration Form',
-                                        style: kText10BlueBlackColorStyle),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 'page2',
-                                    child: Text('FAQ',
-                                        style: kText10BlueBlackColorStyle),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  if (value == 'page1') {
-                                    _showEmpRegistrationBottomSheet(context);
-                                  } else if (value == 'page2') {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => FaqScreen(),
-                                      ),
-                                    );
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    44.height,
-
-                    // Centering the logo and text
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      50), // Use a high value for circular shape
-                                ),
-                                color: Color(0xffb8cbd8),
-                                elevation: 6,
-                                child: const Image(
-                                  image: AssetImage(Assets.imagesCglogo),
-                                  height: 88,
-                                  width: 88,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // const Expanded(
+                        //   child: Text("Welcome To face Attendance",
+                        //       style: kText15whiteColorStyle),
+                        // ),
+                        DropdownButton<String>(
+                          icon:
+                              const Icon(Icons.more_vert, color: Colors.white),
+                          dropdownColor:
+                              Colors.white, // Dropdown menu background color
+                          underline: const SizedBox(), // Remove the underline
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'page1',
+                              child: Text('Employee Registration Form',
+                                  style: kText10BlueBlackColorStyle),
                             ),
-                          ),
-                          10.height,
-                          const Text("Higher Education Department",
-                              style: kText15BaNaBoldWhiteColorStyle),
-                          58.height,
-                          Center(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: const Image(
-                                image: AssetImage('assets/logo.png'),
-                                height: 48,
-                                width: 48,
-                                fit: BoxFit.contain,
-                              ),
+                            DropdownMenuItem(
+                              value: 'page2',
+                              child: Text('FAQ',
+                                  style: kText10BlueBlackColorStyle),
                             ),
-                          ),
-                          5.height,
-                          customButton(
-                            context,
-                            'Face Attendance',
-                            const Color(0xFFCEEEEE),
-                            Colors.black,
-                            Icons.login,
-                            () {
-                              if (mounted) {
-                                Get.to(() => const FaceAttendanceScreen());
-                                // Get.to(() => const LoginCameraTwo());
-                              }
-                            },
-                          ),
-                          5.height,
-                          customButton(
-                            context,
-                            'Face Registration',
-                            const Color(0xFFD7DEEE),
-                            Colors.black,
-                            Icons.person_add,
-                            () {
-                              Get.to(
-                                  () => const RegisterFaceAttendanceScreen());
-                            },
-                          ),
-                          5.height,
-                          // customButton(
-                          //   context,
-                          //   'Profile Page',
-                          //   const Color(0xFFD7DEEE),
-                          //   Colors.black,
-                          //   Icons.person_add,
-                          //   () {
-                          //     _profileBottomSheet(context);
-                          //   },
-                          // ),
-                          5.height,
-                        ],
-                      ),
+                          ],
+                          onChanged: (value) {
+                            if (value == 'page1') {
+                              _showEmpRegistrationBottomSheet(context);
+                            } else if (value == 'page2') {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FaqScreen(),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              )
-            : const Center(
-                child: CircularProgressIndicator(),
               ),
-        bottomSheet: FooterWidget(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              50), // Use a high value for circular shape
+                        ),
+                        color: const Color(0xffb8cbd8),
+                        elevation: 6,
+                        child: const Image(
+                          image: AssetImage(Assets.imagesCglogo),
+                          height: 88,
+                          width: 88,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  10.height,
+                  const Text("Higher Education Department",
+                      style: kText15BaNaBoldWhiteColorStyle),
+                  const Text("Government Of Chhattisgarh",
+                      style: kText15BaNaBoldWhiteColorStyle),
+                  58.height,
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: const Image(
+                        image: AssetImage('assets/logo.png'),
+                        height: 48,
+                        width: 48,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  15.height,
+                  const Text("Welcome To face Attendance System",
+                      style: kText13BoldWhiteColor),
+                  21.height,
+                  customButton(
+                    context,
+                    'Face Attendance',
+                    const Color(0xFFCEEEEE),
+                    Colors.black,
+                    Icons.login,
+                    () {
+                      if (mounted) {
+                        Get.to(() => const FaceAttendanceScreen());
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Get.to(() => const RegisterFaceAttendanceScreen());
+          },
+          icon: const Icon(Icons.person_add),
+          label: const Text('Register'),
+          backgroundColor: const Color(0xFFD7DEEE),
+        ),
+        // bottomSheet: FooterWidget(),
       ),
     );
   }

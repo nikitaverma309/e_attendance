@@ -113,7 +113,7 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                    MaterialPageRoute(builder: (context) => const MyHomePage()),
                   );
                 },
                 icon: const Icon(

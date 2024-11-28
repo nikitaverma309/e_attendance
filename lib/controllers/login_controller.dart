@@ -88,7 +88,7 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> uploadFileLogin(
+  Future<void> uploadLogin(
     BuildContext context,
     File file,
     String empCode,
@@ -127,39 +127,39 @@ class LoginController extends GetxController {
                 message: 'User Attendance Was Successfully Registered');
           } else if (recognizedUser ==
               "User with the given EmployeeCode does not exist.") {
-            showPDialog(context, "Error",
+            showErrorLoginDialog(context, "Error",
                 "User with the given EmployeeCode does not exist.", false);
           } else if (recognizedUser == "Face Not Verified") {
-            showPDialog(context, "Face Verification Pending",
+            showErrorLoginDialog(context, "Face Verification Pending",
                 "Face not verified. Please wait for verification.", false);
           } else if (recognizedUser == "No match found.") {
-            showPDialog(context, "Face Not Matched",
+            showErrorLoginDialog(context, "Face Not Matched",
                 "Face not matched. Please try again.", false);
           } else {
-            showPDialog(context, "Error",
+            showErrorLoginDialog(context, "Error",
                 "Face not recognized. Please try again.", false);
           }
         } else {
-          showPDialog(
+          showErrorLoginDialog(
               context, "Recognition Failed", "Face not recognized.", false);
         }
       } else if (response.statusCode == 401) {
-        showPDialog(context, "Unauthorized",
+        showErrorLoginDialog(context, "Unauthorized",
             "Face not recognized and No match found.", false);
       } else {
-        showPDialog(context, "Error",
+        showErrorLoginDialog(context, "Error",
             "Failed to recognize face: ${responseData.body}", false);
       }
     } catch (e) {
       print("Error occurred: ${e.toString()}");
-      showPDialog(
+      showErrorLoginDialog(
           context, "Unexpected Error", "An unexpected error occurred.", false);
     }
   }
 
-  Future<void> getAttendanceProfileData(BuildContext context, String empCode) async {
-    final url = Uri.parse(
-        '${ApiStrings.profile}$empCode');
+  Future<void> getAttendanceProfileData(
+      BuildContext context, String empCode) async {
+    final url = Uri.parse('${ApiStrings.profile}$empCode');
     try {
       var response = await http.get(url);
 
@@ -168,19 +168,21 @@ class LoginController extends GetxController {
 
         if (jsonResponse is Map<String, dynamic> &&
             jsonResponse['attendance'] != null) {
-          showPDialog(context, "सफलता", "उपस्थिति सफलतापूर्वक दर्ज।", true);
+          showErrorLoginDialog(
+              context, "सफलता", "उपस्थिति सफलतापूर्वक दर्ज।", true);
           final resData = ProfileModel.fromJson(jsonResponse);
           Get.to(() => ProfileScreen(data: resData));
         } else {
-          showPDialog(context, "त्रुटि", "अमान्य उपस्थिति डेटा।", false);
+          showErrorLoginDialog(
+              context, "त्रुटि", "अमान्य उपस्थिति डेटा।", false);
         }
       } else {
-        showPDialog(context, "त्रुटि",
+        showErrorLoginDialog(context, "त्रुटि",
             "उपस्थिति प्राप्त करने में विफल: ${response.body}", false);
       }
     } catch (e) {
       print("त्रुटि: $e");
-      showPDialog(context, "त्रुटि", "अप्रत्याशित त्रुटि।", false);
+      showErrorLoginDialog(context, "त्रुटि", "अप्रत्याशित त्रुटि।", false);
     }
   }
 }

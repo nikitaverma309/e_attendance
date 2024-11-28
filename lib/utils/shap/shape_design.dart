@@ -8,6 +8,12 @@ class Shape {
     borderRadius: BorderRadius.circular(8),
     );
   }
+  static BoxDecoration cCheckBox(BuildContext context) {
+    return   BoxDecoration(
+      color: const Color(0xFFF8F1F1),
+      borderRadius: BorderRadius.circular(8),
+    );
+  }
 
   static BoxDecoration scrollText(BuildContext context) {
     return BoxDecoration(
