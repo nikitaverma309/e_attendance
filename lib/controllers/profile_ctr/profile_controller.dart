@@ -8,6 +8,7 @@ import 'package:online/utils/utils.dart';
 class CheckStatusController extends GetxController {
   var isLoading = false.obs;
   final isChecked = false.obs;
+  final isUserLocation = false.obs;
   var employeeData = Rx<CheckStatusModelProfileLatLong?>(null);
   var attendanceIds = <String>[
     "1",
@@ -102,20 +103,24 @@ print("http://164.100.150.78/lmsbackend/api/employee/get?empCode=$empCode");
             apiLat,
             apiLong,
           );
-
+          print("distanceInMeters was $distanceInMeters");
           if (distanceInMeters <= 150) {
             Utils.showSuccessToast(
                 message: 'Location Matched. You can proceed.');
             isChecked.value = true; // Enable checkbox
+            isUserLocation.value = true; // Enable checkbox
+
           } else {
             Utils.showErrorToast(
                 message: 'Your location does not match the required location.');
             isChecked.value = false; // Disable checkbox
+            isUserLocation.value = false; // Disable checkbox
           }
         } else {
           Utils.showErrorToast(
               message: 'Invalid or missing location data from API.');
           isChecked.value = false;
+          isUserLocation.value = false;
         }
       } catch (e) {
         Utils.showErrorToast(message: 'Failed to parse employee data: $e');

@@ -127,8 +127,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                 if (emailCtr.text.isEmpty) {
                                   showErrorDialog(
                                     context: context,
-                                    subTitle:
-                                    Strings.attendanceAlert,
+                                    subTitle: Strings.attendanceAlert,
                                     textHeading: "Error",
                                     onPressed: () {
                                       Get.back();
@@ -148,10 +147,12 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                   profileController.isLoading.value = false;
                                   profileController.isChecked.value = false;
                                   if (profileController.employeeData.value !=
-                                      null) {
+                                          null &&
+                                      profileController.isUserLocation.value ==
+                                          true) {
                                     showSuccessDialog(
                                       context: context,
-                                      subTitle:Strings.dataSuccess,
+                                      subTitle: Strings.dataSuccess,
                                       textHeading: "Employee Code registered",
                                       onPressed: () {
                                         Navigator.push(
@@ -173,20 +174,20 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                     showErrorDialog(
                                       context: context,
                                       subTitle:
-                                          "Your Attendance ID was incorrect. Please try again.",
+                                      "Your Attendance ID was incorrect. Please try again.",
                                       textHeading: "Error",
                                       onPressed: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const FaceAttendanceScreen(),
+                                            const FaceAttendanceScreen(),
                                           ),
                                         );
                                         profileController.isChecked.value =
-                                            false;
+                                        false;
                                         profileController.isLoading.value =
-                                            false;
+                                        false;
                                       },
                                     );
                                   }
