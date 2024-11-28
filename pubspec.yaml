@@ -39,9 +39,16 @@ dependencies:
   path_provider: ^2.0.9
 #  path: ^1.8.0
   google_ml_kit: ^0.14.0
+<<<<<<< HEAD
 #  image: ^3.0.1
   image: ^3.0.2
 #  font_awesome_flutter: ^9.0.0
+=======
+  image: ^3.0.1
+  http: ^1.2.2
+#  image: ^3.0.2
+  font_awesome_flutter: ^9.0.0
+>>>>>>> 513bd814127e531c95530b23814122375f69ea92
 #  url_launcher: ^6.0.3
 #  sqflite: ^2.0.2
   get_it: ^8.0.0
