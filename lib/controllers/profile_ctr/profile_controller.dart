@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,12 +13,13 @@ class CheckStatusController extends GetxController {
   var isLoading = false.obs;
   final isChecked = false.obs;
   final isLocationMatched = false.obs;
-  var incorrectAttempts = 0.obs; // To track incorrect attempts
+  var incorrectAttempts = 0.obs;
   var isBlocked = false.obs; // To block the user
   Timer? blockTimer;
 
 // Method to reset the block state
   void resetBlock() {
+    Utils.printLog("timer reset after 10seconds");
     incorrectAttempts.value = 0;
     isBlocked.value = false;
     blockTimer?.cancel();
@@ -28,7 +30,8 @@ class CheckStatusController extends GetxController {
     incorrectAttempts.value++;
     if (incorrectAttempts.value >= 3) {
       isBlocked.value = true;
-      blockTimer = Timer(const Duration(seconds: 10), resetBlock);
+      blockTimer = Timer(const Duration(seconds: 30), resetBlock);
+
     }
   }
 
@@ -38,7 +41,7 @@ class CheckStatusController extends GetxController {
     super.onClose();
   }
 
-  var employeeData = Rx<CheckStatusModelProfileLatLong?>(null);
+  var employeeData = Rx<UserProfileModel?>(null);
   var attendanceIds = <String>[
     "1",
     "2",
@@ -72,25 +75,24 @@ class CheckStatusController extends GetxController {
             await determinePosition(context); // Pass context here
         double currentLat = currentPosition.latitude;
         double currentLong = currentPosition.longitude;
-
+        double? compareLat = double.tryParse(kDebugMode
+            ? employeeData.value!.collegeDetails!.homeLat!
+            : employeeData.value!.collegeDetails!.lat!);
+        double? compareLong = double.tryParse(kDebugMode
+            ? employeeData.value!.collegeDetails!.homeLong!
+            : employeeData.value!.collegeDetails!.long!);
         // Validate location data
-        if (employeeData.value?.collegeDetails?.lat != null &&
-            employeeData.value?.collegeDetails?.long != null) {
-          double apiLat =
-              double.tryParse(employeeData.value!.collegeDetails!.lat!) ?? 0.0;
-          double apiLong =
-              double.tryParse(employeeData.value!.collegeDetails!.long!) ?? 0.0;
-
-          // Calculate distance between current location and API location
+        if (compareLat != null && compareLong != null) {
           double distanceInMeters = Geolocator.distanceBetween(
             currentLat,
             currentLong,
-            apiLat,
-            apiLong,
+            compareLat,
+            compareLong,
           );
-
           print("Current Location: ($currentLat, $currentLong)");
-          print("API Location: ($apiLat, $apiLong)");
+          print("API Location: ($compareLat, $compareLong)");
+          print("check lat home : (${employeeData.value!.collegeDetails!.homeLong})");
+          print("check lat mantralaya: (${employeeData.value!.collegeDetails!.long})");
           print("Distance: $distanceInMeters meters");
 
           // Check if location matches
@@ -124,4 +126,3 @@ class CheckStatusController extends GetxController {
     isLoading(false);
   }
 }
-
