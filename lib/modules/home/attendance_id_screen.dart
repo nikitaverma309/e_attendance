@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/controllers/profile_ctr/profile_controller.dart';
+import 'package:online/controllers/user_Location_controller.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
@@ -23,8 +23,8 @@ class FaceAttendanceScreen extends StatefulWidget {
 }
 
 class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
-  final CheckStatusController profileController =
-      Get.put(CheckStatusController());
+  final UserLocationController profileController =
+      Get.put(UserLocationController());
   TextEditingController employeeIdCtr = TextEditingController();
   FocusNode _focusNode = FocusNode();
 

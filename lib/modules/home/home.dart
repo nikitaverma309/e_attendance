@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/controllers/check_status_Register_emp_controller.dart';
-import 'package:online/controllers/profile_ctr/profile_controller.dart';
+import 'package:online/controllers/user_Register_form_controller.dart';
+import 'package:online/controllers/user_Location_controller.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/home/attendance_id_screen.dart';
 import 'package:online/modules/home/registration_id_screen.dart';
@@ -26,10 +26,10 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController empCodeController = TextEditingController();
   final TextEditingController empCodeProController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
-  final CheckStatusController profileController =
-      Get.put(CheckStatusController());
-  final CheckStatusRegistrationEmployeeController employeeController =
-      Get.put(CheckStatusRegistrationEmployeeController());
+  final UserLocationController profileController =
+      Get.put(UserLocationController());
+  final UserRegistrationFormController userRegistrationFormController =
+      Get.put(UserRegistrationFormController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -225,25 +225,26 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     20.height,
                     Obx(
-                      () => employeeController.isLoading.value
+                      () => userRegistrationFormController.isLoading.value
                           ? const Center(child: CircularProgressIndicator())
                           : CommonButton(
                               text: "Check status",
-                              onPressed: employeeController.isLoading.value
+                              onPressed: userRegistrationFormController.isLoading.value
                                   ? null
                                   : () async {
+                                print("jij");
                                       if (_formKey.currentState?.validate() ??
                                           false) {
                                         if (empCodeController.text.isNotEmpty &&
                                             contactController.text.isNotEmpty) {
-                                          employeeController.isLoading.value =
+                                          userRegistrationFormController.isLoading.value =
                                               true;
-                                          await employeeController
-                                              .checkRegisterEmployeeData(
+                                          await userRegistrationFormController
+                                              .getUserRegisterData(
                                             empCodeController.text.trim(),
                                             contactController.text.trim(),
                                           );
-                                          employeeController.isLoading.value =
+                                          userRegistrationFormController.isLoading.value =
                                               false;
                                         } else {
                                           CustomSnackbarError.showSnackbar(

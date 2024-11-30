@@ -1,14 +1,12 @@
-// To parse this JSON data, do
-//
-//     final checkStatusModelProfileLatLong = checkStatusModelProfileLatLongFromJson(jsonString);
+
 
 import 'dart:convert';
 
-List<UserProfileModel> checkStatusModelProfileLatLongFromJson(String str) => List<UserProfileModel>.from(json.decode(str).map((x) => UserProfileModel.fromJson(x)));
+List<UserLocationModel> userLocationModelFromJson(String str) => List<UserLocationModel>.from(json.decode(str).map((x) => UserLocationModel.fromJson(x)));
 
-String checkStatusModelProfileLatLongToJson(List<UserProfileModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String userLocationModelToJson(List<UserLocationModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class UserProfileModel {
+class UserLocationModel {
   String? id;
   String? name;
   String? empCode;
@@ -23,7 +21,7 @@ class UserProfileModel {
   bool? reRegisteredFace;
   CollegeDetails? collegeDetails;
 
-  UserProfileModel({
+  UserLocationModel({
     this.id,
     this.name,
     this.empCode,
@@ -39,7 +37,7 @@ class UserProfileModel {
     this.collegeDetails,
   });
 
-  factory UserProfileModel.fromJson(Map<String, dynamic> json) => UserProfileModel(
+  factory UserLocationModel.fromJson(Map<String, dynamic> json) => UserLocationModel(
     id: json["_id"],
     name: json["name"],
     empCode: json["empCode"],

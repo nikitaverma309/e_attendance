@@ -146,7 +146,9 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
         height: height,
         child: Transform(
           alignment: Alignment.center,
-          transform: Matrix4.rotationY(mirror),
+          //transform: Matrix4.rotationY(mirror),
+          transform: Matrix4.translationValues(0, 0, 0),
+         // transform: Matrix4.rotationY(0),
           child: FittedBox(
             fit: BoxFit.cover,
             child: Image.file(File(imagePath!)),
