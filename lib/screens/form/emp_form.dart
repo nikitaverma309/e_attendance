@@ -3,14 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/colors_res.dart';
-import 'package:online/controllers/check_status_Register_emp_controller.dart';
-import 'package:online/controllers/emp_controller.dart';
-import 'package:online/models/check_emp_status_model.dart';
-import 'package:online/models/college_model.dart';
-import 'package:online/models/designation_model.dart';
-import 'package:online/models/district_model.dart';
-import 'package:online/models/division_model.dart';
-import 'package:online/models/vidhan_sabha_model.dart';
+import 'package:online/controllers/user_Register_form_controller.dart';
+import 'package:online/controllers/dropdown_controller.dart';
+import 'package:online/models/check_status_user_register_model.dart';
+import 'package:online/models/droupDown/class_model.dart';
+import 'package:online/models/droupDown/college_model.dart';
+import 'package:online/models/droupDown/designation_model.dart';
+import 'package:online/models/droupDown/district_model.dart';
+import 'package:online/models/droupDown/division_model.dart';
+import 'package:online/models/droupDown/vidhan_sabha_model.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
@@ -19,7 +20,7 @@ import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/common/rich_title_value_list.dart';
 
 class EmployeeRegistrationForm extends StatefulWidget {
-  final GetEmployeeCode employeeData;
+  final GetEmployeeDetails? employeeData;
   const EmployeeRegistrationForm({
     super.key,
     required this.employeeData,
@@ -32,9 +33,10 @@ class EmployeeRegistrationForm extends StatefulWidget {
 
 class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final EmpController empController = Get.put(EmpController());
-  final CheckStatusRegistrationEmployeeController empCheckController =
-      Get.put(CheckStatusRegistrationEmployeeController());
+  final DropDownController dropDownController = Get.put(DropDownController());
+
+  final UserRegistrationFormController userRegistrationFormController =
+      Get.put(UserRegistrationFormController());
   late TextEditingController empCodeCtr;
   late TextEditingController nameCtr;
 
@@ -44,10 +46,10 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   void initState() {
     super.initState();
 
-    empCodeCtr = TextEditingController(text: widget.employeeData.empCode);
-    nameCtr = TextEditingController(text: widget.employeeData.name);
+    empCodeCtr = TextEditingController(text: widget.employeeData!.empCode!);
+    nameCtr = TextEditingController(text: widget.employeeData!.name);
     mobCtr =
-        TextEditingController(text: widget.employeeData.contact.toString());
+        TextEditingController(text: widget.employeeData!.contact.toString());
   }
 
   @override
@@ -132,27 +134,28 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 ),
                 10.height,
                 Obx(() {
-                  if (empController.divisions.isEmpty) {
+                  if (dropDownController.divisions.isEmpty) {
                     return const DropDownSelectionMessage(
                       message: 'Please Select Division',
                     );
                   }
 
                   return CustomDropdown<DivisionModel>(
-                    items: empController.divisions,
-                    selectedValue: empController.selectedDivision.value.isEmpty
-                        ? null
-                        : empController.divisions.firstWhere((vs) =>
-                            vs.divisionCode.toString() ==
-                            empController.selectedDivision.value),
+                    items: dropDownController.divisions,
+                    selectedValue:
+                        dropDownController.selectedDivision.value.isEmpty
+                            ? null
+                            : dropDownController.divisions.firstWhere((vs) =>
+                                vs.divisionCode.toString() ==
+                                dropDownController.selectedDivision.value),
                     hint: 'Select Division  ',
                     idKey: 'divisionCode',
                     displayKey: 'name', // Display the 'ConstituencyName'
                     onChanged: (DivisionModel? Value) {
                       if (Value != null) {
-                        empController
+                        dropDownController
                             .selectDivision(Value.divisionCode.toString());
-                        empController.fetchDistrictsByDivision(
+                        dropDownController.fetchDistrictsByDivision(
                             int.parse(Value.divisionCode.toString()));
                       }
                     },
@@ -164,30 +167,31 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   subTitle: "Select District",
                 ),
                 Obx(() {
-                  if (empController.districts.isEmpty) {
+                  if (dropDownController.districts.isEmpty) {
                     return const DropDownSelectionMessage(
                       message: 'Please Select District',
                     );
                   }
 
                   return CustomDropdown<DistrictModel>(
-                    items: empController.districts,
-                    selectedValue: empController.selectedDistrict.value.isEmpty
-                        ? null
-                        : empController.districts.firstWhere(
-                            (vs) =>
-                                vs.lgdCode.toString() ==
-                                empController.selectedDistrict.value,
-                          ),
+                    items: dropDownController.districts,
+                    selectedValue:
+                        dropDownController.selectedDistrict.value.isEmpty
+                            ? null
+                            : dropDownController.districts.firstWhere(
+                                (vs) =>
+                                    vs.lgdCode.toString() ==
+                                    dropDownController.selectedDistrict.value,
+                              ),
                     hint: 'Select districtName',
                     idKey: 'LGDCode',
                     displayKey:
                         'districtName', // Display name to show in dropdown
                     onChanged: (DistrictModel? newDistrict) {
                       if (newDistrict != null) {
-                        empController
+                        dropDownController
                             .selectDistrict(newDistrict.lgdCode.toString());
-                        empController.getVidhanSabhaByDivision(
+                        dropDownController.getVidhanSabhaByDivision(
                             int.parse(newDistrict.lgdCode.toString()));
                         print(
                             'Selected districtName: ${newDistrict.districtName}');
@@ -202,27 +206,27 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 ),
                 10.height,
                 Obx(() {
-                  if (empController.vidhanSabha.isEmpty) {
+                  if (dropDownController.vidhanSabha.isEmpty) {
                     return const DropDownSelectionMessage(
                       message: 'Please Select Vidhan Sabha',
                     );
                   }
 
                   return CustomDropdown<VidhanModel>(
-                    items: empController.vidhanSabha,
+                    items: dropDownController.vidhanSabha,
                     selectedValue:
-                        empController.selectedVidhanSabha.value.isEmpty
+                        dropDownController.selectedVidhanSabha.value.isEmpty
                             ? null
-                            : empController.vidhanSabha.firstWhere((vs) =>
+                            : dropDownController.vidhanSabha.firstWhere((vs) =>
                                 vs.constituencyNumber.toString() ==
-                                empController.selectedVidhanSabha.value),
+                                dropDownController.selectedVidhanSabha.value),
                     hint: 'Select Vidhan Sabha',
                     idKey: 'ConstituencyNumber',
                     displayKey:
                         'ConstituencyName', // Display the 'ConstituencyName'
                     onChanged: (VidhanModel? newVidhan) {
                       if (newVidhan != null) {
-                        empController.selectVidhanSabha(
+                        dropDownController.selectVidhanSabha(
                             newVidhan.constituencyNumber.toString());
                       }
                     },
@@ -235,24 +239,25 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 ),
                 10.height,
                 Obx(() {
-                  if (empController.college.isEmpty) {
+                  if (dropDownController.college.isEmpty) {
                     return const DropDownSelectionMessage(
                       message: 'Please Select college',
                     );
                   }
                   return CustomDropdown<CollegeModel>(
-                    items: empController.college,
-                    selectedValue: empController.selectedCollege.value.isEmpty
-                        ? null
-                        : empController.college.firstWhere(
-                            (college) =>
-                                college.id ==
-                                empController.selectedCollege.value,
-                          ),
+                    items: dropDownController.college,
+                    selectedValue:
+                        dropDownController.selectedCollege.value.isEmpty
+                            ? null
+                            : dropDownController.college.firstWhere(
+                                (college) =>
+                                    college.id ==
+                                    dropDownController.selectedCollege.value,
+                              ),
                     hint: 'Select College',
                     onChanged: (CollegeModel? newCollege) {
                       if (newCollege != null) {
-                        empController.selectCollege(newCollege.id);
+                        dropDownController.selectCollege(newCollege.id);
                       }
                     },
                     idKey: 'id',
@@ -264,38 +269,64 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   title: '9',
                   subTitle: "Select Class",
                 ),
-
+                Obx(() {
+                  if (dropDownController.classList.isEmpty) {
+                    return const DropDownSelectionMessage(
+                      message: 'Please Select class',
+                    );
+                  }
+                  return CustomDropdown<ClassModel>(
+                    items: dropDownController.classList,
+                    selectedValue:
+                        dropDownController.selectedClass.value.isEmpty
+                            ? null
+                            : dropDownController.classList.firstWhere(
+                                (college) =>
+                                    college.id ==
+                                    dropDownController.selectedClass.value,
+                              ),
+                    hint: 'Select Class',
+                    onChanged: (ClassModel? newCass) {
+                      if (newCass != null) {
+                        dropDownController.selectClass(newCass.id!);
+                        dropDownController.fetchClassByDesignation(newCass.id!);
+                      }
+                    },
+                    idKey: '_id',
+                    displayKey: 'className',
+                  );
+                }),
                 10.height,
                 const TitleValueTextFormData(
                   title: '10',
                   subTitle: "Select Designation",
                 ),
                 Obx(() {
-                  if (empController.designationList.isEmpty) {
+                  if (dropDownController.designationList.isEmpty) {
                     return const DropDownSelectionMessage(
                       message: 'Please Select DesignationList',
                     );
                   }
                   return CustomDropdown<DesignationModel>(
-                    items: empController.designationList,
-                    selectedValue: empController.selDesignation.value.isEmpty
-                        ? null
-                        : empController.designationList.firstWhere(
-                            (college) =>
-                                college.id ==
-                                empController.selDesignation.value,
-                          ),
+                    items: dropDownController.designationList,
+                    selectedValue:
+                        dropDownController.selDesignation.value.isEmpty
+                            ? null
+                            : dropDownController.designationList.firstWhere(
+                                (college) =>
+                                    college.id ==
+                                    dropDownController.selDesignation.value,
+                              ),
                     hint: 'Select DesignationList',
                     onChanged: (DesignationModel? newCass) {
                       if (newCass != null) {
-                        empController.selectDesignationOOb(newCass.id);
+                        dropDownController.selectDesignationOOb(newCass!.id!);
                       }
                     },
                     idKey: '_id',
                     displayKey: 'designation',
                   );
                 }),
-
                 10.height,
                 TextInputField(
                   no: "11",
@@ -312,34 +343,34 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                 30.height,
                 Center(
                   child: Obx(
-                    () => empController.isLoading.value
+                    () => userRegistrationFormController.isLoading.value
                         ? const Center(child: CircularProgressIndicator())
                         : CommonButton(
                             text: "Register Now",
                             icon: const Icon(Icons.logout, color: Colors.white),
                             color: AppColors.bbAppColor1,
-                            onPressed: empController.isLoading.value
+                            onPressed: userRegistrationFormController.isLoading.value
                                 ? null
                                 : () async {
                                     if (_formKey.currentState?.validate() ??
                                         false) {
-                                      empController.addEmployee(
+                                      userRegistrationFormController.addFormData(
                                         name: nameCtr.text.trim(),
                                         empCode: empCodeCtr.text.trim(),
                                         email: emailCtr.text.trim(),
                                         contact: mobCtr.text.trim(),
-                                        division: empController
+                                        division: dropDownController
                                             .selectedDivision.value,
-                                        district: empController
+                                        district: dropDownController
                                             .selectedDistrict.value,
-                                        vidhanSabha: empController
+                                        vidhanSabha: dropDownController
                                             .selectedVidhanSabha.value,
-                                        college:
-                                            empController.selectedCollege.value,
-                                        classData:
-                                            empController.selectedClass.value,
-                                        designation:
-                                            empController.selDesignation.value,
+                                        college: dropDownController
+                                            .selectedCollege.value,
+                                        classData: dropDownController
+                                            .selectedClass.value,
+                                        designation: dropDownController
+                                            .selDesignation.value,
                                         address: addressCtr.text.trim(),
                                         workType: workTypeCtr.text.trim(),
                                       );

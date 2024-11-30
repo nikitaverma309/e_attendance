@@ -1,87 +1,32 @@
 
+
 import 'dart:convert';
 
-ProfileModel profileModelFromJson(String str) => ProfileModel.fromJson(json.decode(str));
+CheckUserRegisterModel checkUserRegisterModelFromJson(String str) => CheckUserRegisterModel.fromJson(json.decode(str));
 
-String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
+String checkUserRegisterModelToJson(CheckUserRegisterModel data) => json.encode(data.toJson());
 
-class ProfileModel {
+class CheckUserRegisterModel {
   String? msg;
-  Attendance? attendance;
-  EmployeeData? employeeData;
+  GetEmployeeDetails? getEmployeeDetails;
 
-  ProfileModel({
+  CheckUserRegisterModel({
     this.msg,
-    this.attendance,
-    this.employeeData,
+    this.getEmployeeDetails,
   });
 
-  factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
+  factory CheckUserRegisterModel.fromJson(Map<String, dynamic> json) => CheckUserRegisterModel(
     msg: json["msg"],
-    attendance: json["attendance"] == null ? null : Attendance.fromJson(json["attendance"]),
-    employeeData: json["employeeData"] == null ? null : EmployeeData.fromJson(json["employeeData"]),
+    getEmployeeDetails: json["getEmployeeDetails"] == null ? null : GetEmployeeDetails.fromJson(json["getEmployeeDetails"]),
   );
 
   Map<String, dynamic> toJson() => {
     "msg": msg,
-    "attendance": attendance?.toJson(),
-    "employeeData": employeeData?.toJson(),
+    "getEmployeeDetails": getEmployeeDetails?.toJson(),
   };
 }
 
-class Attendance {
-  String? id;
-  String? name;
-  String? empId;
-  String? empCode;
-  String? college;
-  DateTime? loginTime;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  int? v;
-  DateTime? logoutTime;
-
-  Attendance({
-    this.id,
-    this.name,
-    this.empId,
-    this.empCode,
-    this.college,
-    this.loginTime,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
-    this.logoutTime,
-  });
-
-  factory Attendance.fromJson(Map<String, dynamic> json) => Attendance(
-    id: json["_id"],
-    name: json["name"],
-    empId: json["empId"],
-    empCode: json["empCode"],
-    college: json["college"],
-    loginTime: json["loginTime"] == null ? null : DateTime.parse(json["loginTime"]),
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    v: json["__v"],
-    logoutTime: json["logoutTime"] == null ? null : DateTime.parse(json["logoutTime"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "_id": id,
-    "name": name,
-    "empId": empId,
-    "empCode": empCode,
-    "college": college,
-    "loginTime": loginTime?.toIso8601String(),
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "__v": v,
-    "logoutTime": logoutTime?.toIso8601String(),
-  };
-}
-
-class EmployeeData {
+class GetEmployeeDetails {
   String? id;
   String? name;
   String? empCode;
@@ -108,7 +53,7 @@ class EmployeeData {
   String? encodedImage;
   bool? reRegisteredFace;
 
-  EmployeeData({
+  GetEmployeeDetails({
     this.id,
     this.name,
     this.empCode,
@@ -136,7 +81,7 @@ class EmployeeData {
     this.reRegisteredFace,
   });
 
-  factory EmployeeData.fromJson(Map<String, dynamic> json) => EmployeeData(
+  factory GetEmployeeDetails.fromJson(Map<String, dynamic> json) => GetEmployeeDetails(
     id: json["_id"],
     name: json["name"],
     empCode: json["empCode"],

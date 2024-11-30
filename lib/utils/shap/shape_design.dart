@@ -14,7 +14,26 @@ class Shape {
       borderRadius: BorderRadius.circular(8),
     );
   }
-
+  static BoxDecoration cameraView(BuildContext context) {
+    return   BoxDecoration(
+      color: Color(0xff4787b4),
+      shape: BoxShape.circle,
+      boxShadow: [
+        BoxShadow(
+          color: Color(0xff246b9d),
+          offset: Offset(4, 4),
+          blurRadius: 8,
+          spreadRadius: 1,
+        ),
+        BoxShadow(
+          color: Color(0xff176daa),
+          offset: Offset(-4, -4),
+          blurRadius: 8,
+          spreadRadius: 1,
+        ),
+      ],
+    );
+  }
   static BoxDecoration scrollText(BuildContext context) {
     return BoxDecoration(
       color: Colors.cyan.shade50,

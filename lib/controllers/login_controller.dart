@@ -122,7 +122,7 @@ class LoginController extends GetxController {
           final recognizedUser = jsonResponse['recognized_user'];
 
           if (recognizedUser == empCode) {
-            await getAttendanceProfileData(context, recognizedUser);
+            await getProfileData(context, recognizedUser);
             Utils.showSuccessToast(
                 message: 'User Attendance Was Successfully Registered');
           } else if (recognizedUser ==
@@ -157,9 +157,9 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> getAttendanceProfileData(
+  Future<void> getProfileData(
       BuildContext context, String empCode) async {
-    final url = Uri.parse('${ApiStrings.profile}$empCode');
+    final url = Uri.parse('${ApiStrings.userProfile}$empCode');
     try {
       var response = await http.get(url);
 
@@ -187,4 +187,3 @@ class LoginController extends GetxController {
   }
 }
 
-//dialog box
