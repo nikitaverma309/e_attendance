@@ -10,7 +10,6 @@ import 'package:online/locator.dart';
 import 'package:online/modules/auth/camera_view_output.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
-import 'package:online/services/image_converter.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
@@ -102,8 +101,10 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
           _faceDetectorService.currentImage = cameraImage;
           _faceDetectorService.captureImage = false;
           Utils.printLog('Capturing new image...');
-          final imageFromCamera = convertCameraImage(cameraImage);
-          final File imgFile = await convertImageToFile(imageFromCamera);
+          // final imageFromCamera = convertCameraImage(cameraImage);
+          // final File imgFile = await convertImageToFile(imageFromCamera);
+          final File? imgFile =
+              await _faceDetectorService.cropFaceFromImage(cameraImage);
           if (mounted) {
             Get.off(() => LoginCameraViewTwo(
                   imageFile: imgFile,
@@ -122,14 +123,6 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
     Navigator.of(context).pop();
   }
 
-  _reload() {
-    setState(() {
-      // _bottomSheetVisible = false;
-      pictureTaken = true;
-    });
-    _start();
-  }
-
   static double mirror = math.pi;
 
   @override
@@ -146,8 +139,8 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
         height: height,
         child: Transform(
           alignment: Alignment.center,
-          //transform: Matrix4.rotationY(mirror),
-          transform: Matrix4.translationValues(0, 0, 0),
+          transform: Matrix4.rotationY(mirror),
+          //transform: Matrix4.translationValues(0, 0, 0),
          // transform: Matrix4.rotationY(0),
           child: FittedBox(
             fit: BoxFit.cover,
