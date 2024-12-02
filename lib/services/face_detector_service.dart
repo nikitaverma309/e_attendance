@@ -32,12 +32,12 @@ class FaceDetectorService {
   Future<void> detectFacesFromImage(CameraImage image) async {
     InputImageData firebaseImageMetadata = InputImageData(
       imageRotation:
-          _cameraService.cameraRotation ?? InputImageRotation.rotation0deg,
+      _cameraService.cameraRotation ?? InputImageRotation.rotation0deg,
       inputImageFormat: InputImageFormatValue.fromRawValue(image.format.raw) ??
           InputImageFormat.yuv_420_888,
       size: Size(image.width.toDouble(), image.height.toDouble()),
       planeData: image.planes.map(
-        (Plane plane) {
+            (Plane plane) {
           return InputImagePlaneMetadata(
             bytesPerRow: plane.bytesPerRow,
             height: plane.height,
@@ -66,13 +66,13 @@ class FaceDetectorService {
     try {
       InputImageData firebaseImageMetadata = InputImageData(
         imageRotation:
-            _cameraService.cameraRotation ?? InputImageRotation.rotation0deg,
+        _cameraService.cameraRotation ?? InputImageRotation.rotation0deg,
         inputImageFormat:
-            InputImageFormatValue.fromRawValue(cameraImage.format.raw) ??
-                InputImageFormat.yuv_420_888,
+        InputImageFormatValue.fromRawValue(cameraImage.format.raw) ??
+            InputImageFormat.yuv_420_888,
         size: Size(cameraImage.width.toDouble(), cameraImage.height.toDouble()),
         planeData: cameraImage.planes.map(
-          (Plane plane) {
+              (Plane plane) {
             return InputImagePlaneMetadata(
               bytesPerRow: plane.bytesPerRow,
               height: plane.height,
@@ -101,16 +101,24 @@ class FaceDetectorService {
 
       final img.Image originalImage = convertCameraImage(cameraImage);
 
-      // Adjust bounding box to ensure it's within image bounds
-      final x = boundingBox.left.toInt().clamp(0, originalImage.width - 1);
-      final y = boundingBox.top.toInt().clamp(0, originalImage.height - 1);
-      final width = boundingBox.width.toInt().clamp(0, originalImage.width - x);
-      final height =
-          boundingBox.height.toInt().clamp(0, originalImage.height - y);
+      // Expand the bounding box by 20% on each side
+      const double expansionFactor = 0.2;
+      final int extraWidth = (boundingBox.width * expansionFactor).toInt();
+      final int extraHeight = (boundingBox.height * expansionFactor).toInt();
+
+      // Adjust expanded bounding box to ensure it's within image bounds
+      final x = (boundingBox.left.toInt() - extraWidth)
+          .clamp(0, originalImage.width - 1);
+      final y = (boundingBox.top.toInt() - extraHeight)
+          .clamp(0, originalImage.height - 1);
+      final width = (boundingBox.width.toInt() + 2 * extraWidth)
+          .clamp(0, originalImage.width - x);
+      final height = (boundingBox.height.toInt() + 2 * extraHeight)
+          .clamp(0, originalImage.height - y);
 
       // Crop the face from the image
       final img.Image faceImage =
-          img.copyCrop(originalImage, x, y, width, height);
+      img.copyCrop(originalImage, x, y, width, height);
 
       final faceFile = convertImageToFile(faceImage);
 
