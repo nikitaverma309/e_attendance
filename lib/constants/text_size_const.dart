@@ -46,6 +46,16 @@ const kText15whiteColorStyle = TextStyle(
     fontFamily: 'Roboto-Thin',
     fontWeight: FontWeight.bold,
     color: Colors.white);
+const kTextBlackColorStyle = TextStyle(
+    fontSize: 18.0,
+    fontFamily: 'Roboto-Thin',
+    fontWeight: FontWeight.bold,
+    color: Colors.black);
+const kTextBlueColorStyle = TextStyle(
+    fontSize: 18.0,
+    fontFamily: 'Roboto-Thin',
+    fontWeight: FontWeight.bold,
+    color: Colors.indigo);
 const kWhite = TextStyle(
     fontSize: 17.0,
     fontFamily: 'Roboto-Thin',

@@ -6,9 +6,10 @@ import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:online/constants/string_res.dart';
 import 'package:online/enum/enum_screen.dart';
 import 'package:online/locator.dart';
-import 'package:online/modules/auth/camera_view_output.dart';
+import 'package:online/modules/auth/camera_view_pic.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/services/image_converter.dart';
@@ -18,7 +19,9 @@ import 'package:online/widgets/camera_widgets/camera_header.dart';
 
 class LoginCameraTwo extends StatefulWidget {
   final String attendanceId;
-  const LoginCameraTwo({super.key, required this.attendanceId});
+  final CameraAction action;
+  const LoginCameraTwo(
+      {super.key, required this.attendanceId, required this.action});
 
   @override
   LoginCameraTwoState createState() => LoginCameraTwoState();
@@ -126,7 +129,7 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
             Get.off(() => LoginCameraViewTwo(
                   imageFile: imgFile,
                   attendanceId: widget.attendanceId,
-                  action: CameraAction.attendance,
+                  action: widget.action,
                 ));
           }
         }
@@ -205,7 +208,9 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
         children: [
           body,
           CameraHeader(
-            "Login with face",
+            widget.action == CameraAction.login
+                ? "Login with face"
+                : Strings.signUp,
             onBackPressed: _onBackPressed,
           ),
         ],

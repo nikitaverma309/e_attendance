@@ -1,1 +1,1 @@
-enum CameraAction { attendance, registration }
+enum CameraAction { login, registration }

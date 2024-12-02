@@ -6,10 +6,35 @@ import 'package:online/models/droupDown/class_model.dart';
 import 'package:online/models/droupDown/designation_model.dart';
 import 'dart:convert';
 import 'package:online/models/profile/check_user_location_model.dart';
+import 'package:online/models/profile/profile_model.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 
 class ApiServices {
+  //Profile
+  static Future<ProfileModel?> profileApi(String empCode) async {
+    final url = Uri.parse('${ApiStrings.userProfile}$empCode');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return ProfileModel.fromJson(data);
+      } else {
+        CustomSnackbarError.showSnackbar(
+          title: "Error",
+          message: 'Employee data does not exist in the database.',
+        );
+        return null;
+      }
+    } catch (e) {
+      CustomSnackbarError.showSnackbar(
+        title: "Error",
+        message: 'An error occurred: $e',
+      );
+      return null;
+    }
+  }
+
   /// check Location
   static Future<List<UserLocationModel>?> getUserLocationApiServices(
       String empCode) async {
@@ -79,8 +104,7 @@ class ApiServices {
   //designation api
   static Future<List<DesignationModel>?> fetchClassByDesignation(
       String classId) async {
-    final url = Uri.parse(
-        '${ApiStrings.designation}/$classId');
+    final url = Uri.parse('${ApiStrings.designation}/$classId');
 
     try {
       final response = await http.get(url);

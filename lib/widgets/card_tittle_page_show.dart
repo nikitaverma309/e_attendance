@@ -16,6 +16,7 @@ class ResultOutPutCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               title,
@@ -25,8 +26,8 @@ class ResultOutPutCard extends StatelessWidget {
             Expanded(
               child: Text(
                 subTitle,
-                style: kText16BoldBlackColorStyle,
-                textAlign: TextAlign.justify,
+                style: kText15BaNaBoldBlackColorStyle,
+              
               ),
             ),
           ],

@@ -5,8 +5,9 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/user_Location_controller.dart';
+import 'package:online/enum/enum_screen.dart';
 import 'package:online/generated/assets.dart';
-import 'package:online/modules/auth/login/login_camera.dart';
+import 'package:online/modules/auth/camera_pic.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
@@ -16,7 +17,8 @@ import 'package:text_scroll/text_scroll.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 class FaceAttendanceScreen extends StatefulWidget {
-  const FaceAttendanceScreen({super.key});
+  final CameraAction action;
+  const FaceAttendanceScreen({super.key, required this.action});
 
   @override
   State<FaceAttendanceScreen> createState() => _FaceAttendanceScreenState();
@@ -32,10 +34,10 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xF5ECF4F5),
-      appBar: const CustomAppBar(
-        title: Strings.attendance,
+      appBar:  CustomAppBar(
+        title:  widget.action == CameraAction.login ?Strings.attendance:Strings.signUp,
         showBackButton: true,
-        actionWidget: Icon(
+        actionWidget: const Icon(
           Icons.more_vert,
           color: Color(0xff176daa),
         ),
@@ -103,6 +105,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: TextField(
                           controller: employeeIdCtr,
+
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(11),
@@ -261,70 +264,49 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                             employeeIdCtr.text, context);
                                     profileController.isLoading.value = false;
                                     profileController.isChecked.value = false;
-                                    if (profileController.employeeData.value !=
-                                        null) {
-                                      if (profileController
-                                                  .isLocationMatched.value ==
-                                              true &&
-                                          profileController
-                                                  .employeeData.value !=
-                                              null) {
-                                        // Location is matched, show success dialog
-                                        showSuccessDialog(
-                                          context: context,
-                                          subTitle: Strings.dataSuccess,
-                                          textHeading:
-                                              "Location Matched. You can proceed.",
-                                          navigateAfterDelay: true,
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginCameraTwo(
-                                                  attendanceId:
-                                                      employeeIdCtr.text,
-                                                ),
-                                              ),
-                                            );
-
-                                            profileController.isChecked.value =
-                                                false;
-                                            profileController.isLoading.value =
-                                                false;
-                                          },
-                                        );
-                                      } else {
-                                        // Location is incorrect, show location error dialog
-                                        showErrorDialog(
-                                          context: context,
-                                          subTitle:
-                                              "Your location doesn't match. Please try again.",
-                                          onPressed: () {
-                                            if (Navigator.canPop(context)) {
-                                              Navigator.pop(context);
-                                            }
-                                            profileController.isChecked.value =
-                                                false;
-                                            profileController.isLoading.value =
-                                                false;
-                                          },
-                                        );
-                                      }
-                                    } else {
-                                      profileController
-                                          .handleIncorrectAttempt();
-                                      showErrorDialog(
+                                    if (profileController
+                                                .isLocationMatched.value ==
+                                            true &&
+                                        profileController.employeeData.value !=
+                                            null) {
+                                      showSuccessDialog(
                                         context: context,
-                                        subTitle:
-                                            "Your Attendance ID was incorrect. Please try again.",
+                                        subTitle: Strings.dataSuccess,
+                                        textHeading:
+                                            "Location Matched. You can proceed.",
+                                        navigateAfterDelay: true,
                                         onPressed: () {
-                                          if (Navigator.canPop(context)) {
-                                            Navigator.pop(context);
-                                          }
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginCameraTwo(
+                                                attendanceId:
+                                                    employeeIdCtr.text,
+                                                    action: widget.action,
+                                              ),
+                                            ),
+                                          );
+
                                           profileController.isChecked.value =
                                               false;
                                           profileController.isLoading.value =
+                                              false;
+                                        },
+                                      );
+                                    } else {
+                                      showErrorDialog(
+                                        context: context,
+                                        subTitle: profileController
+                                                    .employeeData.value ==
+                                                null
+                                            ? "Your Attendance ID was incorrect. Please try again."
+                                            : "Your location doesn't match. Please try again.",
+                                        onPressed: () {
+                                          profileController
+                                              .handleIncorrectAttempt();
+                                          Navigator.pop(context);
+                                          profileController.isChecked.value =
                                               false;
                                         },
                                       );
@@ -335,9 +317,11 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                             );
                     }),
                     17.width,
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        Strings.notAttendance,
+                        widget.action == CameraAction.login
+                            ? Strings.notAttendance
+                            : Strings.notRegistration,
                         style: k13BoldBlackColorStyle,
                       ),
                     ),

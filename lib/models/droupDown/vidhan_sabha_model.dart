@@ -1,6 +1,4 @@
-// To parse this JSON data, do
-//
-//     final vidhanModel = vidhanModelFromJson(jsonString);
+
 
 import 'dart:convert';
 

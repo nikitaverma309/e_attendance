@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final designationModel = designationModelFromJson(jsonString);
 
 import 'dart:convert';
 

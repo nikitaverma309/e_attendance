@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/modules/home/home.dart';
+import 'package:online/modules/home/main_page.dart';
 import 'constants/string_res.dart';
 
 class FeatureShowCasePage extends StatefulWidget {
@@ -133,7 +134,7 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
                             backgroundColor: AppColors.primary,
                           ),
                           onPressed: () {
-                            Get.to(() => const MyHomePage());
+                            Get.to(() => const MainPage());
                           },
                           child: const Text(
                             'Get Started',
@@ -144,7 +145,7 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
                       children: [
                         TextButton(
                             onPressed: () {
-                              Get.to(() => const MyHomePage());
+                              Get.to(() => const MainPage());
                             },
                             child: Text(
                               "Skip",

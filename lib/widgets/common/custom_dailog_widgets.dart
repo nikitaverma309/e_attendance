@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:online/modules/home/registration_id_screen.dart';
+import 'package:online/enum/enum_screen.dart';
+import 'package:online/modules/auth/check_emp_id_screen.dart';
 import 'package:online/widgets/common/card_button.dart';
 
 void showMessageErrorDialog(String title, String message) {
@@ -30,7 +30,9 @@ void showMessageErrorDialog(String title, String message) {
           height: 50,
           text: "Ok  ",
           onPressed: () {
-            Get.off(() => const RegisterFaceAttendanceScreen());
+            Get.off(() => const FaceAttendanceScreen(
+                  action: CameraAction.registration,
+                ));
           },
         ),
       ],

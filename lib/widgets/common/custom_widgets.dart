@@ -187,8 +187,8 @@ class CustomSnackbarSuccessfully {
 
 void showSuccessDialog({
   required BuildContext context,
-  required String subTitle,
   String? textHeading,
+  required String subTitle,
   VoidCallback? onPressed,
   bool navigateAfterDelay = false,
 }) {
@@ -217,7 +217,15 @@ void showSuccessDialog({
     radius: 8.0,
     barrierDismissible: false,
     actions: [
-      const SizedBox.shrink(),
+      navigateAfterDelay == true
+          ? const SizedBox.shrink() // यदि navigateAfterDelay false है तो खाली Widget दिखाएं
+          : ButtonCard(
+        color: Colors.green,
+        width: 60,
+        height: 40,
+        text: "process",
+        onPressed: onPressed ?? () => Get.back(),
+      ),
     ],
   );
 }

@@ -36,7 +36,11 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
     return Scaffold(
       backgroundColor: const Color(0xff176daa),
       appBar: AppBar(
-        title: const Text(Strings.login, style: kText19BoldBlackColorStyle),
+        title: Text(
+            widget.action == CameraAction.login
+                ? Strings.login
+                : Strings.signUp,
+            style: kText19BoldBlackColorStyle),
         backgroundColor: const Color(0xff176daa),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -120,8 +124,7 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
 
                                 // फ़ाइल और एक्शन चेक करें
                                 if (widget.imageFile != null) {
-                                  if (widget.action ==
-                                      CameraAction.attendance) {
+                                  if (widget.action == CameraAction.login) {
                                     // अटेंडेंस के लिए API कॉल
                                     await loginController.uploadLogin(
                                       context,
@@ -142,7 +145,7 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
 
                                 loginController.isLoading.value = false;
                               },
-                              text: widget.action == CameraAction.attendance
+                              text: widget.action == CameraAction.login
                                   ? 'Mark Attendance'
                                   : 'Registration Now',
                             );

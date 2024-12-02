@@ -7,7 +7,6 @@ import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 
-
 class FaqScreen extends StatelessWidget {
   final List<Map<String, dynamic>> faqData = [
     {
@@ -47,7 +46,9 @@ class FaqScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: Strings.faq,
+        title: "FAQ",
+        showBackButton: false,
+        leadingWidget: null,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -72,7 +73,7 @@ class FaqScreen extends StatelessWidget {
               ),
             ),
             10.height,
-            const Text("Higher Education Department's",
+            Text("Higher Education Department's",
                 style: kText10BlueBlackColorStyle),
             16.height,
             Expanded(
@@ -127,7 +128,7 @@ class FaqScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomSheet: FooterWidget(),
+
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:online/api/api_strings.dart';
 import 'package:online/models/profile/profile_model.dart';
 import 'package:online/modules/home/home.dart';
+import 'package:online/modules/home/main_page.dart';
 import 'package:online/modules/profile/profile_screen.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_dailog_widgets.dart';
@@ -80,8 +81,8 @@ class LoginController extends GetxController {
         "Employee Code Verified and Please wait, the face verification is being processed.",
         "Employee Code: $message",
       );
-      Future.delayed(Duration(seconds: 4), () {
-        Get.off(() => const MyHomePage());
+      Future.delayed(const Duration(seconds: 4), () {
+        Get.off(() => const MainPage());
       });
     } else {
       showMessageErrorDialog(

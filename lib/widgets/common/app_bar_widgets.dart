@@ -25,24 +25,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xff176daa),
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: false,
       elevation: 7,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (showBackButton)
-            leadingWidget ??
-                Expanded(
-                  child: title != null
-                      ? Center(
-                          child: Text(
-                            title!,
-                            textAlign: TextAlign.center,
-                            style: kWhite.copyWith(color: Colors.white),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ),
+          Expanded(
+            child: title != null
+                ? Center(
+              child: Text(
+                title!,
+                textAlign: TextAlign.center,
+                style: kWhite.copyWith(color: Colors.white),
+              ),
+            )
+                : const SizedBox.shrink(),
+          ),
           if (actionWidget != null)
             actionWidget!
           else if (onActionButtonTap != null)
@@ -55,13 +53,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
         ],
       ),
-      leading: showBackButton
-          ? (leadingWidget ??
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: onBackTap ?? () => Navigator.of(context).pop(),
-              ))
-          : null,
+      leading: showBackButton ? leadingWidget : null,
     );
   }
 

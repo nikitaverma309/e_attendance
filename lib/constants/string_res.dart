@@ -24,8 +24,9 @@ class Strings {
   static const String introThreeT = "Boosting Security and Efficiency";
   static const String login = "Login Screen";
   static const String attendance = "Attendance Id";
+  static const String signUp = "Sign Up";
   static const String faq = "FAQs - Online Attendance";
-  static const String attendanceId =  "उपस्थिति आईडी\nAttendance Screen";
+  static const String attendanceId =  "उपस्थिति आईडी\nAttendance ID";
   static const String higherEducation =   "Higher Education Department";
   //error Alert
   static const String attendanceAlert =   "Please enter your Attendance ID before proceeding.";
