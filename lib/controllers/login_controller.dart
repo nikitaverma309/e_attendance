@@ -6,6 +6,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:online/api/api_strings.dart';
 import 'package:online/models/profile/profile_model.dart';
+import 'package:online/modules/home/home.dart';
 import 'package:online/modules/profile/profile_screen.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_dailog_widgets.dart';
@@ -15,7 +16,7 @@ class LoginController extends GetxController {
 
   var imageFile = Rxn<File>();
 
-  Future<void> uploadFileSignUp(int empCode, File file) async {
+  Future<void> signUp(int empCode, File file) async {
     final url = Uri.parse("${ApiStrings.register}$empCode");
     print("Request URL: $url");
 
@@ -63,7 +64,6 @@ class LoginController extends GetxController {
       Utils.printLog('Error: $error');
     }
   }
-
   void handleResponseRegister(String message) {
     if (message.contains("User ID does not exist.")) {
       showMessageErrorDialog(
@@ -80,6 +80,9 @@ class LoginController extends GetxController {
         "Employee Code Verified and Please wait, the face verification is being processed.",
         "Employee Code: $message",
       );
+      Future.delayed(Duration(seconds: 4), () {
+        Get.off(() => const MyHomePage());
+      });
     } else {
       showMessageErrorDialog(
         "Unexpected Response. Please Contact the Administrator.",
@@ -87,6 +90,30 @@ class LoginController extends GetxController {
       );
     }
   }
+
+  // void handleResponseRegister(String message) {
+  //   if (message.contains("User ID does not exist.")) {
+  //     showMessageErrorDialog(
+  //       "Employee Code Not Registered. Please Contact the Administrator.",
+  //       message,
+  //     );
+  //   } else if (message.contains("Employee Not Verified")) {
+  //     showMessageErrorDialog(
+  //       "Employee Not Verified. Please Contact the Administrator.",
+  //       message,
+  //     );
+  //   } else if (message.contains(RegExp(r'^\d{11}$'))) {
+  //     showMessageErrorDialog(
+  //       "Employee Code Verified and Please wait, the face verification is being processed.",
+  //       "Employee Code njkn: $message",
+  //     );
+  //   } else {
+  //     showMessageErrorDialog(
+  //       "Unexpected Response. Please Contact the Administrator.",
+  //       message,
+  //     );
+  //   }
+  // }
 
   Future<void> uploadLogin(
     BuildContext context,
@@ -122,7 +149,7 @@ class LoginController extends GetxController {
           final recognizedUser = jsonResponse['recognized_user'];
 
           if (recognizedUser == empCode) {
-            await getAttendanceProfileData(context, recognizedUser);
+            await getProfileData(context, recognizedUser);
             Utils.showSuccessToast(
                 message: 'User Attendance Was Successfully Registered');
           } else if (recognizedUser ==
@@ -157,9 +184,9 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> getAttendanceProfileData(
+  Future<void> getProfileData(
       BuildContext context, String empCode) async {
-    final url = Uri.parse('${ApiStrings.profile}$empCode');
+    final url = Uri.parse('${ApiStrings.userProfile}$empCode');
     try {
       var response = await http.get(url);
 
@@ -187,4 +214,3 @@ class LoginController extends GetxController {
   }
 }
 
-//dialog box

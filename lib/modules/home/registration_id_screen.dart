@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/controllers/profile_ctr/profile_controller.dart';
+import 'package:online/controllers/user_Location_controller.dart';
 import 'package:online/generated/assets.dart';
+import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/utils/shap/shape_design.dart';
+import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
@@ -24,8 +26,8 @@ class RegisterFaceAttendanceScreen extends StatefulWidget {
 
 class _RegisterFaceAttendanceScreenState
     extends State<RegisterFaceAttendanceScreen> {
-  final CheckStatusController profileController =
-      Get.put(CheckStatusController());
+  final UserLocationController profileController =
+      Get.put(UserLocationController());
   TextEditingController emailCtr = TextEditingController();
 
   @override
@@ -130,65 +132,104 @@ class _RegisterFaceAttendanceScreenState
                                   showErrorDialog(
                                     context: context,
                                     subTitle: Strings.attendanceAlert,
-                                    textHeading: "Error",
-                                    onPressed: () {
-                                      Get.back();
-                                    },
                                   );
-
                                   return;
                                 }
-
                                 profileController.isChecked.value =
                                     newValue ?? false;
-
-                                if (profileController.isChecked.value) {
-                                  profileController.isLoading.value = true;
-                                  await profileController.getCheckStatusLatLong(
-                                      emailCtr.text, context);
-                                  profileController.isLoading.value = false;
+                                var connectivityResult =
+                                    await Connectivity().checkConnectivity();
+                                if (connectivityResult ==
+                                    ConnectivityResult.none) {
+                                  showErrorDialog(
+                                    context: context,
+                                    subTitle:
+                                        "No internet connection. Please check your internet connection.",
+                                  );
                                   profileController.isChecked.value = false;
-                                  if (profileController.employeeData.value !=
-                                      null) {
-                                    showSuccessDialog(
-                                      context: context,
-                                      subTitle: Strings.dataSuccess,
-                                      textHeading: "Employee Code registered",
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                RegistrationScreen(
-                                              attendanceId: emailCtr.text,
-                                            ),
-                                          ),
-                                        );
-
-                                        profileController.isChecked.value =
-                                            false;
-                                        profileController.isLoading.value =
-                                            false;
-                                      },
-                                    );
-                                  } else {
+                                  return;
+                                }
+                                if (profileController.isChecked.value) {
+                                  if (profileController.isBlocked.value) {
                                     showErrorDialog(
                                       context: context,
-                                      subTitle:
-                                          "Your Attendance ID was incorrect. Please try again.",
-                                      textHeading: "Error",
-                                      onPressed: () {
-                                        if (Navigator.canPop(context)) {
-                                          Navigator.pop(
-                                              context); // केवल वापस जाने का प्रयास करें, नया स्क्रीन न बनाएं
-                                        }
-                                        profileController.isChecked.value =
-                                            false;
-                                        profileController.isLoading.value =
-                                            false;
-                                      },
+                                      subTitle: "Please try after 10 seconds.",
+                                      permanentlyDisableButton: true,
                                     );
+                                    profileController.isChecked.value = false;
+                                  } else {
+                                    Utils.printLog("after 10 seconds");
+                                    profileController.isLoading.value = true;
+
+                                    await profileController
+                                        .getCheckStatusLatLong(
+                                            emailCtr.text, context);
+                                    profileController.isLoading.value = false;
+                                    profileController.isChecked.value = false;
+                                    if (profileController.employeeData.value !=
+                                        null&&profileController
+                                        .isLocationMatched.value==true) {
+                                      if (profileController
+                                          .isLocationMatched.value) {
+                                        // Location is matched, show success dialog
+                                        showSuccessDialog(
+                                          context: context,
+                                          subTitle: Strings.dataSuccess,
+                                          textHeading:
+                                              "Location Matched. You can proceed.",
+                                          navigateAfterDelay: true,
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RegistrationScreen(
+                                                  attendanceId: emailCtr.text,
+                                                ),
+                                              ),
+                                            );
+
+                                            profileController.isChecked.value =
+                                                false;
+                                            profileController.isLoading.value =
+                                                false;
+                                          },
+                                        );
+                                      } else {
+                                        // Location is incorrect, show location error dialog
+                                        showErrorDialog(
+                                          context: context,
+                                          subTitle:
+                                              "Your location doesn't match. Please try again.",
+                                          onPressed: () {
+                                            if (Navigator.canPop(context)) {
+                                              Navigator.pop(context);
+                                            }
+                                            profileController.isChecked.value =
+                                                false;
+                                            profileController.isLoading.value =
+                                                false;
+                                          },
+                                        );
+                                      }
+                                    } else {
+                                      profileController
+                                          .handleIncorrectAttempt();
+                                      showErrorDialog(
+                                        context: context,
+                                        subTitle:
+                                            "Your Attendance ID was incorrect. Please try again.",
+                                        onPressed: () {
+                                          if (Navigator.canPop(context)) {
+                                            Navigator.pop(context);
+                                          }
+                                          profileController.isChecked.value =
+                                              false;
+                                          profileController.isLoading.value =
+                                              false;
+                                        },
+                                      );
+                                    }
                                   }
                                 }
                               },

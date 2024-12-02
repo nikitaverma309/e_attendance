@@ -6,13 +6,11 @@ class AppColors {
   static const kSecondaryColor = Color(0xFFFE9901);
   static const Color scaffoldTopGradientClr = Color(0xff8D8AD3);
   static const Color scaffoldBottomGradientClr = Color(0xff454362);
-  static const Color overlayContainerClr = Color(0xff2E2E2E);
   static const kContentColorLightTheme = Color(0xFF1D1D35);
   static const kContentColorDarkTheme = Color(0xFFF5FCF9);
   static const warningColor = Color(0xFFF3BB1C);
   static const kErrorColor = Color(0xFFF03738);
   static const Color primary = Color(0xff1d3a69);
-
   static const Color primaryB = Color(0xff04183b);
   static const Color primary_80 = Color(0xCC311629);
   static const Color white = Color(0xffffffff);
@@ -53,7 +51,7 @@ class AppColors {
   static const Color violet = Color(0xFF8764C3);
   static const Color athensGray = Color(0xFFEDEEF2);
   static const Color codGray = Color(0xFF1A1A1A);
-  static const Color black = Color(0xff20262C);
-  static const Color blackPure = Color(0xff000000);
+  static const Color black = Color(0xff000000);
+
   static const Color blue = Color(0xFF4045EE);
 }

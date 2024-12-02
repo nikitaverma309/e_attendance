@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:image/image.dart' as imglib;
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -99,11 +100,28 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
         }
 
         if (_faceDetectorService.captureImage) {
+          //    _faceDetectorService.currentImage = cameraImage;
+          //    _faceDetectorService.captureImage = false;
+          //    Utils.printLog('Capturing new image...');
+          // //final imageFromCamera = convertCameraImage(cameraImage);
+          //    // final File imgFile = await convertImageToFile(imageFromCamera);
+          //    final File? imgFile =
+          //        await _faceDetectorService.cropFaceFromImage(cameraImage);
+          //    if (mounted) {
+          //      Get.off(() => LoginCameraViewTwo(
+          //            imageFile: imgFile,
+          //            attendanceId: widget.attendanceId,
+          //            action: CameraAction.attendance,
+          //          ));
+          //    }
           _faceDetectorService.currentImage = cameraImage;
           _faceDetectorService.captureImage = false;
           Utils.printLog('Capturing new image...');
-          final imageFromCamera = convertCameraImage(cameraImage);
-          final File imgFile = await convertImageToFile(imageFromCamera);
+          final imglib.Image? imgCrop =
+              await _faceDetectorService.cropFaceFromImage(cameraImage);
+          print("crop $imgCrop");
+          final File imgFile = await convertImageToFile(imgCrop!);
+          print("file img$imgFile");
           if (mounted) {
             Get.off(() => LoginCameraViewTwo(
                   imageFile: imgFile,
@@ -120,14 +138,6 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
 
   _onBackPressed() {
     Navigator.of(context).pop();
-  }
-
-  _reload() {
-    setState(() {
-      // _bottomSheetVisible = false;
-      pictureTaken = true;
-    });
-    _start();
   }
 
   static double mirror = math.pi;
@@ -147,6 +157,8 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
         child: Transform(
           alignment: Alignment.center,
           transform: Matrix4.rotationY(mirror),
+          //transform: Matrix4.translationValues(0, 0, 0),
+          // transform: Matrix4.rotationY(0),
           child: FittedBox(
             fit: BoxFit.cover,
             child: Image.file(File(imagePath!)),

@@ -10,8 +10,7 @@ const white10ColorStyle = TextStyle(
 const kText10WhiteColorStyle = TextStyle(
     fontSize: 10.0, fontWeight: FontWeight.w400, color: AppColors.white);
 
-const kText19BoldWhiteColor = TextStyle(
-    fontSize: 14.0, fontWeight: FontWeight.bold, color: AppColors.blackPure);
+
 const kText13BoldWhiteColor = TextStyle(
     fontSize: 12.0, fontWeight: FontWeight.bold, color: AppColors.white);
 const textBoldTitleTextColor = TextStyle(

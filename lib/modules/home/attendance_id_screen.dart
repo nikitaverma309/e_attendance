@@ -4,15 +4,16 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/controllers/profile_ctr/profile_controller.dart';
+import 'package:online/controllers/user_Location_controller.dart';
 import 'package:online/generated/assets.dart';
+import 'package:online/modules/auth/login/login_camera.dart';
 import 'package:online/utils/shap/shape_design.dart';
+import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 import 'package:text_scroll/text_scroll.dart';
-
-import '../auth/login/login_camera.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class FaceAttendanceScreen extends StatefulWidget {
   const FaceAttendanceScreen({super.key});
@@ -22,10 +23,10 @@ class FaceAttendanceScreen extends StatefulWidget {
 }
 
 class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
-  final CheckStatusController profileController =
-      Get.put(CheckStatusController());
-  TextEditingController emailCtr = TextEditingController();
-  FocusNode _focusNode = FocusNode(); // TextField पर Focus देने के लिए
+  final UserLocationController profileController =
+      Get.put(UserLocationController());
+  TextEditingController employeeIdCtr = TextEditingController();
+  FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +102,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                         decoration: Shape.submitContainerRed(context),
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: TextField(
-                          controller: emailCtr,
+                          controller: employeeIdCtr,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(11),
@@ -125,6 +126,93 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 child: Row(
                   children: [
                     11.width,
+                    // Obx(() {
+                    //   bool isButtonDisabled = profileController.isLoading.value;
+                    //
+                    //   return isButtonDisabled
+                    //       ? const Center(
+                    //           child: CircularProgressIndicator(),
+                    //         )
+                    //       : Checkbox(
+                    //           value: profileController.isChecked.value,
+                    //           onChanged: (bool? newValue) async {
+                    //             if (employeeIdCtr.text.isEmpty) {
+                    //               showErrorDialog(
+                    //                 context: context,
+                    //                 subTitle: Strings.attendanceAlert,
+                    //               );
+                    //               return;
+                    //             }
+                    //             profileController.isChecked.value =
+                    //                 newValue ?? false;
+                    //
+                    //             if (profileController.isChecked.value) {
+                    //               if (profileController.isBlocked.value) {
+                    //                 showErrorDialog(
+                    //                   context: context,
+                    //                   subTitle: "Please try after 10 seconds.",
+                    //                   permanentlyDisableButton: true,
+                    //                 );
+                    //               } else {
+                    //                 Utils.printLog("after 10 seconds");
+                    //                 profileController.isLoading.value = true;
+                    //
+                    //                 await profileController
+                    //                     .getCheckStatusLatLong(
+                    //                         employeeIdCtr.text, context);
+                    //                 profileController.isLoading.value = false;
+                    //                 profileController.isChecked.value = false;
+                    //                 if (profileController.employeeData.value !=
+                    //                         null &&
+                    //                     profileController
+                    //                         .isLocationMatched.value) {
+                    //                   showSuccessDialog(
+                    //                     context: context,
+                    //                     subTitle: Strings.dataSuccess,
+                    //                     textHeading:
+                    //                         "Location Matched. You can proceed.",
+                    //                     navigateAfterDelay: true,
+                    //                     onPressed: () {
+                    //                       Navigator.push(
+                    //                         context,
+                    //                         MaterialPageRoute(
+                    //                           builder: (context) =>
+                    //                               LoginCameraTwo(
+                    //                             attendanceId:
+                    //                                 employeeIdCtr.text,
+                    //                           ),
+                    //                         ),
+                    //                       );
+                    //
+                    //                       profileController.isChecked.value =
+                    //                           false;
+                    //                       profileController.isLoading.value =
+                    //                           false;
+                    //                     },
+                    //                   );
+                    //                 } else {
+                    //                   profileController
+                    //                       .handleIncorrectAttempt();
+                    //                   showErrorDialog(
+                    //                     context: context,
+                    //                     subTitle:
+                    //                         "Your Attendance ID was incorrect. Please try again.",
+                    //                     onPressed: () {
+                    //                       if (Navigator.canPop(context)) {
+                    //                         Navigator.pop(context);
+                    //                       }
+                    //                       profileController.isChecked.value =
+                    //                           false;
+                    //                       profileController.isLoading.value =
+                    //                           false;
+                    //                     },
+                    //                   );
+                    //                 }
+                    //               }
+                    //             }
+                    //           },
+                    //         );
+                    // }),
                     Obx(() {
                       bool isButtonDisabled = profileController.isLoading.value;
 
@@ -135,69 +223,112 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                           : Checkbox(
                               value: profileController.isChecked.value,
                               onChanged: (bool? newValue) async {
-                                if (emailCtr.text.isEmpty) {
+                                if (employeeIdCtr.text.isEmpty) {
                                   showErrorDialog(
                                     context: context,
                                     subTitle: Strings.attendanceAlert,
-                                    textHeading: "Error",
-                                    onPressed: () {
-                                      Get.back();
-                                    },
                                   );
-
                                   return;
                                 }
-
                                 profileController.isChecked.value =
                                     newValue ?? false;
-
-                                if (profileController.isChecked.value) {
-                                  profileController.isLoading.value = true;
-                                  await profileController.getCheckStatusLatLong(
-                                      emailCtr.text, context);
-                                  profileController.isLoading.value = false;
+                                var connectivityResult =
+                                    await Connectivity().checkConnectivity();
+                                if (connectivityResult ==
+                                    ConnectivityResult.none) {
+                                  showErrorDialog(
+                                    context: context,
+                                    subTitle:
+                                        "No internet connection. Please check your internet connection.",
+                                  );
                                   profileController.isChecked.value = false;
-                                  if (profileController.employeeData.value !=
-                                      null) {
-                                    showSuccessDialog(
-                                      context: context,
-                                      subTitle: Strings.dataSuccess,
-                                      textHeading: "Employee Code registered",
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                LoginCameraTwo(
-                                              attendanceId: emailCtr.text,
-                                            ),
-                                          ),
-                                        );
-
-                                        profileController.isChecked.value =
-                                            false;
-                                        profileController.isLoading.value =
-                                            false;
-                                      },
-                                    );
-                                  } else {
+                                  return;
+                                }
+                                if (profileController.isChecked.value) {
+                                  if (profileController.isBlocked.value) {
                                     showErrorDialog(
                                       context: context,
-                                      subTitle:
-                                          "Your Attendance ID was incorrect. Please try again.",
-                                      textHeading: "Error",
-                                      onPressed: () {
-                                        if (Navigator.canPop(context)) {
-                                          Navigator.pop(
-                                              context); // केवल वापस जाने का प्रयास करें, नया स्क्रीन न बनाएं
-                                        }
-                                        profileController.isChecked.value =
-                                            false;
-                                        profileController.isLoading.value =
-                                            false;
-                                      },
+                                      subTitle: "Please try after 10 seconds.",
+                                      permanentlyDisableButton: true,
                                     );
+                                    profileController.isChecked.value = false;
+                                  } else {
+                                    Utils.printLog("after 10 seconds");
+                                    profileController.isLoading.value = true;
+
+                                    await profileController
+                                        .getCheckStatusLatLong(
+                                            employeeIdCtr.text, context);
+                                    profileController.isLoading.value = false;
+                                    profileController.isChecked.value = false;
+                                    if (profileController.employeeData.value !=
+                                        null) {
+                                      if (profileController
+                                                  .isLocationMatched.value ==
+                                              true &&
+                                          profileController
+                                                  .employeeData.value !=
+                                              null) {
+                                        // Location is matched, show success dialog
+                                        showSuccessDialog(
+                                          context: context,
+                                          subTitle: Strings.dataSuccess,
+                                          textHeading:
+                                              "Location Matched. You can proceed.",
+                                          navigateAfterDelay: true,
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LoginCameraTwo(
+                                                  attendanceId:
+                                                      employeeIdCtr.text,
+                                                ),
+                                              ),
+                                            );
+
+                                            profileController.isChecked.value =
+                                                false;
+                                            profileController.isLoading.value =
+                                                false;
+                                          },
+                                        );
+                                      } else {
+                                        // Location is incorrect, show location error dialog
+                                        showErrorDialog(
+                                          context: context,
+                                          subTitle:
+                                              "Your location doesn't match. Please try again.",
+                                          onPressed: () {
+                                            if (Navigator.canPop(context)) {
+                                              Navigator.pop(context);
+                                            }
+                                            profileController.isChecked.value =
+                                                false;
+                                            profileController.isLoading.value =
+                                                false;
+                                          },
+                                        );
+                                      }
+                                    } else {
+                                      profileController
+                                          .handleIncorrectAttempt();
+                                      showErrorDialog(
+                                        context: context,
+                                        subTitle:
+                                            "Your Attendance ID was incorrect. Please try again.",
+                                        onPressed: () {
+                                          if (Navigator.canPop(context)) {
+                                            Navigator.pop(context);
+                                          }
+                                          profileController.isChecked.value =
+                                              false;
+                                          profileController.isLoading.value =
+                                              false;
+                                        },
+                                      );
+                                    }
                                   }
                                 }
                               },
@@ -231,15 +362,15 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                         String selectedValue =
                             profileController.attendanceIds[index];
                         if (selectedValue == "Reset") {
-                          emailCtr.clear();
+                          employeeIdCtr.clear();
                         } else if (selectedValue == "Back") {
-                          String currentText = emailCtr.text;
+                          String currentText = employeeIdCtr.text;
                           if (currentText.isNotEmpty) {
-                            emailCtr.text = currentText.substring(
+                            employeeIdCtr.text = currentText.substring(
                                 0, currentText.length - 1);
                           }
-                        } else if (emailCtr.text.length < 11) {
-                          emailCtr.text += selectedValue;
+                        } else if (employeeIdCtr.text.length < 11) {
+                          employeeIdCtr.text += selectedValue;
                         }
                         FocusScope.of(context).requestFocus(_focusNode);
                       },

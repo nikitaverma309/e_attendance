@@ -188,11 +188,21 @@ class CustomSnackbarSuccessfully {
 void showSuccessDialog({
   required BuildContext context,
   required String subTitle,
-  required String textHeading,
-  required VoidCallback onPressed,
+  String? textHeading,
+  VoidCallback? onPressed,
+  bool navigateAfterDelay = false,
 }) {
+  if (navigateAfterDelay) {
+    Future.delayed(const Duration(seconds: 2), () {
+      if (Get.isDialogOpen!) {
+        Get.back();
+        onPressed?.call();
+      }
+    });
+  }
+
   Get.defaultDialog(
-    title: textHeading, // Dialog title
+    title: textHeading ?? "Success",
     titleStyle: const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.bold,
@@ -201,22 +211,13 @@ void showSuccessDialog({
     middleText: subTitle,
     middleTextStyle: const TextStyle(
       fontSize: 12,
+      fontWeight: FontWeight.bold,
       color: Colors.black87,
     ),
-    radius: 8.0, // Rounded corners for dialog box
-    contentPadding: const EdgeInsets.all(16.0),
-    barrierDismissible: false, // Prevent dismissing by tapping outside
+    radius: 8.0,
+    barrierDismissible: false,
     actions: [
-      ElevatedButton.icon(
-        onPressed: onPressed, // Use the custom action passed as a parameter
-        icon: const Icon(Icons.check_circle, color: Colors.white),
-        label: const Text("Proceed"),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          textStyle: const TextStyle(fontSize: 16),
-        ),
-      ),
+      const SizedBox.shrink(),
     ],
   );
 }
@@ -224,11 +225,22 @@ void showSuccessDialog({
 void showErrorDialog({
   required BuildContext context,
   required String subTitle,
-  required String textHeading,
-  required VoidCallback onPressed,
+  String? textHeading,
+  VoidCallback? onPressed, // Optional onPressed parameter
+  bool permanentlyDisableButton = false,
 }) {
+  RxBool isButtonDisabled = permanentlyDisableButton.obs;
+
+  if (permanentlyDisableButton) {
+    Future.delayed(const Duration(seconds: 10), () {
+      if (Get.isDialogOpen!) {
+        Get.back();
+        onPressed?.call();
+      }
+    });
+  }
   Get.defaultDialog(
-    title: textHeading, // Dialog title
+    title: textHeading ?? "Error",
     titleStyle: const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.bold,
@@ -240,16 +252,21 @@ void showErrorDialog({
       color: Colors.black87,
     ),
     radius: 8.0,
-
     barrierDismissible: false,
     actions: [
-      ButtonCard(
-        color: Colors.red,
-        width: 110,
-        height: 40,
-        text: "Proceed  ",
-        onPressed: onPressed,
-      ),
+      Obx(() {
+        if (isButtonDisabled.value) {
+          return const SizedBox.shrink();
+        } else {
+          return ButtonCard(
+            color: Colors.red,
+            width: 60,
+            height: 40,
+            text: "Ok",
+            onPressed: onPressed ?? () => Get.back(),
+          );
+        }
+      }),
     ],
   );
 }

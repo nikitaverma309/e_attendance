@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:online/modules/home/attendance_id_screen.dart';
 import 'package:online/modules/home/registration_id_screen.dart';
 import 'package:online/widgets/common/card_button.dart';
 

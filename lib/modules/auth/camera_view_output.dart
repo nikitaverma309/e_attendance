@@ -7,6 +7,7 @@ import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/login_controller.dart';
 import 'package:online/enum/enum_screen.dart';
+import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/footer_widget.dart';
 
@@ -40,24 +41,7 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            decoration: const BoxDecoration(
-              color: Color(0xff4787b4),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xff246b9d),
-                  offset: Offset(4, 4),
-                  blurRadius: 8,
-                  spreadRadius: 1,
-                ),
-                BoxShadow(
-                  color: Color(0xff176daa),
-                  offset: Offset(-4, -4),
-                  blurRadius: 8,
-                  spreadRadius: 1,
-                ),
-              ],
-            ),
+            decoration: Shape.cameraView(context),
             child: IconButton(
               icon: const Icon(Icons.arrow_back),
               color: Colors.white,
@@ -131,7 +115,7 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                       return loginController.isLoading.value
                           ? const CircularProgressIndicator()
                           : CommonButton(
-                        onPressed: () async {
+                              onPressed: () async {
                                 loginController.isLoading.value = true;
 
                                 // फ़ाइल और एक्शन चेक करें
@@ -149,7 +133,7 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                                     // लॉगिन के लिए API कॉल
                                     int? employeeCode =
                                         int.tryParse(widget.attendanceId!);
-                                    await loginController.uploadFileSignUp(
+                                    await loginController.signUp(
                                       employeeCode!,
                                       widget.imageFile!,
                                     );

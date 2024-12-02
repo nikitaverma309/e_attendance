@@ -1,34 +1,34 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:online/api/api_services.dart';
-import 'package:online/models/profile/check_status_Register_Employee_model.dart';
+import 'package:online/api/get_api_services.dart';
+import 'package:online/models/profile/check_user_location_model.dart';
 import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
 import 'package:online/utils/utils.dart';
 
-class CheckStatusController extends GetxController {
+class UserLocationController extends GetxController {
   var isLoading = false.obs;
   final isChecked = false.obs;
   final isLocationMatched = false.obs;
-  var incorrectAttempts = 0.obs; // To track incorrect attempts
-  var isBlocked = false.obs; // To block the user
+  var incorrectAttempts = 0.obs;
+  var isBlocked = false.obs;
   Timer? blockTimer;
 
-// Method to reset the block state
   void resetBlock() {
+    Utils.printLog("timer reset after 10seconds");
     incorrectAttempts.value = 0;
     isBlocked.value = false;
     blockTimer?.cancel();
   }
 
-// Method to handle incorrect attempts
   void handleIncorrectAttempt() {
     incorrectAttempts.value++;
     if (incorrectAttempts.value >= 3) {
       isBlocked.value = true;
-      blockTimer = Timer(const Duration(seconds: 10), resetBlock);
+      blockTimer = Timer(const Duration(seconds: 13), resetBlock);
     }
   }
 
@@ -38,7 +38,7 @@ class CheckStatusController extends GetxController {
     super.onClose();
   }
 
-  var employeeData = Rx<CheckStatusModelProfileLatLong?>(null);
+  var employeeData = Rx<UserLocationModel?>(null);
   var attendanceIds = <String>[
     "1",
     "2",
@@ -57,53 +57,46 @@ class CheckStatusController extends GetxController {
   Future<void> getCheckStatusLatLong(
       String empCode, BuildContext context) async {
     isLoading(true);
-
     try {
-      // Fetch employee data using ApiServices
       var employeeDetails =
-          await ApiServices.getCheckEmployeeLatLongApiServices(empCode);
+          await ApiServices.getUserLocationApiServices(empCode);
 
       if (employeeDetails != null && employeeDetails.isNotEmpty) {
-        employeeData.value =
-            employeeDetails[0]; // Assuming first element is needed
-
-        // Fetch current location
-        Position currentPosition =
-            await determinePosition(context); // Pass context here
+        employeeData.value = employeeDetails[0];
+        Position currentPosition = await determinePosition(context);
         double currentLat = currentPosition.latitude;
         double currentLong = currentPosition.longitude;
-
-        // Validate location data
-        if (employeeData.value?.collegeDetails?.lat != null &&
-            employeeData.value?.collegeDetails?.long != null) {
-          double apiLat =
-              double.tryParse(employeeData.value!.collegeDetails!.lat!) ?? 0.0;
-          double apiLong =
-              double.tryParse(employeeData.value!.collegeDetails!.long!) ?? 0.0;
-
-          // Calculate distance between current location and API location
+        double? compareLat = double.tryParse(kDebugMode
+            ? employeeData.value!.collegeDetails!.lat!
+            : employeeData.value!.collegeDetails!.lat!);
+        double? compareLong = double.tryParse(kDebugMode
+            ? employeeData.value!.collegeDetails!.long!
+            : employeeData.value!.collegeDetails!.long!);
+        if (compareLat != null && compareLong != null) {
           double distanceInMeters = Geolocator.distanceBetween(
             currentLat,
             currentLong,
-            apiLat,
-            apiLong,
+            compareLat,
+            compareLong,
           );
+          Utils.printLog("Current Location: ($currentLat, $currentLong)");
+          Utils.printLog("API Location: ($compareLat, $compareLong)");
+          Utils.printLog(
+              "check lat home : (${employeeData.value!.collegeDetails!.long})");
+          Utils.printLog(
+              "check lat : (${employeeData.value!.collegeDetails!.long})");
+          Utils.printLog("Distance: $distanceInMeters meters");
 
-          print("Current Location: ($currentLat, $currentLong)");
-          print("API Location: ($apiLat, $apiLong)");
-          print("Distance: $distanceInMeters meters");
-
-          // Check if location matches
           if (distanceInMeters <= 160) {
             Utils.showSuccessToast(
                 message: 'Location Matched. You can proceed.');
-            isChecked.value = true; // Enable checkbox
-            isLocationMatched.value = true; // Enable checkbox
+            isChecked.value = true;
+            isLocationMatched.value = true;
           } else {
             Utils.showErrorToast(
                 message: 'Your location does not match the required location.');
-            isChecked.value = false; // Disable checkbox
-            isLocationMatched.value = false; // Disable checkbox
+            isChecked.value = false;
+            isLocationMatched.value = false;
           }
         } else {
           Utils.showErrorToast(
@@ -124,4 +117,3 @@ class CheckStatusController extends GetxController {
     isLoading(false);
   }
 }
-

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:camera/camera.dart';
+import 'package:image/image.dart' as imglib;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
@@ -101,16 +102,31 @@ class RegistrationScreenState extends State<RegistrationScreen> {
         if (_faceDetectorService.captureImage) {
           _faceDetectorService.currentImage = cameraImage;
           _faceDetectorService.captureImage = false;
-          final imageFromCamera = convertCameraImage(cameraImage);
-          final File imgFile = await convertImageToFile(imageFromCamera);
-
+          Utils.printLog('Capturing new image...');
+          final imglib.Image? imgCrop =
+          await _faceDetectorService.cropFaceFromImage(cameraImage);
+          print("crop $imgCrop");
+          final File imgFile = await convertImageToFile(imgCrop!);
+          print("file img$imgFile");
           if (mounted) {
             Get.off(() => LoginCameraViewTwo(
-                  imageFile: imgFile,
-                  attendanceId: widget.attendanceId,
-                  action: CameraAction.registration,
-                ));
+              imageFile: imgFile,
+              attendanceId: widget.attendanceId,
+              action: CameraAction.registration,
+            ));
           }
+          // _faceDetectorService.currentImage = cameraImage;
+          // _faceDetectorService.captureImage = false;
+          // final imageFromCamera = convertCameraImage(cameraImage);
+          // final File imgFile = await convertImageToFile(imageFromCamera);
+          //
+          // if (mounted) {
+          //   Get.off(() => LoginCameraViewTwo(
+          //         imageFile: imgFile,
+          //         attendanceId: widget.attendanceId,
+          //         action: CameraAction.registration,
+          //       ));
+          // }
         }
       } catch (e) {
         Utils.printLog('Error in face detection: $e');
