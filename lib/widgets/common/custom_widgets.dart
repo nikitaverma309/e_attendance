@@ -22,7 +22,7 @@ Widget customButton(BuildContext context, String label, Color bgColor,
           ],
         ),
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
         width: MediaQuery.of(context).size.width * 0.6,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

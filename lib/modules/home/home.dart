@@ -9,7 +9,6 @@ import 'package:online/enum/enum_screen.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/check_emp_id_screen.dart';
 import 'package:online/modules/profile/profile_screen.dart';
-import 'package:online/screens/comman_screen/faq_screen.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
@@ -39,126 +38,135 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xff176daa),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        DropdownButton<String>(
-                          icon:
-                              const Icon(Icons.more_vert, color: Colors.white),
-                          dropdownColor: Colors.white,
-                          underline: const SizedBox(),
-                          items: const [
-                            DropdownMenuItem(
-                              value: 'page1',
-                              child: Text('Employee Registration Form',
-                                  style: kText10BlueBlackColorStyle),
-                            ),
-                            DropdownMenuItem(
-                              value: 'page2',
-                              child: Text('Profile',
-                                  style: kText10BlueBlackColorStyle),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            if (value == 'page1') {
-                              _showEmpRegistrationBottomSheet(context);
-                            } else if (value == 'page2') {
-                              _profileDialog(context);
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+      backgroundColor: const Color(0xff176daa),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
                 children: [
-                  Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        color: const Color(0xffb8cbd8),
-                        elevation: 6,
-                        child: const Image(
-                          image: AssetImage(Assets.imagesCglogo),
-                          height: 88,
-                          width: 88,
-                          fit: BoxFit.cover,
-                        ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      DropdownButton<String>(
+                        icon:
+                            const Icon(Icons.more_vert, color: Colors.white),
+                        dropdownColor: Colors.white,
+                        underline: const SizedBox(),
+                        items: const [
+                          DropdownMenuItem(
+                            value: 'page1',
+                            child: Text('Employee Registration Form',
+                                style: kText10BlueBlackColorStyle),
+                          ),
+                          DropdownMenuItem(
+                            value: 'page2',
+                            child: Text('Profile',
+                                style: kText10BlueBlackColorStyle),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          if (value == 'page1') {
+                            _showEmpRegistrationBottomSheet(context);
+                          } else if (value == 'page2') {
+                            _profileDialog(context);
+                          }
+                        },
                       ),
-                    ),
-                  ),
-                  10.height,
-                  const Text("Higher Education Department",
-                      style: kText15whiteColorStyle),
-                  const Text("Government Of Chhattisgarh",
-                      style: kText15BaNaBoldWhiteColorStyle),
-                  58.height,
-                  Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: const Image(
-                        image: AssetImage('assets/logo.png'),
-                        height: 48,
-                        width: 48,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  15.height,
-                  const Text("Welcome To face Attendance System",
-                      style: kText13BoldWhiteColor),
-                  21.height,
-                  customButton(
-                    context,
-                    'Face Attendance',
-                    const Color(0xFFCEEEEE),
-                    Colors.black,
-                    Icons.login,
-                    () {
-                      if (mounted) {
-                        Get.to(() => const FaceAttendanceScreen(
-                              action: CameraAction.login,
-                            ));
-                      }
-                    },
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      color: const Color(0xffb8cbd8),
+                      elevation: 6,
+                      child: const Image(
+                        image: AssetImage(Assets.imagesCglogo),
+                        height: 88,
+                        width: 88,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                10.height,
+                const Text("Higher Education Department",
+                    style: kText15whiteColorStyle),
+                const Text("Government Of Chhattisgarh",
+                    style: kText15BaNaBoldWhiteColorStyle),
+                58.height,
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: const Image(
+                      image: AssetImage('assets/logo.png'),
+                      height: 48,
+                      width: 48,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                15.height,
+                const Text("Welcome To face Attendance System",
+                    style: kText13BoldWhiteColor),
+                21.height,
+                customButton(
+                  context,
+                  'Face Attendance',
+                  const Color(0xFFCEEEEE),
+                  Colors.black,
+                  Icons.login,
+                  () {
+                    if (mounted) {
+                      Get.to(() => const FaceAttendanceScreen(
+                            action: CameraAction.login,
+                          ));
+                    }
+                  },
+                ),
+                10.height,
+                customButton(
+                  context,
+                  'Profile',
+                  const Color(0xFFCEEEEE),
+                  Colors.black,
+                  Icons.perm_contact_calendar_outlined,
+                      () {
+                        _profileDialog(context);
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Get.to(() => const FaceAttendanceScreen(
-              action: CameraAction.registration,
-            ));
-          },
-          icon: const Icon(Icons.person_add),
-          label: const Text('Register'),
-          backgroundColor: const Color(0xFFD7DEEE),
-        ),
-        // bottomSheet: FooterWidget(),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Get.to(() => const FaceAttendanceScreen(
+            action: CameraAction.registration,
+          ));
+        },
+        icon: const Icon(Icons.person_add),
+        label: const Text('Register'),
+        backgroundColor: const Color(0xFFD7DEEE),
+      ),
+      // bottomSheet: FooterWidget(),
     );
   }
 
