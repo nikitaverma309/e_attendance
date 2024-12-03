@@ -25,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xff176daa),
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: false, // Set to false to control leading manually
       elevation: 7,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -53,10 +53,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
         ],
       ),
-      leading: showBackButton ? leadingWidget : null,
+      leading: showBackButton
+          ? IconButton(
+        icon: const Icon(
+          Icons.arrow_back, // Default back icon
+          color: Colors.white, // Set the color to white
+        ),
+        onPressed: onBackTap ??
+                () {
+              Navigator.of(context).pop();
+            },
+      )
+          : null,
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(50);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

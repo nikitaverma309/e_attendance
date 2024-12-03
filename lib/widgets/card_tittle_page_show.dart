@@ -20,9 +20,9 @@ class ResultOutPutCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: kText10BlueBlackColorStyle,
+              style: kText10BlueColorStyle,
             ),
-            5.width,
+            7.width,
             Expanded(
               child: Text(
                 subTitle,

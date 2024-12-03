@@ -12,6 +12,7 @@ import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
+import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -36,7 +37,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
       backgroundColor: const Color(0xF5ECF4F5),
       appBar:  CustomAppBar(
         title:  widget.action == CameraAction.login ?Strings.attendance:Strings.signUp,
-        showBackButton: true,
+
         actionWidget: const Icon(
           Icons.more_vert,
           color: Color(0xff176daa),
@@ -103,9 +104,9 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                       child: Container(
                         decoration: Shape.submitContainerRed(context),
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: TextField(
+                        child: TextFormField(
                           controller: employeeIdCtr,
-
+                          keyboardType: TextInputType.phone,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(11),

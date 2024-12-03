@@ -34,7 +34,12 @@ const kText1012BoldBlackColorStyle = TextStyle(
 const kText10BlueBlackColorStyle = TextStyle(
     fontSize: 12.0,
     fontFamily: 'Roboto-Thin',
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.bold,
+    color: AppColors.blue);
+const kText10BlueColorStyle = TextStyle(
+    fontSize: 14.0,
+    fontFamily: 'Roboto-Thin',
+    fontWeight: FontWeight.bold,
     color: AppColors.blue);
 const textwhiteColorStyle = TextStyle(
     fontSize: 12.0,

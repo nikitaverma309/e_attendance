@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/generated/assets.dart';
 import 'package:online/models/profile/profile_model.dart';
 import 'package:online/modules/home/main_page.dart';
 import 'package:online/utils/utils.dart';
@@ -18,28 +18,34 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xff176daa),
-          centerTitle: true,
-          elevation: 7,
-          title: Text(
-            "Profile",
-            textAlign: TextAlign.center,
-            style: kWhite.copyWith(color: Colors.white),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back,
-                color: Colors.white), // Icon for back
-            onPressed: () {
-              Get.offAll(() => const MainPage()); // Navigate to MainPage
-            },
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xff176daa),
+        centerTitle: true,
+        elevation: 7,
+        title: Text(
+          "Profile",
+          textAlign: TextAlign.center,
+          style: kWhite.copyWith(color: Colors.white),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Get.offAll(() => const MainPage());
+          },
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage(
+                'assets/icon/wallpaper.png'), // Use the asset image path
           ),
         ),
-        body: Column(
+        child: Column(
           children: [
-
+            10.height,
             Align(
               alignment: Alignment.centerLeft,
               child: Row(
@@ -49,14 +55,14 @@ class ProfileScreen extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                     decoration: BoxDecoration(
                       color: const Color(0xff204867),
-                      borderRadius: BorderRadius.circular(1),
+                      borderRadius: BorderRadius.circular(4),
                       border: Border.all(
                         color: Colors.blueGrey,
                         width: 1.0,
                       ),
                     ),
                     child: Card(
-                      elevation: 12,
+                      elevation: 35,
                       child: Image.memory(
                         // height: 90,
                         // width: 90,
@@ -99,37 +105,46 @@ class ProfileScreen extends StatelessWidget {
             //   height: MediaQuery.of(context).size.height * 0.26,
             // ),
             const Spacer(),
+
             Align(
               alignment: Alignment.center,
-              child: Container(
-                width: 230,
-                color: const Color(0xffe7eeee),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-      
-                    ResultOutPutCard(
-                      title: 'Name ',
-                      subTitle: "${data!.employeeData!.name}",
-                    ),
-                    ResultOutPutCard(
-                      title: 'Email ',
-                      subTitle: "${data!.employeeData!.email}",
-                    ),
-                    ResultOutPutCard(
-                      title: 'Contact ',
-                      subTitle: "${data!.employeeData!.contact}",
-                    ),
-                    ResultOutPutCard(
-                      title: 'Work Type ',
-                      subTitle: "${data!.employeeData!.workType}",
-                    ),
-                    ResultOutPutCard(
-                      title: 'Login OutTime ',
-                      subTitle: Utils.formatTime(data!.attendance!.logoutTime),
-                    ),
-                  ],
+              child: Card(
+                elevation: 34,
+                child: Container(
+                  width: 240,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xfff6f2f2),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      10.height,
+                      ResultOutPutCard(
+                        title: 'Name ',
+                        subTitle: "${data!.employeeData!.name}",
+                      ),
+                      ResultOutPutCard(
+                        title: 'Email ',
+                        subTitle: "${data!.employeeData!.email}",
+                      ),
+                      ResultOutPutCard(
+                        title: 'Contact ',
+                        subTitle: "${data!.employeeData!.contact}",
+                      ),
+                      ResultOutPutCard(
+                        title: 'Work Type ',
+                        subTitle: "${data!.employeeData!.workType}",
+                      ),
+                      ResultOutPutCard(
+                        title: 'Login OutTime ',
+                        subTitle:
+                            Utils.formatTime(data!.attendance!.logoutTime),
+                      ),
+                      10.height,
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -151,8 +166,8 @@ class ProfileScreen extends StatelessWidget {
             const Spacer(),
           ],
         ),
-        bottomSheet: FooterWidget(),
       ),
+      bottomSheet: FooterWidget(),
     );
   }
 }

@@ -6,7 +6,6 @@ import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:online/api/api_strings.dart';
 import 'package:online/models/profile/profile_model.dart';
-import 'package:online/modules/home/home.dart';
 import 'package:online/modules/home/main_page.dart';
 import 'package:online/modules/profile/profile_screen.dart';
 import 'package:online/utils/utils.dart';

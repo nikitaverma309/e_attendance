@@ -127,10 +127,10 @@ class UserLocationController extends GetxController {
         double currentLat = currentPosition.latitude;
         double currentLong = currentPosition.longitude;
         double? compareLat = double.tryParse(kDebugMode
-            ? employeeData.value!.collegeDetails!.homeLat!
+            ? employeeData.value!.collegeDetails!.lat!
             : employeeData.value!.collegeDetails!.lat!);
         double? compareLong = double.tryParse(kDebugMode
-            ? employeeData.value!.collegeDetails!.homeLong!
+            ? employeeData.value!.collegeDetails!.long!
             : employeeData.value!.collegeDetails!.long!);
 
         // If latitude and longitude from API are valid
