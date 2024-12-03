@@ -12,10 +12,8 @@ import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
-import 'package:online/widgets/common/form_input_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 import 'package:text_scroll/text_scroll.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 class FaceAttendanceScreen extends StatefulWidget {
   final CameraAction action;
@@ -29,15 +27,16 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
   final UserLocationController profileController =
       Get.put(UserLocationController());
   TextEditingController employeeIdCtr = TextEditingController();
-  FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xF5ECF4F5),
-      appBar:  CustomAppBar(
-        title:  widget.action == CameraAction.login ?Strings.attendance:Strings.signUp,
-
+      appBar: CustomAppBar(
+        title: widget.action == CameraAction.login
+            ? Strings.attendance
+            : Strings.signUp,
         actionWidget: const Icon(
           Icons.more_vert,
           color: Color(0xff176daa),
@@ -284,7 +283,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                                   LoginCameraTwo(
                                                 attendanceId:
                                                     employeeIdCtr.text,
-                                                    action: widget.action,
+                                                action: widget.action,
                                               ),
                                             ),
                                           );

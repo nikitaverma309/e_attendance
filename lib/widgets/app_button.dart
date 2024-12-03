@@ -6,17 +6,13 @@ class CommonButton extends StatelessWidget {
       this.onPressed,
       this.text,
       this.color = const Color(0xFF0F0BDB),
-      this.icon = const Icon(
-        Icons.add,
-        color: Colors.white,
-      )});
+      this.icon});
   final void Function()? onPressed;
   final String? text;
-  final Icon icon;
+  final Icon? icon;
   final Color color;
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       onTap: onPressed,
       child: Container(
@@ -44,7 +40,7 @@ class CommonButton extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            icon
+            if (icon != null) icon!
           ],
         ),
       ),

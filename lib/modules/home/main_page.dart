@@ -18,7 +18,7 @@ class MainPageState extends State<MainPage> {
 
   List<TabItem<dynamic>> items = [
     const TabItem<IconData>(icon: Icons.home, title: 'Home'),
-    const TabItem<IconData>(icon: Icons.notification_add, title: 'Faq Screen'),
+    const TabItem<IconData>(icon: Icons.notification_add, title: 'Faq'),
   ];
 
   @override

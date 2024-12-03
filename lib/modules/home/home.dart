@@ -55,8 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       DropdownButton<String>(
-                        icon:
-                            const Icon(Icons.more_vert, color: Colors.white),
+                        icon: const Icon(Icons.more_vert, color: Colors.white),
                         dropdownColor: Colors.white,
                         underline: const SizedBox(),
                         items: const [
@@ -147,8 +146,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Color(0xFFCEEEEE),
                   Colors.black,
                   Icons.perm_contact_calendar_outlined,
-                      () {
-                        _profileDialog(context);
+                  () {
+                    _profileDialog(context);
                   },
                 ),
               ],
@@ -159,8 +158,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Get.to(() => const FaceAttendanceScreen(
-            action: CameraAction.registration,
-          ));
+                action: CameraAction.registration,
+              ));
         },
         icon: const Icon(Icons.person_add),
         label: const Text('Register'),
@@ -286,17 +285,18 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
+
   void _profileDialog(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      isDismissible: false,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
       ),
       builder: (BuildContext context) {
         return Stack(
           children: [
-
             Form(
               child: Padding(
                 padding: EdgeInsets.only(
@@ -310,15 +310,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     50.height,
                     const Text(
-                      "Before Opening Your Profile, Check Status",
+                      "Enter Your Employee Code",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    20.height,
                     TextInputField(
-                      no: "1",
                       controller: empCodeController,
                       inputType: TextInputType.phone,
                       inputFormatters: [
@@ -328,50 +327,50 @@ class _MyHomePageState extends State<MyHomePage> {
                       title: "Employee Code",
                       hintText: 'Fill details',
                     ),
-                    const SizedBox(height: 20),
+                    20.height,
                     Obx(
-                          () => profileController.isLoading.value
+                      () => profileController.isLoading.value
                           ? const Center(child: CircularProgressIndicator())
                           : CommonButton(
-                        text: "Profile Page",
-                        onPressed: () async {
-                          if (empCodeController.text.isEmpty) {
-                            Get.defaultDialog(
-                              title: "Error",
-                              middleText:
-                              "Please enter your Employee Code before proceeding.",
-                              textConfirm: "OK",
-                              onConfirm: () => Get.back(),
-                            );
-                            return;
-                          }
+                              text: "Verify",
+                              onPressed: () async {
+                                if (empCodeController.text.isEmpty) {
+                                  Get.defaultDialog(
+                                    title: "Error",
+                                    middleText:
+                                        "Please enter your Employee Code before proceeding.",
+                                    textConfirm: "OK",
+                                    onConfirm: () => Get.back(),
+                                  );
+                                  return;
+                                }
 
-                          profileController.isLoading.value = true;
-                          await profileController
-                              .getProfile(empCodeController.text);
-                          profileController.isLoading.value = false;
+                                profileController.isLoading.value = true;
+                                await profileController
+                                    .getProfile(empCodeController.text);
+                                profileController.isLoading.value = false;
 
-                          if (profileController.employeeDataA.value !=
-                              null) {
-                            Navigator.pop(context);
-                            Get.to(() => ProfileScreen(
-                              data: profileController
-                                  .employeeDataA.value,
-                            ));
-                          } else {
-                            Get.defaultDialog(
-                              title: "Error",
-                              middleText:
-                              "Your Employee Code was incorrect. Please try again.",
-                              textConfirm: "OK",
-                              onConfirm: () {
-                                Get.back();
-                                empCodeController.clear();
+                                if (profileController.employeeDataA.value !=
+                                    null) {
+                                  Navigator.pop(context);
+                                  Get.to(() => ProfileScreen(
+                                        data: profileController
+                                            .employeeDataA.value,
+                                      ));
+                                } else {
+                                  Get.defaultDialog(
+                                    title: "Error",
+                                    middleText:
+                                        "Your Employee Code was incorrect. Please try again.",
+                                    textConfirm: "OK",
+                                    onConfirm: () {
+                                      Get.back();
+                                      empCodeController.clear();
+                                    },
+                                  );
+                                }
                               },
-                            );
-                          }
-                        },
-                      ),
+                            ),
                     ),
                     30.height,
                   ],
@@ -379,15 +378,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Positioned(
-              top: 0,
-              right: 10,
+              top: 5,
+              right: 5,
               child: Container(
+                height: 40,
+                width: 40,
                 decoration: const BoxDecoration(
-                  color: Colors.red,
+                  color: Colors.grey,
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
-                  icon: const Icon(Icons.close),
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -399,5 +403,4 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
-
 }

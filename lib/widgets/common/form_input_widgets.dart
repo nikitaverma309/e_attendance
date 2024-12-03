@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/text_size_const.dart';
-
 
 class TextInputField extends StatefulWidget {
   final TextEditingController controller;
@@ -63,16 +62,17 @@ class _TextInputFieldState extends State<TextInputField> {
           child: Text.rich(
             TextSpan(
               children: [
-                TextSpan(
-                  text: widget.no,
-                  style: kTextBlue,
-                ),
-                const TextSpan(
-                  text: "  ",
-                ),
-                const WidgetSpan(
-                  child: SizedBox(width: 6,)
-                ),
+                if (widget.no != null) ...[
+                  TextSpan(
+                    text: widget.no,
+                    style: kTextBlue,
+                  ),
+                  const TextSpan(
+                    text: "  ",
+                  ),
+                  const WidgetSpan(child: SizedBox(width: 6)),
+                ],
+                WidgetSpan(child: 8.height),
                 TextSpan(
                   text: widget.title,
                   style: kText13BoldBlackColorStyle,
@@ -142,16 +142,18 @@ class _TextInputFieldState extends State<TextInputField> {
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderSide: const BorderSide(
-                color: Colors.red, // Border color when focused and there's an error
+                color: Colors
+                    .red, // Border color when focused and there's an error
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(5.0),
             ),
             hintText: widget.showHintText ? widget.hintText : null,
-            hintStyle:   kText16GrayColorStyle,
+            hintStyle: kText16GrayColorStyle,
             fillColor: Colors.white, // Background color
             filled: true, // Apply the background color
-            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             alignLabelWithHint: true,
           ),
           validator: (value) {
@@ -165,7 +167,9 @@ class _TextInputFieldState extends State<TextInputField> {
             return null;
           },
         ),
-      const SizedBox(height: 2,)
+        const SizedBox(
+          height: 2,
+        )
       ],
     );
   }

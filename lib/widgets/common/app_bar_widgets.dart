@@ -27,6 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: const Color(0xff176daa),
       automaticallyImplyLeading: false, // Set to false to control leading manually
       elevation: 7,
+      centerTitle: true,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
