@@ -6,6 +6,7 @@ import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/user_Location_controller.dart';
 import 'package:online/enum/enum_screen.dart';
+import 'package:online/enum/location_status.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/camera_pic.dart';
 import 'package:online/utils/shap/shape_design.dart';
@@ -53,7 +54,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 decoration: Shape.scrollText(context),
                 padding: const EdgeInsets.all(8.0),
                 child: const TextScroll(
-                  Strings.version,
+                  "${Strings.version}",
                   style: kText15BaNaBoldBlackColorStyle,
                   velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
                 ),
@@ -216,6 +217,8 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                     //           },
                     //         );
                     // }),
+
+
                     Obx(() {
                       bool isButtonDisabled = profileController.isLoading.value;
 
@@ -233,8 +236,10 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                   );
                                   return;
                                 }
+
                                 profileController.isChecked.value =
                                     newValue ?? false;
+
                                 var connectivityResult =
                                     await Connectivity().checkConnectivity();
                                 if (connectivityResult ==
@@ -247,6 +252,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                   profileController.isChecked.value = false;
                                   return;
                                 }
+
                                 if (profileController.isChecked.value) {
                                   if (profileController.isBlocked.value) {
                                     showErrorDialog(
@@ -255,23 +261,26 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                       permanentlyDisableButton: true,
                                     );
                                     profileController.isChecked.value = false;
-                                  } else {
-                                    Utils.printLog("after 10 seconds");
-                                    profileController.isLoading.value = true;
+                                    return;
+                                  }
 
-                                    await profileController
-                                        .getCheckStatusLatLong(
-                                            employeeIdCtr.text, context);
-                                    profileController.isLoading.value = false;
-                                    profileController.isChecked.value = false;
-                                    if (profileController
-                                                .isLocationMatched.value ==
-                                            true &&
-                                        profileController.employeeData.value !=
-                                            null) {
+                                  profileController.isLoading.value = true;
+
+                                  Status status = await profileController
+                                      .getCheckStatusLatLong(
+                                          employeeIdCtr.text, context);
+
+                                  profileController.isLoading.value = false;
+                                  profileController.isChecked.value = false;
+
+                                  switch (status) {
+                                    case Status.success:
                                       showSuccessDialog(
                                         context: context,
-                                        subTitle: Strings.dataSuccess,
+                                        subTitle:
+                                            widget.action == CameraAction.login
+                                                ? Strings.dataSuccess
+                                                : Strings.dataRegister,
                                         textHeading:
                                             "Location Matched. You can proceed.",
                                         navigateAfterDelay: true,
@@ -287,34 +296,30 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                               ),
                                             ),
                                           );
-
-                                          profileController.isChecked.value =
-                                              false;
-                                          profileController.isLoading.value =
-                                              false;
                                         },
                                       );
-                                    } else {
+                                      break;
+
+                                    case Status.employeeNotFound:
                                       showErrorDialog(
                                         context: context,
-                                        subTitle: profileController
-                                                    .employeeData.value ==
-                                                null
-                                            ? "Your Attendance ID was incorrect. Please try again."
-                                            : "Your location doesn't match. Please try again.",
-                                        onPressed: () {
-                                          profileController
-                                              .handleIncorrectAttempt();
-                                          Navigator.pop(context);
-                                          profileController.isChecked.value =
-                                              false;
-                                        },
+                                        subTitle:
+                                            "Your Attendance ID was incorrect. Please try again.",
                                       );
-                                    }
+                                      profileController
+                                          .handleIncorrectAttempt();
+                                      break;
+
+                                    case Status.locationMismatch:
+                                      showErrorDialog(
+                                        context: context,
+                                        subTitle:
+                                            "Your location doesn't match. Please try again.",
+                                      );
+                                      break;
                                   }
                                 }
-                              },
-                            );
+                              });
                     }),
                     17.width,
                     Expanded(

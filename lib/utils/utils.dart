@@ -70,7 +70,7 @@ class Utils {
       return 'Required';
     }
     final emailRegex =
-        RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+    RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     if (!emailRegex.hasMatch(value)) {
       return 'Invalid email format';
     }
@@ -81,8 +81,8 @@ class Utils {
     return (value == null || value.isEmpty) ? 'Required' : null;
   }
 
-  static Future<void> selectDate(
-      BuildContext context, TextEditingController controller) async {
+  static Future<void> selectDate(BuildContext context,
+      TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -97,8 +97,8 @@ class Utils {
     }
   }
 
-  static Future<DateTime?> showDatePickerDialog(
-      BuildContext context, DateTime selectedDate) async {
+  static Future<DateTime?> showDatePickerDialog(BuildContext context,
+      DateTime selectedDate) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -159,7 +159,8 @@ class Utils {
       toastLength: length,
       gravity: gravity,
       timeInSecForIosWeb: timeInSecForIosWeb,
-      backgroundColor: Colors.green, // Success color
+      backgroundColor: Colors.green,
+      // Success color
       textColor: Colors.white,
       fontSize: fontSize,
     );
@@ -177,12 +178,12 @@ class Utils {
       toastLength: length,
       gravity: gravity,
       timeInSecForIosWeb: timeInSecForIosWeb,
-      backgroundColor: Colors.red, // Error color
+      backgroundColor: Colors.red,
+      // Error color
       textColor: Colors.white,
       fontSize: fontSize,
     );
   }
-
 
 
   static String formatDay(dynamic dateTime) {
@@ -202,6 +203,7 @@ class Utils {
       return 'Invalid Date';
     }
   }
+
   static String formatTime(dynamic dateTime) {
     try {
       if (dateTime is String) {
@@ -219,4 +221,25 @@ class Utils {
       return 'Invalid Date';
     }
   }
+  // static String formatTime(dynamic dateTime) {
+  //   try {
+  //     if (dateTime is String) {
+  //       // If it's a string, parse it to DateTime
+  //       DateTime parsedDate = DateTime.parse(dateTime);
+  //       // Convert to IST (UTC +5:30)
+  //       DateTime istDateTime = parsedDate.add(Duration(hours: 5, minutes: 30));
+  //       return DateFormat('HH:mm:ss').format(istDateTime);
+  //     } else if (dateTime is DateTime) {
+  //       // If it's already a DateTime object
+  //       // Convert to IST (UTC +5:30)
+  //       DateTime istDateTime = dateTime.add(Duration(hours: 5, minutes: 30));
+  //       return DateFormat('HH:mm:ss').format(istDateTime);
+  //     } else {
+  //       // If dateTime is not valid
+  //       return 'Invalid Date';
+  //     }
+  //   } catch (e) {
+  //     return 'Invalid Date';
+  //   }
+  // }
 }

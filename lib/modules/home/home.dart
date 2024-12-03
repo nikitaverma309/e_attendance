@@ -12,6 +12,7 @@ import 'package:online/modules/profile/profile_screen.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
+import 'package:online/widgets/footer_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -45,7 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Column(
@@ -54,6 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      const Expanded(
+                        child: Text(
+                            "App Version: 1.00,\nApp Release Date: 3/12/2024.",
+                            style: kText11BoldWhiteColor),
+                      ),
                       DropdownButton<String>(
                         icon: const Icon(Icons.more_vert, color: Colors.white),
                         dropdownColor: Colors.white,
@@ -83,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+            30.height,
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -165,7 +171,6 @@ class _MyHomePageState extends State<MyHomePage> {
         label: const Text('Register'),
         backgroundColor: const Color(0xFFD7DEEE),
       ),
-      // bottomSheet: FooterWidget(),
     );
   }
 
@@ -250,7 +255,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                               .isLoading.value = false;
                                         } else {
                                           CustomSnackbarError.showSnackbar(
-                                            title: "Error",
                                             message:
                                                 'Please fill in all fields',
                                           );
@@ -336,7 +340,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               onPressed: () async {
                                 if (empCodeController.text.isEmpty) {
                                   Get.defaultDialog(
-                                    title: "Error",
                                     middleText:
                                         "Please enter your Employee Code before proceeding.",
                                     textConfirm: "OK",
@@ -359,7 +362,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ));
                                 } else {
                                   Get.defaultDialog(
-                                    title: "Error",
                                     middleText:
                                         "Your Employee Code was incorrect. Please try again.",
                                     textConfirm: "OK",

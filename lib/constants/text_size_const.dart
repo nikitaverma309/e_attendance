@@ -11,6 +11,8 @@ const kText10WhiteColorStyle = TextStyle(
     fontSize: 10.0, fontWeight: FontWeight.w400, color: AppColors.white);
 
 
+const kText11BoldWhiteColor = TextStyle(
+    fontSize: 10.0, fontWeight: FontWeight.bold, color: Colors.white);
 const kText13BoldWhiteColor = TextStyle(
     fontSize: 12.0, fontWeight: FontWeight.bold, color: AppColors.white);
 const textBoldTitleTextColor = TextStyle(
@@ -136,7 +138,7 @@ const kText16BoldRed = TextStyle(
     fontWeight: FontWeight.bold,
     color: AppColors.redShade4);
 const k13NormalGreyColorStyle = TextStyle(
-    fontSize: 16.0,
+    fontSize: 12.0,
     fontFamily: 'Roboto-Thin',
     fontWeight: FontWeight.bold,
     color: AppColors.green);

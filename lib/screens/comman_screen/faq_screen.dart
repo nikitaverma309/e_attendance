@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
-import 'package:online/widgets/footer_widget.dart';
 
 class FaqScreen extends StatelessWidget {
   final List<Map<String, dynamic>> faqData = [
@@ -15,26 +13,60 @@ class FaqScreen extends StatelessWidget {
         {
           'question': 'What is the Online Attendance System?',
           'answer':
-              'It is a digital platform to record and manage attendance for higher education students and staff.',
+          'It is a digital platform to record and manage attendance for higher education students and staff.',
         },
         {
           'question': 'Why is online attendance required?',
           'answer':
-              'To ensure transparency and efficiency in attendance management.',
+          'To ensure transparency and efficiency in attendance management.',
+        },
+        {
+          'question': 'Is the system secure?',
+          'answer': 'Yes, the system uses secure protocols to protect user data.',
         },
       ],
     },
     {
-      'category': 'Account Access',
+      'category': 'Face Registration & Verification',
       'questions': [
         {
-          'question': 'How do I register for the system?',
-          'answer':
-              'You can register using your institutional email on the registration page.',
+          'question': 'How to register your face for the first time?',
+          'answer': 'Enter your Employee Code and capture your face during the first-time registration, then follow the on-screen instructions.',
         },
         {
-          'question': 'What should I do if I forget my password?',
-          'answer': 'Click on "Forgot Password" and follow the instructions.',
+          'question': 'What if my location is not verified?',
+          'answer':
+          'Ensure that you are within the permitted location area and try again.',
+        },
+        {
+          'question':
+          'What happens if both location and face verification are successful?',
+          'answer':
+          'The system will record your attendance once both verifications are complete.',
+        },
+        {
+          'question': 'Can I register multiple faces for one employee code?',
+          'answer':
+          'No, only one face can be registered per employee code for security reasons.',
+        },
+      ],
+    },
+    {
+      'category': 'Troubleshooting',
+      'questions': [
+        {
+          'question': 'What if I forget my Employee Code?',
+          'answer': 'Contact your HR or system administrator to retrieve it.',
+        },
+        {
+          'question': 'Why is the face recognition not working?',
+          'answer':
+          'Ensure good lighting and position your face properly in front of the camera.',
+        },
+        {
+          'question': 'What should I do if the system shows location mismatch?',
+          'answer':
+          'Check if your GPS is enabled and ensure you are within the authorized location.',
         },
       ],
     },
@@ -47,13 +79,13 @@ class FaqScreen extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar(
         title: "FAQ",
-        showBackButton: false,
-        leadingWidget: null,
+        showBackButton: true, // Back button for easy navigation
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            // Logo at the top
             Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
@@ -73,19 +105,24 @@ class FaqScreen extends StatelessWidget {
               ),
             ),
             10.height,
-            Text("Higher Education Department's",
-                style: kText10BlueBlackColorStyle),
+            Text(
+              "Higher Education Department's",
+              style: kText10BlueBlackColorStyle,
+            ),
             16.height,
+            // FAQ List
             Expanded(
               child: ListView.builder(
                 itemCount: faqData.length,
                 itemBuilder: (context, index) {
                   final category = faqData[index];
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: ExpansionTile(
-                      leading: const Icon(Icons.category,
-                          color: Colors.blue), // Add leading icon
+                      leading: const Icon(
+                        Icons.category,
+                        color: Colors.blue,
+                      ),
                       title: Text(
                         category['category'],
                         style: const TextStyle(
@@ -101,7 +138,6 @@ class FaqScreen extends StatelessWidget {
                       collapsedIconColor: Colors.blue,
                       iconColor: Colors.green,
                       shape: RoundedRectangleBorder(
-                        // Add border to the tile
                         side: BorderSide(color: Colors.grey.shade300),
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -110,12 +146,21 @@ class FaqScreen extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(vertical: 4),
                           decoration: Shape.submitContainerRed(context),
                           child: ListTile(
-                            title: Text(q['question'],
-                                style: k13BoldBlackColorStyle),
-                            subtitle: Text(q['answer'],
-                                style: k13NormalGreyColorStyle),
-                            leading: const Icon(Icons.help_outline,
-                                color: Colors.blue),
+                            title: Text(
+                              q['question'],
+                              style: k13BoldBlackColorStyle,
+                            ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 4.0),
+                              child: Text(
+                                q['answer'],
+                                style: k13NormalGreyColorStyle,
+                              ),
+                            ),
+                            leading: const Icon(
+                              Icons.help_outline,
+                              color: Colors.blue,
+                            ),
                           ),
                         );
                       }).toList(),
@@ -128,7 +173,6 @@ class FaqScreen extends StatelessWidget {
           ],
         ),
       ),
-
     );
   }
 }

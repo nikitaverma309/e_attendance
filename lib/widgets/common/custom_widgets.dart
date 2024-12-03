@@ -143,7 +143,7 @@ class DropDownSelectionMessage extends StatelessWidget {
 
 class CustomSnackbarError {
   static void showSnackbar({
-    required String title,
+    String? title,
     required String message,
     SnackPosition position = SnackPosition.TOP,
     Color backgroundColor = Colors.red,
@@ -152,7 +152,7 @@ class CustomSnackbarError {
     EdgeInsets margin = const EdgeInsets.all(10),
   }) {
     Get.snackbar(
-      title,
+      title!,
       message,
       snackPosition: position,
       backgroundColor: backgroundColor,
@@ -193,7 +193,7 @@ void showSuccessDialog({
   bool navigateAfterDelay = false,
 }) {
   if (navigateAfterDelay) {
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 4), () {
       if (Get.isDialogOpen!) {
         Get.back();
         onPressed?.call();
@@ -202,7 +202,7 @@ void showSuccessDialog({
   }
 
   Get.defaultDialog(
-    title: textHeading ?? "Success",
+    title: textHeading ?? "",
     titleStyle: const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.bold,
@@ -210,7 +210,7 @@ void showSuccessDialog({
     ),
     middleText: subTitle,
     middleTextStyle: const TextStyle(
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.bold,
       color: Colors.black87,
     ),
@@ -218,14 +218,15 @@ void showSuccessDialog({
     barrierDismissible: false,
     actions: [
       navigateAfterDelay == true
-          ? const SizedBox.shrink() // यदि navigateAfterDelay false है तो खाली Widget दिखाएं
+          ? const SizedBox
+              .shrink() // यदि navigateAfterDelay false है तो खाली Widget दिखाएं
           : ButtonCard(
-        color: Colors.green,
-        width: 60,
-        height: 40,
-        text: "process",
-        onPressed: onPressed ?? () => Get.back(),
-      ),
+              color: Colors.green,
+              width: 60,
+              height: 40,
+              text: "process",
+              onPressed: onPressed ?? () => Get.back(),
+            ),
     ],
   );
 }
@@ -248,7 +249,7 @@ void showErrorDialog({
     });
   }
   Get.defaultDialog(
-    title: textHeading ?? "Error",
+    title: textHeading ?? "",
     titleStyle: const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.bold,

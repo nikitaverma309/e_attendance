@@ -45,7 +45,13 @@ class ProfileScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            10.height,
+            20.height,
+            const Text("Higher Education Department",
+                style: kTextBlackColorStyle),
+            const Text("Government Of Chhattisgarh",
+                style: k13BoldBlackColorStyle),
+
+            20.height,
             Align(
               alignment: Alignment.centerLeft,
               child: Row(
@@ -75,9 +81,9 @@ class ProfileScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         const Text(
-                          "Login Time",
+                          "Today\nLogin Time",
                           style: kTextBlackColorStyle,
-                          textAlign: TextAlign.justify,
+                          textAlign: TextAlign.center,
                         ),
                         Text(
                           Utils.formatTime(data!.attendance!.loginTime),
@@ -164,6 +170,7 @@ class ProfileScreen extends StatelessWidget {
               color: AppColors.bbFacebook,
             ),
             const Spacer(),
+            20.height,
           ],
         ),
       ),

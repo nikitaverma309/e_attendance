@@ -1,6 +1,6 @@
 class Strings {
   Strings._();
-  // PREVIEW Screen STRINGS
+
   static const String shiftName = "पाली नाम";
   static const String morning = "Morning Shift";
   static const String inTime = "आने का समय";
@@ -26,15 +26,23 @@ class Strings {
   static const String attendance = "Attendance";
   static const String signUp = "Sign Up";
   static const String faq = "FAQs - Online Attendance";
-  static const String attendanceId =  "उपस्थिति आईडी\nAttendance ID";
-  static const String higherEducation =   "Higher Education Department";
+  static const String attendanceId = "उपस्थिति आईडी\nAttendance ID";
+  static const String higherEducation = "Higher Education Department";
   //error Alert
-  static const String attendanceAlert =   "Please enter your Attendance ID before proceeding.";
-  static const String attendanceIDIncorrect =   "Your Attendance ID was incorrect. Please try again.";
+  static const String attendanceAlert =
+      "Please enter your Attendance ID before proceeding.";
+  static const String attendanceIDIncorrect =
+      "Your Attendance ID was incorrect. Please try again.";
   // success alert
-  static const String dataSuccess =   "This Employee Code is already present and verified in our records.";
+  static const String dataSuccess =
+      "This Employee Code is already registered. Now, please proceed with your face attendance.";
+  static const String dataRegister =
+      "This Employee Code is already registered. Now, please register your face.";
   //screen note
-  static const String notRegistration =  "जिन उपयोगकर्ताओं का कर्मचारी कोड मौजूद है, कृपया अपनी उपस्थिति दर्ज करने के लिए अपना चेहरा पंजीकृत करें।";
-  static const String notAttendance =  "मैं उपस्थिति को चिन्हित करने के लिए अपनी स्वीकृति देता हूँ \n I give my approval  to mark attendance";
-  static const String version = "App Version: 0.01 Organization: National Information Center (NIC) Chhattisgarh, Building: Mantralaya Naya Raipur";
+  static const String notRegistration =
+      "जिन उपयोगकर्ताओं का कर्मचारी कोड मौजूद है, कृपया अपनी उपस्थिति दर्ज करने के लिए अपना चेहरा पंजीकृत करें।";
+  static const String notAttendance =
+      "मैं उपस्थिति को चिन्हित करने के लिए अपनी स्वीकृति देता हूँ \n I give my approval  to mark attendance";
+  static const String version =
+      "App Version: 1.00, App Release Date: 3/12/2024, Organization: Higher Education Department, Chhattisgarh, Building: Mantralaya, Naya Raipur.";
 }
