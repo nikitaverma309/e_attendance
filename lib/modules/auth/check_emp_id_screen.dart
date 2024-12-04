@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,6 @@ import 'package:online/enum/location_status.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/camera_pic.dart';
 import 'package:online/utils/shap/shape_design.dart';
-import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
@@ -32,6 +32,10 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // MediaQuery for responsive height and width
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: const Color(0xF5ECF4F5),
       appBar: CustomAppBar(
@@ -45,65 +49,76 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.04,
+            vertical: screenHeight * 0.02,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 decoration: Shape.scrollText(context),
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(4.0),
                 child: const TextScroll(
                   "${Strings.version}",
                   style: kText15BaNaBoldBlackColorStyle,
                   velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
                 ),
               ),
-              10.height,
-
-              // Logo Section
-              const CircleAvatar(
+              SizedBox(height: screenHeight * 0.01), // Responsive spacing
+              CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: 44,
+                radius: 35,
                 child: Image(
                   image: AssetImage(Assets.imagesCglogo),
-                  height: 64,
-                  width: 64,
+                  height: screenHeight * 0.08, // Responsive image height
+                  width: screenWidth * 0.15, // Responsive image width
                 ),
               ),
-              5.height,
+              SizedBox(height: screenHeight * 0.01), // Responsive spacing
               Container(
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(screenHeight * 0.01),
                 decoration: Shape.cCheckBox(context),
                 child: const Column(
                   children: [
                     Text(
                       Strings.higherEducation,
-                      style: kText15BaNaBoldBlackColorStyle,
+                      style: kTextBlackColorStyle,
                     ),
                     Text("Government Of Chhattisgarh",
                         style: kText15BaNaBoldBlackColorStyle),
                   ],
                 ),
               ),
-
-              10.height,
+              SizedBox(height: screenHeight * 0.02),
               Container(
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.symmetric(
+                  vertical: screenHeight * 0.01,
+                  horizontal: screenWidth * 0.03,
+                ),
                 decoration: Shape.chooseCheckBox(context),
                 child: Row(
                   children: [
-                    const Flexible(
+                    Flexible(
                       child: Text(
                         Strings.attendanceId,
-                        style: k13BoldBlackColorStyle,
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.04,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    10.width,
+                    SizedBox(width: screenWidth * 0.12),
                     Expanded(
                       child: Container(
-                        decoration: Shape.submitContainerRed(context),
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.circular(screenWidth * 0.04),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.01),
                         child: TextFormField(
                           controller: employeeIdCtr,
                           keyboardType: TextInputType.phone,
@@ -122,103 +137,13 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                   ],
                 ),
               ),
-              20.height,
-
+              SizedBox(height: screenHeight * 0.03),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 4),
                 decoration: Shape.scrollText(context),
                 child: Row(
                   children: [
                     11.width,
-                    // Obx(() {
-                    //   bool isButtonDisabled = profileController.isLoading.value;
-                    //
-                    //   return isButtonDisabled
-                    //       ? const Center(
-                    //           child: CircularProgressIndicator(),
-                    //         )
-                    //       : Checkbox(
-                    //           value: profileController.isChecked.value,
-                    //           onChanged: (bool? newValue) async {
-                    //             if (employeeIdCtr.text.isEmpty) {
-                    //               showErrorDialog(
-                    //                 context: context,
-                    //                 subTitle: Strings.attendanceAlert,
-                    //               );
-                    //               return;
-                    //             }
-                    //             profileController.isChecked.value =
-                    //                 newValue ?? false;
-                    //
-                    //             if (profileController.isChecked.value) {
-                    //               if (profileController.isBlocked.value) {
-                    //                 showErrorDialog(
-                    //                   context: context,
-                    //                   subTitle: "Please try after 10 seconds.",
-                    //                   permanentlyDisableButton: true,
-                    //                 );
-                    //               } else {
-                    //                 Utils.printLog("after 10 seconds");
-                    //                 profileController.isLoading.value = true;
-                    //
-                    //                 await profileController
-                    //                     .getCheckStatusLatLong(
-                    //                         employeeIdCtr.text, context);
-                    //                 profileController.isLoading.value = false;
-                    //                 profileController.isChecked.value = false;
-                    //                 if (profileController.employeeData.value !=
-                    //                         null &&
-                    //                     profileController
-                    //                         .isLocationMatched.value) {
-                    //                   showSuccessDialog(
-                    //                     context: context,
-                    //                     subTitle: Strings.dataSuccess,
-                    //                     textHeading:
-                    //                         "Location Matched. You can proceed.",
-                    //                     navigateAfterDelay: true,
-                    //                     onPressed: () {
-                    //                       Navigator.push(
-                    //                         context,
-                    //                         MaterialPageRoute(
-                    //                           builder: (context) =>
-                    //                               LoginCameraTwo(
-                    //                             attendanceId:
-                    //                                 employeeIdCtr.text,
-                    //                           ),
-                    //                         ),
-                    //                       );
-                    //
-                    //                       profileController.isChecked.value =
-                    //                           false;
-                    //                       profileController.isLoading.value =
-                    //                           false;
-                    //                     },
-                    //                   );
-                    //                 } else {
-                    //                   profileController
-                    //                       .handleIncorrectAttempt();
-                    //                   showErrorDialog(
-                    //                     context: context,
-                    //                     subTitle:
-                    //                         "Your Attendance ID was incorrect. Please try again.",
-                    //                     onPressed: () {
-                    //                       if (Navigator.canPop(context)) {
-                    //                         Navigator.pop(context);
-                    //                       }
-                    //                       profileController.isChecked.value =
-                    //                           false;
-                    //                       profileController.isLoading.value =
-                    //                           false;
-                    //                     },
-                    //                   );
-                    //                 }
-                    //               }
-                    //             }
-                    //           },
-                    //         );
-                    // }),
-
-
                     Obx(() {
                       bool isButtonDisabled = profileController.isLoading.value;
 
@@ -266,58 +191,16 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
 
                                   profileController.isLoading.value = true;
 
-                                  Status status = await profileController
+                                  LoginStatus status = await profileController
                                       .getCheckStatusLatLong(
                                           employeeIdCtr.text, context);
-
+                                  handleStatus(
+                                    status,
+                                    employeeIdCtr.text,
+                                    widget.action,
+                                  );
                                   profileController.isLoading.value = false;
                                   profileController.isChecked.value = false;
-
-                                  switch (status) {
-                                    case Status.success:
-                                      showSuccessDialog(
-                                        context: context,
-                                        subTitle:
-                                            widget.action == CameraAction.login
-                                                ? Strings.dataSuccess
-                                                : Strings.dataRegister,
-                                        textHeading:
-                                            "Location Matched. You can proceed.",
-                                        navigateAfterDelay: true,
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginCameraTwo(
-                                                attendanceId:
-                                                    employeeIdCtr.text,
-                                                action: widget.action,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                      break;
-
-                                    case Status.employeeNotFound:
-                                      showErrorDialog(
-                                        context: context,
-                                        subTitle:
-                                            "Your Attendance ID was incorrect. Please try again.",
-                                      );
-                                      profileController
-                                          .handleIncorrectAttempt();
-                                      break;
-
-                                    case Status.locationMismatch:
-                                      showErrorDialog(
-                                        context: context,
-                                        subTitle:
-                                            "Your location doesn't match. Please try again.",
-                                      );
-                                      break;
-                                  }
                                 }
                               });
                     }),
@@ -333,16 +216,16 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                   ],
                 ),
               ),
-              20.height,
+              SizedBox(height: screenHeight * 0.03),
               Obx(() {
                 return GridView.builder(
                   itemCount: profileController.attendanceIds.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+                    crossAxisSpacing: screenWidth * 0.02,
+                    mainAxisSpacing: screenHeight * 0.02,
                     childAspectRatio: 2.5,
                   ),
                   itemBuilder: (context, index) {
@@ -366,12 +249,16 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: const Color(0xFFE3C998),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius:
+                              BorderRadius.circular(screenWidth * 0.02),
                         ),
                         alignment: Alignment.center,
                         child: Text(
                           profileController.attendanceIds[index],
-                          style: k13BoldBlackColorStyle,
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.04,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     );
@@ -384,5 +271,53 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
       ),
       bottomSheet: FooterWidget(),
     );
+  }
+
+  void handleStatus(
+      LoginStatus status, String employeeId, CameraAction action) {
+    switch (status) {
+      case LoginStatus.success:
+        showSuccessDialog(
+          context: context,
+          subTitle: action == CameraAction.login
+              ? "Login Successful. You can proceed."
+              : "Registration Successful. You can proceed.",
+          textHeading: "Location Matched",
+          navigateAfterDelay: true,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginCameraTwo(
+                  attendanceId: employeeId,
+                  action: action,
+                ),
+              ),
+            );
+          },
+        );
+        break;
+      case LoginStatus.employeeNotFound:
+        showErrorDialog(
+          context: context,
+          subTitle: "Your Attendance ID was incorrect. Please try again.",
+        );
+        profileController.handleIncorrectAttempt();
+        break;
+
+      case LoginStatus.locationMismatch:
+        showErrorDialog(
+          context: context,
+          subTitle: "Your location doesn't match. Please try again.",
+        );
+        break;
+
+      case LoginStatus.reRegisteredFace:
+        showErrorDialog(
+          context: context,
+          subTitle: "Please register your face before logging in.",
+        );
+        break;
+    }
   }
 }

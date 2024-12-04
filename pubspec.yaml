@@ -49,6 +49,7 @@ dependencies:
   intl: ^0.19.0
   connectivity_plus: ^3.0.6
   awesome_bottom_bar: ^1.2.4
+  animate_do: ^3.1.2
 
 
 

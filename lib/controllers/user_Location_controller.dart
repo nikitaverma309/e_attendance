@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:online/api/get_api_services.dart';
+import 'package:online/enum/enum_screen.dart';
 import 'package:online/enum/location_status.dart';
 import 'package:online/models/profile/check_user_location_model.dart';
 import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
@@ -117,7 +118,7 @@ class UserLocationController extends GetxController {
     }
     isLoading(false);
   }*/
-  Future<Status> getCheckStatusLatLong(
+  Future<LoginStatus> getCheckStatusLatLong(
       String empCode, BuildContext context) async {
     isLoading(true);
     try {
@@ -126,6 +127,10 @@ class UserLocationController extends GetxController {
       if (employeeDetails != null && employeeDetails.isNotEmpty) {
         Position currentPosition = await determinePosition(context);
         employeeData.value = employeeDetails[0];
+       if (employeeData.value!.verified == false) {
+          isLoading(false);
+          return LoginStatus.reRegisteredFace;
+        }
         double currentLat = currentPosition.latitude;
         double currentLong = currentPosition.longitude;
 
@@ -134,7 +139,8 @@ class UserLocationController extends GetxController {
         double? compareLong =
             double.tryParse(employeeData.value!.collegeDetails!.long!);
 
-        if (compareLat != null && compareLong != null) {
+        if (compareLat != null &&
+            compareLong != null ) {
           double distanceInMeters = Geolocator.distanceBetween(
             currentLat,
             currentLong,
@@ -146,32 +152,36 @@ class UserLocationController extends GetxController {
             isChecked.value = true;
             isLocationMatched.value = true;
             isLoading(false);
-            return Status.success;
+            return LoginStatus.success;
           } else {
             isChecked.value = false;
             isLocationMatched.value = false;
             isLoading(false);
-            return Status.locationMismatch;
+            return LoginStatus.locationMismatch;
           }
         } else {
           isChecked.value = false;
           isLocationMatched.value = false;
           isLoading(false);
-          return Status.locationMismatch;
+          return LoginStatus.locationMismatch;
         }
       } else {
         // Employee not found
         isChecked.value = false;
         isLocationMatched.value = false;
         isLoading(false);
-        return Status.employeeNotFound;
+        return LoginStatus.employeeNotFound;
       }
     } catch (e) {
       Utils.showErrorToast(message: e.toString());
       isChecked.value = false;
       isLocationMatched.value = false;
       isLoading(false);
-      return Status.employeeNotFound;
+      return LoginStatus.employeeNotFound;
     }
   }
+
+
+
+
 }

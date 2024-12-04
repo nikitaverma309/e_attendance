@@ -207,21 +207,23 @@ class Utils {
   static String formatTime(dynamic dateTime) {
     try {
       if (dateTime is String) {
-        // If it's a string, parse it to DateTime
-        DateTime parsedDate = DateTime.parse(dateTime);
-        return DateFormat('HH:mm:ss').format(parsedDate);
+        // Parse UTC time string to DateTime
+        DateTime parsedDate = DateTime.parse(dateTime).toLocal();
+        // Format to local time with AM/PM
+        return DateFormat('hh:mm:ss a').format(parsedDate);
       } else if (dateTime is DateTime) {
-        // If it's already a DateTime object
-        return DateFormat('HH:mm:ss').format(dateTime);
+        // If it's already a DateTime object, convert to local time
+        DateTime localDate = dateTime.toLocal();
+        return DateFormat('hh:mm:ss a').format(localDate);
       } else {
-        // If dateTime is not valid
         return 'Invalid Date';
       }
     } catch (e) {
       return 'Invalid Date';
     }
   }
-  // static String formatTime(dynamic dateTime) {
+
+// static String formatTime(dynamic dateTime) {
   //   try {
   //     if (dateTime is String) {
   //       // If it's a string, parse it to DateTime

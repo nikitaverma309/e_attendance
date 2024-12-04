@@ -34,6 +34,23 @@ class ApiServices {
       return null;
     }
   }
+  /// API to update faceVerified to true
+  static Future<bool> updateFaceVerifiedStatus(String empCode) async {
+    final url = Uri.parse('${ApiStrings.userLocation}$empCode');
+
+    try {
+      final response = await http.put(url, body: {'faceVerified': 'true'});
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        Get.snackbar('Error', 'Failed to update face verification status');
+        return false;
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred: $e');
+      return false;
+    }
+  }
 
   /// check Location
   static Future<List<UserLocationModel>?> getUserLocationApiServices(

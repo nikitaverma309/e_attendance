@@ -193,7 +193,7 @@ void showSuccessDialog({
   bool navigateAfterDelay = false,
 }) {
   if (navigateAfterDelay) {
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 0), () {
       if (Get.isDialogOpen!) {
         Get.back();
         onPressed?.call();

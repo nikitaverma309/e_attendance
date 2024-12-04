@@ -9,10 +9,11 @@ import 'package:online/enum/enum_screen.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/check_emp_id_screen.dart';
 import 'package:online/modules/profile/profile_screen.dart';
+import 'package:online/screens/emp_dash_bord/cmo_dash_bord.dart';
+import 'package:online/screens/emp_dash_bord/login_page.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
-import 'package:online/widgets/footer_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       const Expanded(
                         child: Text(
-                            "App Version: 1.00,\nApp Release Date: 3/12/2024.",
+                            "App Version: 1.0,\nApp Release Date: 03/12/2024.",
                             style: kText11BoldWhiteColor),
                       ),
                       DropdownButton<String>(
@@ -148,12 +149,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 10.height,
                 customButton(
                   context,
-                  'Profile',
+                  'Login',
                   const Color(0xFFCEEEEE),
                   Colors.black,
                   Icons.perm_contact_calendar_outlined,
                   () {
-                    _profileDialog(context);
+                    // _profileDialog(context);
+                    Get.to(() =>  LoginPage());
                   },
                 ),
               ],
@@ -168,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ));
         },
         icon: const Icon(Icons.person_add),
-        label: const Text('Register'),
+        label: const Text('Face Register'),
         backgroundColor: const Color(0xFFD7DEEE),
       ),
     );

@@ -44,5 +44,5 @@ class Strings {
   static const String notAttendance =
       "मैं उपस्थिति को चिन्हित करने के लिए अपनी स्वीकृति देता हूँ \n I give my approval  to mark attendance";
   static const String version =
-      "App Version: 1.00, App Release Date: 3/12/2024, Organization: Higher Education Department, Chhattisgarh, Building: Mantralaya, Naya Raipur.";
+      "App Version: 1.0, App Release Date: 03/12/2024, Organization: Higher Education Department, Chhattisgarh, Building: Mantralaya, Naya Raipur.";
 }
