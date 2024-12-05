@@ -53,22 +53,66 @@ class ApiServices {
   }
 
   /// check Location
+  // static Future<List<UserLocationModel>?> getUserLocationApiServices(
+  //     String empCode) async {
+  //   final url = Uri.parse('${ApiStrings.userLocation}$empCode');
+  //
+  //   try {
+  //     final response = await http.get(url);
+  //     if (response.statusCode == 200) {
+  //       List<dynamic> jsonResponse = jsonDecode(response.body);
+  //       return jsonResponse
+  //           .map((data) => UserLocationModel.fromJson(data))
+  //           .toList();
+  //     } else {
+  //       Get.snackbar('Error', 'Failed to load employee details');
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar('Error', 'An error occurred: $e');
+  //     return null;
+  //   }
+  // }
   static Future<List<UserLocationModel>?> getUserLocationApiServices(
       String empCode) async {
     final url = Uri.parse('${ApiStrings.userLocation}$empCode');
 
     try {
+      print("Requesting API: $url");
+
       final response = await http.get(url);
+      print("Response Status Code: ${response.statusCode}");
+
       if (response.statusCode == 200) {
-        List<dynamic> jsonResponse = jsonDecode(response.body);
-        return jsonResponse
-            .map((data) => UserLocationModel.fromJson(data))
-            .toList();
+        print("Response Body: ${response.body}");
+
+        final jsonResponse = jsonDecode(response.body);
+
+        if (jsonResponse is List) {
+          return jsonResponse.map((data) => UserLocationModel.fromJson(data)).toList();
+        } else if (jsonResponse is Map<String, dynamic>) {
+          if (jsonResponse['msg'] == 'FACE NOT EXISTS') {
+            Utils.showErrorToast(message: 'FACE NOT EXISTS');
+            return null;
+          } else if (jsonResponse['msg'] == 'RE-REGISTERED YOUR FACE') {
+            Utils.showErrorToast(message: 'RE-REGISTERED YOUR FACE.');
+            return null;
+          }else if (jsonResponse['msg'] == 'FACE NOT VERIFIED') {
+            Utils.showErrorToast(message: 'FACE NOT VERIFIED.');
+            return null;
+          }
+        }
+
+        print("Unexpected response format.");
+        Get.snackbar('Error', 'Unexpected response format.');
+        return null;
       } else {
-        Get.snackbar('Error', 'Failed to load employee details');
+        print("Error: Non-200 status code received: ${response.statusCode}");
+        Get.snackbar('Error', 'Failed to load employee details. Status Code: ${response.statusCode}');
         return null;
       }
     } catch (e) {
+      print("Exception occurred: $e");
       Get.snackbar('Error', 'An error occurred: $e');
       return null;
     }
@@ -130,7 +174,7 @@ class ApiServices {
         if (response.body.isNotEmpty) {
           Utils.printLog("Full Response Body: ${response.body}");
           final List<DesignationModel> fetchedData =
-              designationModelFromJson(response.body);
+          designationModelFromJson(response.body);
           return fetchedData;
         } else {
           Utils.printLog("Empty response body for class ID $classId.");

@@ -127,9 +127,16 @@ class UserLocationController extends GetxController {
       if (employeeDetails != null && employeeDetails.isNotEmpty) {
         Position currentPosition = await determinePosition(context);
         employeeData.value = employeeDetails[0];
-       if (employeeData.value!.verified == false) {
+        if (employeeData.value!.verified == 'FACE NOT EXISTS') {
           isLoading(false);
           return LoginStatus.reRegisteredFace;
+        }
+        if (employeeData.value!.verified == 'RE-REGISTERED YOUR FACE') {
+          isLoading(false);
+          Utils.showErrorToast(message: 'Face re-registered. Please proceed.');
+        } if (employeeData.value!.verified == 'FACE NOT VERIFIED') {
+          isLoading(false);
+          Utils.showErrorToast(message: 'FACE NOT VERIFIED');
         }
         double currentLat = currentPosition.latitude;
         double currentLong = currentPosition.longitude;
@@ -139,8 +146,7 @@ class UserLocationController extends GetxController {
         double? compareLong =
             double.tryParse(employeeData.value!.collegeDetails!.long!);
 
-        if (compareLat != null &&
-            compareLong != null ) {
+        if (compareLat != null && compareLong != null) {
           double distanceInMeters = Geolocator.distanceBetween(
             currentLat,
             currentLong,
@@ -180,8 +186,4 @@ class UserLocationController extends GetxController {
       return LoginStatus.employeeNotFound;
     }
   }
-
-
-
-
 }
