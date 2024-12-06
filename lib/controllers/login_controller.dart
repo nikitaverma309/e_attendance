@@ -179,8 +179,7 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       print("Error occurred: ${e.toString()}");
-      showErrorLoginDialog(
-          context, "Unexpected Error", "An unexpected error occurred.", false);
+
     }
   }
 

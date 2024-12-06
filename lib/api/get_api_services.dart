@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:online/api/api_strings.dart';
+import 'package:online/enum/handal.dart';
+import 'package:online/enum/location_status.dart';
 import 'package:online/models/check_status_user_register_model.dart';
 import 'package:online/models/droupDown/class_model.dart';
 import 'package:online/models/droupDown/designation_model.dart';
@@ -34,6 +36,7 @@ class ApiServices {
       return null;
     }
   }
+
   /// API to update faceVerified to true
   static Future<bool> updateFaceVerifiedStatus(String empCode) async {
     final url = Uri.parse('${ApiStrings.userLocation}$empCode');
@@ -52,29 +55,10 @@ class ApiServices {
     }
   }
 
-  /// check Location
-  // static Future<List<UserLocationModel>?> getUserLocationApiServices(
-  //     String empCode) async {
-  //   final url = Uri.parse('${ApiStrings.userLocation}$empCode');
-  //
-  //   try {
-  //     final response = await http.get(url);
-  //     if (response.statusCode == 200) {
-  //       List<dynamic> jsonResponse = jsonDecode(response.body);
-  //       return jsonResponse
-  //           .map((data) => UserLocationModel.fromJson(data))
-  //           .toList();
-  //     } else {
-  //       Get.snackbar('Error', 'Failed to load employee details');
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     Get.snackbar('Error', 'An error occurred: $e');
-  //     return null;
-  //   }
-  // }
-  static Future<List<UserLocationModel>?> getUserLocationApiServices(
+
+  static Future<UserResponseModel> getUserLocationApiServices(
       String empCode) async {
+    UserResponseModel userResponse = UserResponseModel();
     final url = Uri.parse('${ApiStrings.userLocation}$empCode');
 
     try {
@@ -89,33 +73,30 @@ class ApiServices {
         final jsonResponse = jsonDecode(response.body);
 
         if (jsonResponse is List) {
-          return jsonResponse.map((data) => UserLocationModel.fromJson(data)).toList();
+          userResponse.userData = jsonResponse
+              .map((data) => UserLocationModel.fromJson(data))
+              .toList()[0];
         } else if (jsonResponse is Map<String, dynamic>) {
           if (jsonResponse['msg'] == 'FACE NOT EXISTS') {
             Utils.showErrorToast(message: 'FACE NOT EXISTS');
-            return null;
+            userResponse.errorType = LoginStatus.faceNotExists;
           } else if (jsonResponse['msg'] == 'RE-REGISTERED YOUR FACE') {
             Utils.showErrorToast(message: 'RE-REGISTERED YOUR FACE.');
-            return null;
-          }else if (jsonResponse['msg'] == 'FACE NOT VERIFIED') {
+            userResponse.errorType = LoginStatus.reRegisteredFace;
+          } else if (jsonResponse['msg'] == 'FACE NOT VERIFIED') {
             Utils.showErrorToast(message: 'FACE NOT VERIFIED.');
-            return null;
+            userResponse.errorType = LoginStatus.faceNotVerified;
+          } else if (jsonResponse['msg'] == 'EMPLOYEE NOT EXISTS') {
+            Utils.showErrorToast(message: 'EMPLOYEE NOT EXISTS');
+            userResponse.errorType = LoginStatus.employeeNotExists;
+          } else if (jsonResponse['msg'] == 'EMPLOYEE NOT VERIFIED') {
+            Utils.showErrorToast(message: 'EMPLOYEE NOT VERIFIED');
+            userResponse.errorType = LoginStatus.employeeVerified;
           }
         }
-
-        print("Unexpected response format.");
-        Get.snackbar('Error', 'Unexpected response format.');
-        return null;
-      } else {
-        print("Error: Non-200 status code received: ${response.statusCode}");
-        Get.snackbar('Error', 'Failed to load employee details. Status Code: ${response.statusCode}');
-        return null;
       }
-    } catch (e) {
-      print("Exception occurred: $e");
-      Get.snackbar('Error', 'An error occurred: $e');
-      return null;
-    }
+    } catch (e) {}
+    return userResponse;
   }
 
   //check User register from Status user was true ya not
@@ -174,7 +155,7 @@ class ApiServices {
         if (response.body.isNotEmpty) {
           Utils.printLog("Full Response Body: ${response.body}");
           final List<DesignationModel> fetchedData =
-          designationModelFromJson(response.body);
+              designationModelFromJson(response.body);
           return fetchedData;
         } else {
           Utils.printLog("Empty response body for class ID $classId.");

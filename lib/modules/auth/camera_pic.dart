@@ -18,7 +18,7 @@ import 'package:online/widgets/camera_widgets/FacePainter.dart';
 import 'package:online/widgets/camera_widgets/camera_header.dart';
 
 class LoginCameraTwo extends StatefulWidget {
-  final String attendanceId;
+  final String? attendanceId;
   final CameraAction action;
   const LoginCameraTwo(
       {super.key, required this.attendanceId, required this.action});

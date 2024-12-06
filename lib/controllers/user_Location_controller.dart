@@ -8,8 +8,10 @@ import 'package:online/api/get_api_services.dart';
 import 'package:online/enum/enum_screen.dart';
 import 'package:online/enum/location_status.dart';
 import 'package:online/models/profile/check_user_location_model.dart';
+import 'package:online/modules/auth/camera_pic.dart';
 import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
 import 'package:online/utils/utils.dart';
+import 'package:online/widgets/common/custom_widgets.dart';
 
 class UserLocationController extends GetxController {
   var isLoading = false.obs;
@@ -56,95 +58,129 @@ class UserLocationController extends GetxController {
     "Back"
   ].obs;
 
-/*
-  Future<void> getCheckStatusLatLong(String empCode, BuildContext context) async {
+
+  // Future<void> getCheckStatusLatLong(
+  //     String empCode, CameraAction login, BuildContext context) async {
+  //   isLoading(true);
+  //   try {
+  //     var employeeDetails =
+  //         await ApiServices.getUserLocationApiServices(empCode);
+  //     if (employeeDetails.userData != null) {
+  //       Position currentPosition = await determinePosition(context);
+  //       employeeData.value = employeeDetails.userData;
+  //
+  //       double currentLat = currentPosition.latitude;
+  //       double currentLong = currentPosition.longitude;
+  //
+  //       double? compareLat =
+  //           double.tryParse(employeeData.value!.collegeDetails!.lat!);
+  //       double? compareLong =
+  //           double.tryParse(employeeData.value!.collegeDetails!.long!);
+  //
+  //       if (compareLat != null && compareLong != null) {
+  //         double distanceInMeters = Geolocator.distanceBetween(
+  //           currentLat,
+  //           currentLong,
+  //           compareLat,
+  //           compareLong,
+  //         );
+  //
+  //         if (distanceInMeters <= 160) {
+  //           isChecked.value = true;
+  //           isLocationMatched.value = true;
+  //
+  //           showSuccessDialog(
+  //             context: context,
+  //             subTitle: "Attendance marked successfully!",
+  //             navigateAfterDelay: true,
+  //             onPressed: () {
+  //               print("object");
+  //               Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) => LoginCameraTwo(
+  //                     attendanceId: employeeData.value?.empCode!,
+  //                     action: CameraAction.login,
+  //                   ),
+  //                 ),
+  //               );
+  //             },
+  //           );
+  //           isLoading(false);
+  //         } else {
+  //           isChecked.value = false;
+  //           isLocationMatched.value = false;
+  //           isLoading(false);
+  //         }
+  //       } else {
+  //         isChecked.value = false;
+  //         isLocationMatched.value = false;
+  //         isLoading(false);
+  //       }
+  //     } else {
+  //       String msgError = "";
+  //       if (employeeDetails.errorType == LoginStatus.faceNotVerified) {
+  //         msgError =
+  //             "Face verification is pending. Please contact the web administrator";
+  //       } else if (employeeDetails.errorType == LoginStatus.employeeNotExists) {
+  //         msgError = "Face not employeeNotVerified";
+  //       } else if (employeeDetails.errorType == LoginStatus.reRegisteredFace) {
+  //         msgError = "Please re-register your face. ";
+  //       } else if (employeeDetails.errorType == LoginStatus.faceNotExists) {
+  //         showSuccessDialog(
+  //           context: context,
+  //           subTitle: "your FACE NOT EXISTS",
+  //           navigateAfterDelay: true,
+  //           onPressed: () {
+  //             print("object");
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) => LoginCameraTwo(
+  //                   attendanceId: employeeData.value?.empCode!,
+  //                   action: CameraAction.login,
+  //                 ),
+  //               ),
+  //             );
+  //           },
+  //         );
+  //
+  //       } else if (employeeDetails.errorType == LoginStatus.employeeVerified) {
+  //         msgError = "employeeNotFound";
+  //       }
+  //       isLoading(false);
+  //       showErrorDialog(
+  //         context: context,
+  //         subTitle: msgError,
+  //       );
+  //     }
+  //   } catch (e) {
+  //     Utils.showErrorToast(message: e.toString());
+  //     isChecked.value = false;
+  //     isLocationMatched.value = false;
+  //     isLoading(false);
+  //   }
+  //
+  //   isLoading(false);
+  // }
+
+  Future<void> getCheckStatusLatLong(
+      String empCode, CameraAction action, BuildContext context) async {
     isLoading(true);
     try {
-      var employeeDetails =
-      await ApiServices.getUserLocationApiServices(empCode);
-      if (employeeDetails != null && employeeDetails.isNotEmpty) {
+      var employeeDetails = await ApiServices.getUserLocationApiServices(empCode);
+
+      if (employeeDetails.userData != null) {
         Position currentPosition = await determinePosition(context);
-        employeeData.value = employeeDetails[0];
-        double currentLat = currentPosition.latitude;
-        double currentLong = currentPosition.longitude;
-        double? compareLat = double.tryParse(kDebugMode
-            ? employeeData.value!.collegeDetails!.lat!
-            : employeeData.value!.collegeDetails!.lat!);
-        double? compareLong = double.tryParse(kDebugMode
-            ? employeeData.value!.collegeDetails!.long!
-            : employeeData.value!.collegeDetails!.long!);
+        employeeData.value = employeeDetails.userData;
 
-        // If latitude and longitude from API are valid
-        if (compareLat != null && compareLong != null) {
-          double distanceInMeters = Geolocator.distanceBetween(
-            currentLat,
-            currentLong,
-            compareLat,
-            compareLong,
-          );
-
-          Utils.printLog("Current Location: ($currentLat, $currentLong)");
-          Utils.printLog("API Location: ($compareLat, $compareLong)");
-          Utils.printLog("Distance: $distanceInMeters meters");
-
-          // Check if the distance is within 160 meters
-          if (distanceInMeters <= 160) {
-            Utils.showSuccessToast(message: 'Location Matched. You can proceed.');
-            isChecked.value = true;
-            isLocationMatched.value = true;
-          } else {
-            Utils.showErrorToast(
-                message: 'Your location does not match the required location.');
-            isChecked.value = false;
-            isLocationMatched.value = false;
-          }
-        } else {
-          Utils.showErrorToast(
-              message: 'Invalid or missing location data from API.');
-          isChecked.value = false;
-          isLocationMatched.value = false;
-        }
-      } else {
-        // Employee not found case
-        Utils.showErrorToast(message: 'Employee not found.');
-        isChecked.value = false;
-        isLocationMatched.value = false;
-      }
-    } catch (e) {
-      // Handle any errors
-      Utils.showErrorToast(message: e.toString());
-      isChecked.value = false;
-      isLocationMatched.value = false;
-    }
-    isLoading(false);
-  }*/
-  Future<LoginStatus> getCheckStatusLatLong(
-      String empCode, BuildContext context) async {
-    isLoading(true);
-    try {
-      var employeeDetails =
-          await ApiServices.getUserLocationApiServices(empCode);
-      if (employeeDetails != null && employeeDetails.isNotEmpty) {
-        Position currentPosition = await determinePosition(context);
-        employeeData.value = employeeDetails[0];
-        if (employeeData.value!.verified == 'FACE NOT EXISTS') {
-          isLoading(false);
-          return LoginStatus.reRegisteredFace;
-        }
-        if (employeeData.value!.verified == 'RE-REGISTERED YOUR FACE') {
-          isLoading(false);
-          Utils.showErrorToast(message: 'Face re-registered. Please proceed.');
-        } if (employeeData.value!.verified == 'FACE NOT VERIFIED') {
-          isLoading(false);
-          Utils.showErrorToast(message: 'FACE NOT VERIFIED');
-        }
         double currentLat = currentPosition.latitude;
         double currentLong = currentPosition.longitude;
 
         double? compareLat =
-            double.tryParse(employeeData.value!.collegeDetails!.lat!);
+        double.tryParse(employeeData.value!.collegeDetails!.homeLat!);
         double? compareLong =
-            double.tryParse(employeeData.value!.collegeDetails!.long!);
+        double.tryParse(employeeData.value!.collegeDetails!.homeLong!);
 
         if (compareLat != null && compareLong != null) {
           double distanceInMeters = Geolocator.distanceBetween(
@@ -157,33 +193,104 @@ class UserLocationController extends GetxController {
           if (distanceInMeters <= 160) {
             isChecked.value = true;
             isLocationMatched.value = true;
-            isLoading(false);
-            return LoginStatus.success;
-          } else {
-            isChecked.value = false;
-            isLocationMatched.value = false;
-            isLoading(false);
-            return LoginStatus.locationMismatch;
+            if (action == CameraAction.login) {
+              showSuccessDialog(
+                context: context,
+                subTitle: action == CameraAction.login
+                    ? "Attendance marked successfully!"
+                    : "Registration completed successfully!",
+                navigateAfterDelay: true,
+                onPressed: () {
+                  navigateToCamera(context, action, employeeData.value!.empCode!);
+                },
+              );
+            }
+            else {
+              // Registration Action - Just show success dialog but no navigation
+              showErrorDialog(
+                context: context,
+                subTitle: "You are already registered. If you want to re-register, please proceed.",
+
+                onPressed: () {
+                  Navigator.pop(context);
+                  navigateToCamera(context, action, employeeData.value!.empCode!);
+                },
+              );
+            }
+
+            // showSuccessDialog(
+            //   context: context,
+            //   subTitle: action == CameraAction.login
+            //       ? "Attendance marked successfully!"
+            //       : "Registration completed successfully!",
+            //   navigateAfterDelay: true,
+            //   onPressed: () {
+            //     navigateToCamera(context, action, employeeData.value!.empCode!);
+            //   },
+            // );
           }
         } else {
-          isChecked.value = false;
-          isLocationMatched.value = false;
-          isLoading(false);
-          return LoginStatus.locationMismatch;
+          handleErrorResponse(context, "Invalid location data.", action);
         }
       } else {
-        // Employee not found
-        isChecked.value = false;
-        isLocationMatched.value = false;
-        isLoading(false);
-        return LoginStatus.employeeNotFound;
+        handleErrorResponse(
+            context, getErrorMessage(employeeDetails.errorType, action), action);
       }
     } catch (e) {
       Utils.showErrorToast(message: e.toString());
-      isChecked.value = false;
-      isLocationMatched.value = false;
+    } finally {
       isLoading(false);
-      return LoginStatus.employeeNotFound;
+      isChecked.value = false;
+
     }
   }
+
+  void navigateToCamera(BuildContext context, CameraAction action, String empCode) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginCameraTwo(
+          attendanceId: empCode,
+          action: action,
+        ),
+      ),
+    );
+  }
+
+  void handleErrorResponse(
+      BuildContext context, String errorMessage, CameraAction action) {
+    showErrorDialog(
+      context: context,
+      subTitle: errorMessage,
+      onPressed: () {
+        if (action == CameraAction.registration) {
+          Navigator.pop(context);
+        } else {
+          Navigator.pop(context);
+        }
+      },
+    );
+  }
+
+  String getErrorMessage(LoginStatus? status, CameraAction action) {
+    switch (status) {
+      case LoginStatus.faceNotVerified:
+        return action == CameraAction.login
+            ? "Face verification is pending. Please contact the web administrator."
+            : "Face verification is pending. Please complete the verification.";
+      case LoginStatus.employeeNotExists:
+        handleIncorrectAttempt();
+        return "Employee does not exist. Please check your emp code.";
+      case LoginStatus.reRegisteredFace:
+        return "Please re-register your face.";
+      case LoginStatus.faceNotExists:
+        return "Your face is not registered. Please register before login.";
+      case LoginStatus.employeeVerified:
+        return "Employee is verified but not found.";
+      default:
+        return "An unknown error occurred. Please try again.";
+    }
+  }
+
+
 }

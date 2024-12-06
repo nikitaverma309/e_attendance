@@ -159,7 +159,6 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                     context: context,
                                     subTitle: Strings.attendanceAlert,
                                   );
-                                  return;
                                 }
 
                                 profileController.isChecked.value =
@@ -190,19 +189,15 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                   }
 
                                   profileController.isLoading.value = true;
+                                  await profileController.getCheckStatusLatLong(
+                                      employeeIdCtr.text,
+                                      widget.action,
+                                      context);
 
-                                  LoginStatus status = await profileController
-                                      .getCheckStatusLatLong(
-                                          employeeIdCtr.text, context);
-                                  handleStatus(
-                                    status,
-                                    employeeIdCtr.text,
-                                    widget.action,
-                                  );
-                                  profileController.isLoading.value = false;
-                                  profileController.isChecked.value = false;
+                                  // Handle each status separately
                                 }
-                              });
+                              },
+                            );
                     }),
                     17.width,
                     Expanded(
@@ -279,10 +274,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
       case LoginStatus.success:
         showSuccessDialog(
           context: context,
-          subTitle: action == CameraAction.login
-              ? "Login Successful. You can proceed."
-              : "Registration Successful. You can proceed.",
-          textHeading: "Location Matched",
+          subTitle: "Attendance marked successfully!",
           navigateAfterDelay: true,
           onPressed: () {
             Navigator.push(
@@ -297,26 +289,8 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
           },
         );
         break;
-      case LoginStatus.employeeNotFound:
-        showErrorDialog(
-          context: context,
-          subTitle: "Your Attendance ID was incorrect. Please try again.",
-        );
-        profileController.handleIncorrectAttempt();
-        break;
 
-      case LoginStatus.locationMismatch:
-        showErrorDialog(
-          context: context,
-          subTitle: "Your location doesn't match. Please try again.",
-        );
-        break;
-
-      case LoginStatus.reRegisteredFace:
-        showErrorDialog(
-          context: context,
-          subTitle: "Please register your face before logging in.",
-        );
+      default:
         break;
     }
   }
