@@ -8,9 +8,8 @@ import 'package:online/controllers/user_Register_form_controller.dart';
 import 'package:online/enum/enum_screen.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/check_emp_id_screen.dart';
-import 'package:online/modules/profile/profile_screen.dart';
-import 'package:online/screens/emp_dash_bord/cmo_dash_bord.dart';
 import 'package:online/screens/emp_dash_bord/login_page.dart';
+import 'package:online/utils/utils.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
@@ -155,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icons.perm_contact_calendar_outlined,
                   () {
                     // _profileDialog(context);
-                    Get.to(() =>  LoginPage());
+                    Get.to(() => LoginPage());
                   },
                 ),
               ],
@@ -341,38 +340,16 @@ class _MyHomePageState extends State<MyHomePage> {
                               text: "Verify",
                               onPressed: () async {
                                 if (empCodeController.text.isEmpty) {
-                                  Get.defaultDialog(
-                                    middleText:
-                                        "Please enter your Employee Code before proceeding.",
-                                    textConfirm: "OK",
-                                    onConfirm: () => Get.back(),
-                                  );
-                                  return;
+                                  // Show an error message or highlight the input field
+                                  Utils.showErrorToast(message: "Please enter the employee code.");
+                                  return; // Don't proceed if the input is empty
                                 }
 
                                 profileController.isLoading.value = true;
                                 await profileController
                                     .getProfile(empCodeController.text);
                                 profileController.isLoading.value = false;
-
-                                if (profileController.employeeDataA.value !=
-                                    null) {
-                                  Navigator.pop(context);
-                                  Get.to(() => ProfileScreen(
-                                        data: profileController
-                                            .employeeDataA.value,
-                                      ));
-                                } else {
-                                  Get.defaultDialog(
-                                    middleText:
-                                        "Your Employee Code was incorrect. Please try again.",
-                                    textConfirm: "OK",
-                                    onConfirm: () {
-                                      Get.back();
-                                      empCodeController.clear();
-                                    },
-                                  );
-                                }
+                                empCodeController.clear();
                               },
                             ),
                     ),

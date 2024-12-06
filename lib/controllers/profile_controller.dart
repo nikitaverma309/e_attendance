@@ -17,11 +17,7 @@ class ProfileController extends GetxController {
         data: employeeDataA.value,
       ));
     } else {
-      Get.snackbar(
-        'Error',
-        'Failed to load profile data.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+
     }
     isLoading(false);
   }

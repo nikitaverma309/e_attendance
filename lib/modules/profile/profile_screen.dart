@@ -133,11 +133,11 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       ResultOutPutCard(
                         title: 'Email ',
-                        subTitle: "${data!.employeeData!.email}",
+                        subTitle:  Utils.maskEmail(data!.employeeData!.email ?? ""),
                       ),
                       ResultOutPutCard(
                         title: 'Contact ',
-                        subTitle: "${data!.employeeData!.contact}",
+                        subTitle:  Utils.maskContact(data!.employeeData!.contact.toString()),
                       ),
                       ResultOutPutCard(
                         title: 'Work Type ',

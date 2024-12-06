@@ -13,7 +13,6 @@ class LoginDashBordController extends GetxController {
   Future<void> login(String username, String password, String userType) async {
     isLoading(true); // Set loading state to true
     try {
-
       var url = Uri.parse('http://164.100.150.78/lmsbackend/api/login');
       var headers = {'Content-Type': 'application/json'};
 
@@ -34,22 +33,18 @@ class LoginDashBordController extends GetxController {
         print(response.body);
         if (data['status'] == true) {
           loginResponse.value = LoginResponseModel.fromJson(data);
-          Get.snackbar("Success", "Login Successful!");
-          Get.to(() => UserDashBord());
 
+          Get.to(() => UserDashBord());
         } else {
           errorMessage.value = "Login Failed. Please check your credentials.";
-          Get.snackbar("Error", errorMessage.value);
         }
       } else {
         errorMessage.value = "Error: ${response.statusCode}";
         print("ud ${response.statusCode}");
-        Get.snackbar("Error", errorMessage.value);
       }
     } catch (e) {
       errorMessage.value = "Failed to connect to server: $e";
       print("ud $e");
-      Get.snackbar("Error", errorMessage.value);
     } finally {
       isLoading(false); // Set loading state to false
     }

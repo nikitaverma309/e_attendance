@@ -51,7 +51,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: screenWidth * 0.04,
-            vertical: screenHeight * 0.02,
+            vertical: screenHeight * 0.01,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,16 +62,16 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 padding: const EdgeInsets.all(4.0),
                 child: const TextScroll(
                   "${Strings.version}",
-                  style: kText15BaNaBoldBlackColorStyle,
+                  style: kText16BoldBlackColorStyle,
                   velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
                 ),
               ),
               SizedBox(height: screenHeight * 0.01), // Responsive spacing
               CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: 35,
+                radius: 33,
                 child: Image(
-                  image: AssetImage(Assets.imagesCglogo),
+                  image: const AssetImage(Assets.imagesCglogo),
                   height: screenHeight * 0.08, // Responsive image height
                   width: screenWidth * 0.15, // Responsive image width
                 ),
@@ -84,10 +84,10 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                   children: [
                     Text(
                       Strings.higherEducation,
-                      style: kTextBlackColorStyle,
+                      style: kText15BaNaBoldBlackColorStyle,
                     ),
                     Text("Government Of Chhattisgarh",
-                        style: kText15BaNaBoldBlackColorStyle),
+                        style: kTextBaNaBoldBlackColorStyle),
                   ],
                 ),
               ),
@@ -100,13 +100,10 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 decoration: Shape.chooseCheckBox(context),
                 child: Row(
                   children: [
-                    Flexible(
+                    const Flexible(
                       child: Text(
                         Strings.attendanceId,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.04,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: kText16BoldBlackColorStyle,
                       ),
                     ),
                     SizedBox(width: screenWidth * 0.12),
@@ -137,7 +134,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: screenHeight * 0.03),
+              SizedBox(height: screenHeight * 0.02),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 4),
                 decoration: Shape.scrollText(context),
@@ -155,10 +152,22 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                               value: profileController.isChecked.value,
                               onChanged: (bool? newValue) async {
                                 if (employeeIdCtr.text.isEmpty) {
+                                  if (profileController.isBlocked.value) {
+                                    showErrorDialog(
+                                      context: context,
+                                      permanentlyDisableButton: true,
+                                      subTitle: " Please try after 10 seconds.",
+                                    );
+                                    profileController.isBlocked.value = false;
+                                    return;
+                                  }
                                   showErrorDialog(
                                     context: context,
                                     subTitle: Strings.attendanceAlert,
                                   );
+                                  profileController.handleIncorrectAttempt();
+
+                                  return;
                                 }
 
                                 profileController.isChecked.value =
@@ -193,8 +202,6 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                                       employeeIdCtr.text,
                                       widget.action,
                                       context);
-
-                                  // Handle each status separately
                                 }
                               },
                             );
@@ -205,13 +212,14 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                         widget.action == CameraAction.login
                             ? Strings.notAttendance
                             : Strings.notRegistration,
-                        style: k13BoldBlackColorStyle,
+                        style: kText16BoldBlackColorStyle,
                       ),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: screenHeight * 0.03),
+
               Obx(() {
                 return GridView.builder(
                   itemCount: profileController.attendanceIds.length,
@@ -221,7 +229,8 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                     crossAxisCount: 3,
                     crossAxisSpacing: screenWidth * 0.02,
                     mainAxisSpacing: screenHeight * 0.02,
-                    childAspectRatio: 2.5,
+                    childAspectRatio:
+                        2.5, // Slightly adjusted ratio for better button size
                   ),
                   itemBuilder: (context, index) {
                     return GestureDetector(
@@ -241,19 +250,44 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                         }
                         FocusScope.of(context).requestFocus(_focusNode);
                       },
-                      child: Container(
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE3C998),
+                          color: Colors.white,
                           borderRadius:
                               BorderRadius.circular(screenWidth * 0.02),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 8,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                          border: Border.all(
+                              color: const Color(0xFFE3C998), width: 2),
                         ),
                         alignment: Alignment.center,
-                        child: Text(
-                          profileController.attendanceIds[index],
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.04,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              profileController.attendanceIds[index],
+                              style: TextStyle(
+                                fontSize: screenWidth * 0.045,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            if (profileController.attendanceIds[index] ==
+                                "Reset")
+                              const Icon(Icons.refresh,
+                                  size: 2, color: Colors.redAccent),
+                            if (profileController.attendanceIds[index] ==
+                                "Back")
+                              const Icon(Icons.backspace,
+                                  size: 2, color: Colors.blueAccent),
+                          ],
                         ),
                       ),
                     );
@@ -266,32 +300,5 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
       ),
       bottomSheet: FooterWidget(),
     );
-  }
-
-  void handleStatus(
-      LoginStatus status, String employeeId, CameraAction action) {
-    switch (status) {
-      case LoginStatus.success:
-        showSuccessDialog(
-          context: context,
-          subTitle: "Attendance marked successfully!",
-          navigateAfterDelay: true,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginCameraTwo(
-                  attendanceId: employeeId,
-                  action: action,
-                ),
-              ),
-            );
-          },
-        );
-        break;
-
-      default:
-        break;
-    }
   }
 }

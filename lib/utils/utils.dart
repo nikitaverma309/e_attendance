@@ -222,26 +222,17 @@ class Utils {
       return 'Invalid Date';
     }
   }
+  static String maskEmail(String email) {
+    // Assuming the email is in the form "example@example.com"
+    List<String> parts = email.split('@');
+    String maskedEmail = parts[0].substring(0, 2) + '*' * (parts[0].length - 4) + parts[0].substring(parts[0].length - 4) + '@' + parts[1];
+    return maskedEmail;
+  }
 
-// static String formatTime(dynamic dateTime) {
-  //   try {
-  //     if (dateTime is String) {
-  //       // If it's a string, parse it to DateTime
-  //       DateTime parsedDate = DateTime.parse(dateTime);
-  //       // Convert to IST (UTC +5:30)
-  //       DateTime istDateTime = parsedDate.add(Duration(hours: 5, minutes: 30));
-  //       return DateFormat('HH:mm:ss').format(istDateTime);
-  //     } else if (dateTime is DateTime) {
-  //       // If it's already a DateTime object
-  //       // Convert to IST (UTC +5:30)
-  //       DateTime istDateTime = dateTime.add(Duration(hours: 5, minutes: 30));
-  //       return DateFormat('HH:mm:ss').format(istDateTime);
-  //     } else {
-  //       // If dateTime is not valid
-  //       return 'Invalid Date';
-  //     }
-  //   } catch (e) {
-  //     return 'Invalid Date';
-  //   }
-  // }
+  // Method to mask the contact number
+  static String maskContact(String contact) {
+    // Assuming contact is a phone number, e.g., "9876543210"
+    String maskedContact = contact.substring(0, 2) + '*' * (contact.length - 6) + contact.substring(contact.length - 4);
+    return maskedContact;
+  }
 }
