@@ -24,7 +24,7 @@ class FaceAttendanceScreen extends StatefulWidget {
 class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
   final UserLocationController profileController =
       Get.put(UserLocationController());
-  TextEditingController employeeIdCtr = TextEditingController();
+
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -114,7 +114,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.01),
                         child: TextFormField(
-                          controller: employeeIdCtr,
+                          controller: profileController.employeeIdCtr,
                           keyboardType: TextInputType.phone,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
@@ -148,7 +148,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                           : Checkbox(
                               value: profileController.isChecked.value,
                               onChanged: (bool? newValue) async {
-                                if (employeeIdCtr.text.isEmpty) {
+                                if (profileController.employeeIdCtr.text.isEmpty) {
                                   if (profileController.isBlocked.value) {
                                     showErrorDialog(
                                       context: context,
@@ -196,7 +196,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
 
                                   profileController.isLoading.value = true;
                                   await profileController.getCheckStatusLatLong(
-                                      employeeIdCtr.text,
+                                      profileController.employeeIdCtr.text,
                                       widget.action,
                                       context);
                                 }
@@ -235,15 +235,15 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                         String selectedValue =
                             profileController.attendanceIds[index];
                         if (selectedValue == "Reset") {
-                          employeeIdCtr.clear();
+                          profileController.employeeIdCtr.clear();
                         } else if (selectedValue == "Back") {
-                          String currentText = employeeIdCtr.text;
+                          String currentText = profileController.employeeIdCtr.text;
                           if (currentText.isNotEmpty) {
-                            employeeIdCtr.text = currentText.substring(
+                            profileController.employeeIdCtr.text = currentText.substring(
                                 0, currentText.length - 1);
                           }
-                        } else if (employeeIdCtr.text.length < 11) {
-                          employeeIdCtr.text += selectedValue;
+                        } else if (profileController.employeeIdCtr.text.length < 11) {
+                          profileController.employeeIdCtr.text += selectedValue;
                         }
                         FocusScope.of(context).requestFocus(_focusNode);
                       },
