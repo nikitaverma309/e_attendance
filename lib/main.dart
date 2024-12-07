@@ -6,15 +6,12 @@ import 'package:online/locator.dart';
 import 'package:online/modules/splash/splash_page.dart';
 import 'package:online/utils/utils.dart';
 
-import 'modules/restriction_dialog/dialog_manager.dart';
 
 
 void main() {
 
-  void initDialogManager() => serviceLocator<DialogManager>().init();
   HttpOverrides.global = CustomHttpOverrides();
   setupServices();
-  initDialogManager();
   runApp(const MyApp());
 }
 class CustomHttpOverrides extends HttpOverrides{

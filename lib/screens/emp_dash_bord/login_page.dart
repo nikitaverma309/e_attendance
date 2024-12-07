@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // Background color
-      backgroundColor: Color(0xFFf0f0f0),
+      backgroundColor: const Color(0xFFf0f0f0),
       appBar: const CustomAppBar(
         title: "Login",
         actionIcon: Icons.ice_skating,
@@ -70,7 +70,7 @@ class LoginPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -79,7 +79,7 @@ class LoginPage extends StatelessWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 // Password TextField
                 TextFormField(
                   controller: passwordController,
@@ -93,7 +93,7 @@ class LoginPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -102,12 +102,12 @@ class LoginPage extends StatelessWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 // Login Button with Obx loading state
                 Obx(() {
                   if (loginController.isLoading.value) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else {
                     return CommonButton(
                       onPressed: () {

@@ -105,7 +105,7 @@ class FaqScreen extends StatelessWidget {
               ),
             ),
             10.height,
-            Text(
+            const Text(
               "Higher Education Department's",
               style: kText10BlueBlackColorStyle,
             ),
