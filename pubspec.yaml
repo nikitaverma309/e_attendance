@@ -40,14 +40,12 @@ dependencies:
   image: ^3.0.1
   get_it: ^8.0.0
   get: ^4.3.8
-  poly_geofence_service: ^3.0.0
   geolocator: ^12.0.0
   permission_handler: ^9.1.0
   nb_utils: ^4.6.25
   http: ^1.2.2
   text_scroll: ^0.2.0
   intl: ^0.19.0
-  connectivity_plus: ^3.0.6
   awesome_bottom_bar: ^1.2.4
   animate_do: ^3.1.2
 

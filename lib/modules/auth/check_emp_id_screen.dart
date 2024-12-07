@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,9 +6,7 @@ import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/user_Location_controller.dart';
 import 'package:online/enum/enum_screen.dart';
-import 'package:online/enum/location_status.dart';
 import 'package:online/generated/assets.dart';
-import 'package:online/modules/auth/camera_pic.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
@@ -61,7 +58,7 @@ class _FaceAttendanceScreenState extends State<FaceAttendanceScreen> {
                 decoration: Shape.scrollText(context),
                 padding: const EdgeInsets.all(4.0),
                 child: const TextScroll(
-                  "${Strings.version}",
+                  Strings.version,
                   style: kText16BoldBlackColorStyle,
                   velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
                 ),

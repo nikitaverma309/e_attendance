@@ -320,7 +320,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     hint: 'Select DesignationList',
                     onChanged: (DesignationModel? newCass) {
                       if (newCass != null) {
-                        dropDownController.selectDesignationOOb(newCass!.id!);
+                        dropDownController.selectDesignationOOb(newCass.id!);
                       }
                     },
                     idKey: '_id',

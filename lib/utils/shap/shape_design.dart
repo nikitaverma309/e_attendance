@@ -55,7 +55,7 @@ class Shape {
     );
   }
   static BoxDecoration cameraView(BuildContext context) {
-    return   BoxDecoration(
+    return   const BoxDecoration(
       color: Color(0xff4787b4),
       shape: BoxShape.circle,
       boxShadow: [
