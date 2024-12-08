@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:online/api/api_strings.dart';
 import 'package:online/enum/handal.dart';
 import 'package:online/enum/location_status.dart';
-import 'package:online/models/check_status_user_register_model.dart';
+import 'package:online/models/employee_register_model.dart';
 import 'package:online/models/droupDown/class_model.dart';
 import 'package:online/models/droupDown/designation_model.dart';
 import 'dart:convert';
@@ -55,7 +55,6 @@ class ApiServices {
     }
   }
 
-
   static Future<UserResponseModel> getUserLocationApiServices(
       String empCode) async {
     UserResponseModel userResponse = UserResponseModel();
@@ -91,7 +90,7 @@ class ApiServices {
             userResponse.errorType = LoginStatus.employeeNotExists;
           } else if (jsonResponse['msg'] == 'EMPLOYEE NOT VERIFIED') {
             Utils.showErrorToast(message: 'EMPLOYEE NOT VERIFIED');
-            userResponse.errorType = LoginStatus.employeeVerified;
+            userResponse.errorType = LoginStatus.employeeNotVerified;
           }
         }
       }

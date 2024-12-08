@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:online/api/get_api_services.dart';
 import 'package:online/api/post_api_services.dart';
-import 'package:online/models/check_status_user_register_model.dart';
+import 'package:online/models/employee_register_model.dart';
 import 'package:online/screens/form/emp_form.dart';
 
 import 'package:online/utils/utils.dart';

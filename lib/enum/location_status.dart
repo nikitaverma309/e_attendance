@@ -1,7 +1,7 @@
 // enum Status { employeeNotFound, locationMismatch, success }
 enum LoginStatus {
   success,
-  employeeVerified,
+  employeeNotVerified,
   employeeNotExists,
   faceNotExists,
   faceNotVerified,

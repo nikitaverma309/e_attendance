@@ -9,8 +9,13 @@ class Assets {
   static const String assetsScanBeep = 'assets/scan_beep.wav';
   static const String assetsSuccess = 'assets/success.mp3';
   static const String assetsWFace = 'assets/wFace.png';
+  static const String eAttendanceAssetsFailed = 'assets/failed.mp3';
+  static const String eAttendanceAssetsScanBeep = 'assets/scan_beep.wav';
+  static const String eAttendanceAssetsSuccess = 'assets/success.mp3';
+  static const String iconEdu = 'assets/icon/edu.png';
   static const String iconHigher = 'assets/icon/higher.png';
   static const String iconSaidImg = 'assets/icon/saidImg.png';
+  static const String iconWallpaper = 'assets/icon/wallpaper.png';
   static const String imagesCglogo = 'assets/images/cglogo.png';
   static const String imagesNiclogo = 'assets/images/niclogo.jpeg';
   static const String introAppBackGround = 'assets/intro/appBackGround.png';
