@@ -86,7 +86,11 @@ class _SplashScreenOneState extends State<SplashScreenOne>
                 scale: _animation,
                 child: ClipOval(
                   child: Image.asset(
+<<<<<<< HEAD
                     "assets/icon/edu.png",
+=======
+                    "assets/icon/higher.png",
+>>>>>>> 73707ac735af1804bd6daf6a49eb13ae46407c7c
                     height: 100,
                     width: 100,
                     fit: BoxFit.cover,
