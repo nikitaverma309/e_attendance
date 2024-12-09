@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
@@ -194,11 +192,8 @@ class UserLocationController extends GetxController {
       case LoginStatus.employeeVerified:
         return "Employee is verified but not found.";
       default:
-        // Added a default return statement for the switch statement
         return "An unknown error occurred. Please try again.";
     }
-
-    // If none of the cases match, throw an error to ensure that a value is always returned
     throw Exception("Unhandled LoginStatus: $status");
   }
 }
