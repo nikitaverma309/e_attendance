@@ -56,7 +56,7 @@ class FaqScreen extends StatelessWidget {
       'questions': [
         {
           'question': 'What if I forget my Employee Code?',
-          'answer': 'Contact your HR or system administrator to retrieve it.',
+          'answer': 'Contact your Officio staff or system administrator to retrieve it.',
         },
         {
           'question': 'Why is the face recognition not working?',
@@ -105,7 +105,7 @@ class FaqScreen extends StatelessWidget {
               ),
             ),
             10.height,
-            Text(
+            const Text(
               "Higher Education Department's",
               style: kText10BlueBlackColorStyle,
             ),

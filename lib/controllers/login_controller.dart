@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
+import 'package:nb_utils/nb_utils.dart';
 import 'package:online/api/api_strings.dart';
+import 'package:online/constants/string_res.dart';
+import 'package:online/constants/text_size_const.dart';
 import 'package:online/models/profile/profile_model.dart';
 import 'package:online/modules/home/main_page.dart';
 import 'package:online/modules/profile/profile_screen.dart';
 import 'package:online/utils/utils.dart';
+import 'package:online/widgets/common/card_button.dart';
 import 'package:online/widgets/common/custom_dailog_widgets.dart';
 
 class LoginController extends GetxController {
@@ -64,6 +68,7 @@ class LoginController extends GetxController {
       Utils.printLog('Error: $error');
     }
   }
+
   void handleResponseRegister(String message) {
     if (message.contains("User ID does not exist.")) {
       showMessageErrorDialog(
@@ -90,30 +95,6 @@ class LoginController extends GetxController {
       );
     }
   }
-
-  // void handleResponseRegister(String message) {
-  //   if (message.contains("User ID does not exist.")) {
-  //     showMessageErrorDialog(
-  //       "Employee Code Not Registered. Please Contact the Administrator.",
-  //       message,
-  //     );
-  //   } else if (message.contains("Employee Not Verified")) {
-  //     showMessageErrorDialog(
-  //       "Employee Not Verified. Please Contact the Administrator.",
-  //       message,
-  //     );
-  //   } else if (message.contains(RegExp(r'^\d{11}$'))) {
-  //     showMessageErrorDialog(
-  //       "Employee Code Verified and Please wait, the face verification is being processed.",
-  //       "Employee Code njkn: $message",
-  //     );
-  //   } else {
-  //     showMessageErrorDialog(
-  //       "Unexpected Response. Please Contact the Administrator.",
-  //       message,
-  //     );
-  //   }
-  // }
 
   Future<void> uploadLogin(
     BuildContext context,
@@ -179,12 +160,10 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       print("Error occurred: ${e.toString()}");
-
     }
   }
 
-  Future<void> getProfileData(
-      BuildContext context, String empCode) async {
+  Future<void> getProfileData(BuildContext context, String empCode) async {
     final url = Uri.parse('${ApiStrings.userProfile}$empCode');
     try {
       var response = await http.get(url);
@@ -196,8 +175,121 @@ class LoginController extends GetxController {
             jsonResponse['attendance'] != null) {
           showErrorLoginDialog(
               context, "सफलता", "उपस्थिति सफलतापूर्वक दर्ज।", true);
-          final resData = ProfileModel.fromJson(jsonResponse);
-          Get.to(() => ProfileScreen(data: resData));
+          final resData = AttendanceProfileModel.fromJson(jsonResponse);
+          print(resData.attendance?.loginTime);
+          print(resData.attendance?.logoutTime);
+          print(resData);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              String logoutTimeText = resData!.attendance!.logoutTime != null
+                  ? Utils.formatTime(resData!.attendance!.logoutTime)
+                  : "...";
+              String responseTimeText = resData!.attendance!.logoutTime != null
+                  ? "Closing Time Response"
+                  : "Login Response";
+              Future.delayed(const Duration(seconds: 10), () {
+                Navigator.pop(context); // Close the dialog
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainPage(),
+                  ),
+                      (Route<dynamic> route) => false, // Remove all previous routes
+                );
+              });
+
+              return AlertDialog(
+                title:  Column(
+                  children: [
+                    const Text(
+                      "Attendance Type ",
+                      style: kText15BaNaBoldBlackColorStyle,
+                    ),
+                    Text(
+                      "$responseTimeText ",
+                      style: kText15BaNaBoldBlackColorStyle,
+                    ),
+                  ],
+                ),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: const Color(0xffe4eaef),
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2.0,
+                          ),
+                        ),
+                        child: Card(
+                          elevation: 35,
+                          child: Image.memory(
+                            // height: 90,
+                            // width: 90,
+                            base64Decode(resData!.employeeData!.encodedImage!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      10.height,
+                      const Text(
+                        "${Strings.inTime}:/  Login Time ",
+                        style: kText15BaNaBoldBlackColorStyle,
+                      ),
+                      Text(
+                        "${Utils.formatTime(resData!.attendance!.loginTime)}",
+                        style: kTextBlueColorStyle,
+                      ),
+                      const Text(
+                        "${Strings.outTime}:/   Logout Time",
+                        style: kText15BaNaBoldBlackColorStyle,
+                      ),
+                      Text(
+                        "${logoutTimeText}",
+                        style: kTextBlueColorStyle,
+                      ),
+                    ],
+                  ),
+                ),
+                actions: [
+                  ButtonCard(
+                    color: Colors.green,
+                    width: 60,
+                    height: 40,
+                    text: "Ok",
+                    onPressed: () {
+                      Navigator.pop(context); // Close the dialog
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainPage(),
+                        ),
+                        (Route<dynamic> route) =>
+                            false, // Remove all previous routes
+                      );
+                    },
+
+                    // onPressed: () {
+                    //   Navigator.pop(context); // Close the dialog
+                    //   Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => const MainPage(),
+                    //     ),
+                    //   );
+                    // },
+                  ),
+                ],
+              );
+            },
+          );
+          //  Get.to(() => ProfileScreen(data: resData));
         } else {
           showErrorLoginDialog(
               context, "त्रुटि", "अमान्य उपस्थिति डेटा।", false);
@@ -212,4 +304,3 @@ class LoginController extends GetxController {
     }
   }
 }
-

@@ -3,39 +3,39 @@ import 'package:get/get.dart';
 import 'package:online/api/api_strings.dart';
 import 'package:online/enum/handal.dart';
 import 'package:online/enum/location_status.dart';
-import 'package:online/models/check_status_user_register_model.dart';
+import 'package:online/models/employee_register_model.dart';
 import 'package:online/models/droupDown/class_model.dart';
 import 'package:online/models/droupDown/designation_model.dart';
 import 'dart:convert';
 import 'package:online/models/profile/check_user_location_model.dart';
 import 'package:online/models/profile/profile_model.dart';
+import 'package:online/models/profile/user_model.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 
 class ApiServices {
   //Profile
   static Future<ProfileModel?> profileApi(String empCode) async {
-    final url = Uri.parse('${ApiStrings.userProfile}$empCode');
+    final url = Uri.parse(
+        'http://164.100.150.78/lmsbackend/api/get-employee-details?empCode=$empCode');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        if (data['msg'] == "Employee Not Found") {
+          return null; // Employee not found, return null
+        }
+        print(data);
         return ProfileModel.fromJson(data);
       } else {
-        CustomSnackbarError.showSnackbar(
-          title: "Error",
-          message: 'Employee data does not exist in the database.',
-        );
-        return null;
+        return null; // If response code is not 200, return null
       }
     } catch (e) {
-      CustomSnackbarError.showSnackbar(
-        title: "Error",
-        message: 'An error occurred: $e',
-      );
-      return null;
+      print("Error: $e");
+      return null; // Return null in case of any error
     }
   }
+
 
   /// API to update faceVerified to true
   static Future<bool> updateFaceVerifiedStatus(String empCode) async {
@@ -54,7 +54,6 @@ class ApiServices {
       return false;
     }
   }
-
 
   static Future<UserResponseModel> getUserLocationApiServices(
       String empCode) async {
@@ -91,7 +90,7 @@ class ApiServices {
             userResponse.errorType = LoginStatus.employeeNotExists;
           } else if (jsonResponse['msg'] == 'EMPLOYEE NOT VERIFIED') {
             Utils.showErrorToast(message: 'EMPLOYEE NOT VERIFIED');
-            userResponse.errorType = LoginStatus.employeeVerified;
+            userResponse.errorType = LoginStatus.employeeNotVerified;
           }
         }
       }

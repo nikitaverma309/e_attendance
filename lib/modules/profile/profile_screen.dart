@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/models/profile/profile_model.dart';
+import 'package:online/models/profile/user_model.dart';
 import 'package:online/modules/home/main_page.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/app_button.dart';
@@ -50,68 +50,28 @@ class ProfileScreen extends StatelessWidget {
                 style: kTextBlackColorStyle),
             const Text("Government Of Chhattisgarh",
                 style: k13BoldBlackColorStyle),
-
             20.height,
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                children: [
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff204867),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                        color: Colors.blueGrey,
-                        width: 1.0,
-                      ),
-                    ),
-                    child: Card(
-                      elevation: 35,
-                      child: Image.memory(
-                        // height: 90,
-                        // width: 90,
-                        base64Decode(data!.employeeData!.encodedImage!),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Today\nLogin Time",
-                          style: kTextBlackColorStyle,
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          Utils.formatTime(data!.attendance!.loginTime),
-                          style: kTextBlueColorStyle,
-                          textAlign: TextAlign.justify,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+              decoration: BoxDecoration(
+                color: const Color(0xff204867),
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                  color: Colors.blueGrey,
+                  width: 1.0,
+                ),
+              ),
+              child: Card(
+                elevation: 35,
+                child: Image.memory(
+                  // height: 90,
+                  // width: 90,
+                  base64Decode(data!.encodedImage!),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            // Container(
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(10),
-            //     color: Colors.black,
-            //     image: DecorationImage(
-            //       fit: BoxFit.cover,
-            //       image: MemoryImage(Utils.getImageFromBase64(data!
-            //           .employeeData!.encodedImage!)), // Use dynamic imagePath
-            //     ),
-            //   ),
-            //   margin: const EdgeInsets.all(2),
-            //   width: MediaQuery.of(context).size.width * 0.4,
-            //   height: MediaQuery.of(context).size.height * 0.26,
-            // ),
             const Spacer(),
-
             Align(
               alignment: Alignment.center,
               child: Card(
@@ -129,25 +89,26 @@ class ProfileScreen extends StatelessWidget {
                       10.height,
                       ResultOutPutCard(
                         title: 'Name ',
-                        subTitle: "${data!.employeeData!.name}",
+                        subTitle: "${data!.name}",
                       ),
                       ResultOutPutCard(
                         title: 'Email ',
-                        subTitle:  Utils.maskEmail(data!.employeeData!.email ?? ""),
+                        subTitle: Utils.maskEmail(data!.email ?? ""),
                       ),
                       ResultOutPutCard(
                         title: 'Contact ',
-                        subTitle:  Utils.maskContact(data!.employeeData!.contact.toString()),
+                        subTitle: Utils.maskContact(data!.contact.toString()),
                       ),
                       ResultOutPutCard(
                         title: 'Work Type ',
-                        subTitle: "${data!.employeeData!.workType}",
+                        subTitle: "${data!.workType}",
                       ),
-                      ResultOutPutCard(
-                        title: 'Login OutTime ',
-                        subTitle:
-                            Utils.formatTime(data!.attendance!.logoutTime),
-                      ),
+
+                      // ResultOutPutCard(
+                      //   title: 'Login OutTime ',
+                      //   subTitle:
+                      //       Utils.formatTime(data!.logoutTime),
+                      // ),
                       10.height,
                     ],
                   ),

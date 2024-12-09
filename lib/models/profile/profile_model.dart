@@ -1,22 +1,22 @@
 
 import 'dart:convert';
 
-ProfileModel profileModelFromJson(String str) => ProfileModel.fromJson(json.decode(str));
+AttendanceProfileModel profileModelFromJson(String str) => AttendanceProfileModel.fromJson(json.decode(str));
 
-String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
+String profileModelToJson(AttendanceProfileModel data) => json.encode(data.toJson());
 
-class ProfileModel {
+class AttendanceProfileModel {
   String? msg;
   Attendance? attendance;
   EmployeeData? employeeData;
 
-  ProfileModel({
+  AttendanceProfileModel({
     this.msg,
     this.attendance,
     this.employeeData,
   });
 
-  factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
+  factory AttendanceProfileModel.fromJson(Map<String, dynamic> json) => AttendanceProfileModel(
     msg: json["msg"],
     attendance: json["attendance"] == null ? null : Attendance.fromJson(json["attendance"]),
     employeeData: json["employeeData"] == null ? null : EmployeeData.fromJson(json["employeeData"]),

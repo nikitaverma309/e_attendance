@@ -7,7 +7,7 @@ import 'package:online/enum/enum_screen.dart';
 import 'package:online/enum/location_status.dart';
 import 'package:online/models/profile/check_user_location_model.dart';
 import 'package:online/modules/auth/camera_pic.dart';
-import 'package:online/modules/home/home.dart';
+import 'package:online/modules/home/main_page.dart';
 import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
@@ -19,7 +19,7 @@ class UserLocationController extends GetxController {
   var incorrectAttempts = 0.obs;
   var isBlocked = false.obs;
   Timer? blockTimer;
-
+  TextEditingController employeeIdCtr = TextEditingController();
   void resetBlock() {
     Utils.printLog("timer reset after 10seconds");
     incorrectAttempts.value = 0;
@@ -61,13 +61,12 @@ class UserLocationController extends GetxController {
       String empCode, CameraAction action, BuildContext context) async {
     isLoading(true);
     try {
-      var employeeDetails =
+      var employeeResponse =
           await ApiServices.getUserLocationApiServices(empCode);
 
-      if (employeeDetails.userData != null) {
+      if (employeeResponse.userData != null) {
         Position currentPosition = await determinePosition(context);
-        employeeData.value = employeeDetails.userData;
-
+        employeeData.value = employeeResponse.userData;
         double currentLat = currentPosition.latitude;
         double currentLong = currentPosition.longitude;
 
@@ -80,8 +79,8 @@ class UserLocationController extends GetxController {
           double distanceInMeters = Geolocator.distanceBetween(
             currentLat,
             currentLong,
-            compareLat,
-            compareLong,
+            compareLat!,
+            compareLong!,
           );
           double tolerance = 50.0;
           if (distanceInMeters <= 160 + tolerance) {
@@ -98,33 +97,38 @@ class UserLocationController extends GetxController {
                 },
               );
             } else {
-              reRegisterBox(
+              showErrorDialog(
                 context: context,
                 subTitle:
-                    "Your Face Was All Ready register If You Want To Re Register",
+                    "Your face is already registered. If you want to re-register, you need to login first.",
                 onPressed: () {
-                  navigateToCamera(
-                      context, action, employeeData.value!.empCode!);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainPage(),
+                    ),
+                  );
                 },
               );
             }
             // return;
+          } else {
+            showErrorDialog(
+              context: context,
+              subTitle: "Your location does not match the required location.",
+            );
+            Utils.showErrorToast(
+                message: 'Your location does not match the required location.');
+            isChecked.value = false;
+            isLocationMatched.value = false;
           }
-        } else {
-          // handleErrorResponse(context, "Invalid location data.", action);
-          Utils.showErrorToast(
-              message: 'Your location does not match the required location.');
-          isChecked.value = false;
-          isLocationMatched.value = false;
         }
       } else {
-        handleErrorResponse(
-            context,
-            getErrorMessage(context, employeeDetails.errorType, action),
-            action);
-
-        // handleErrorResponse(context,
-        //     getErrorMessage(employeeDetails.errorType, action), action);
+        getErrorMessage(context, employeeResponse.errorType, action);
+        // handleErrorResponse(
+        //     context,
+        //     getErrorMessage(context, employeeResponse.errorType, action),
+        //     action);
       }
     } catch (e) {
       Utils.showErrorToast(message: e.toString());
@@ -154,46 +158,87 @@ class UserLocationController extends GetxController {
       context: context,
       subTitle: errorMessage,
       onPressed: () {
-        if (action == CameraAction.registration) {
-          Navigator.pop(context);
-        } else {
-          Navigator.pop(context);
-        }
+        Navigator.pop(context);
       },
     );
   }
 
   String getErrorMessage(
       BuildContext context, LoginStatus? status, CameraAction action) {
+    String errorMessage = ""; // Initialize the error message
+
     switch (status) {
-      case LoginStatus.faceNotVerified:
-        return action == CameraAction.login
-            ? "Face verification is pending. Please contact the web administrator."
-            : "Face verification is pending. Please complete the verification.";
-      case LoginStatus.employeeNotExists:
-        handleIncorrectAttempt();
-        return "Employee does not exist. Please check your emp code.";
-      case LoginStatus.reRegisteredFace:
+      case LoginStatus.faceNotExists:
         if (action == CameraAction.login) {
-          return "Your Face Was All Ready Register Please Contact to WebAdministrator.";
+          errorMessage =
+              "Your face is not registered. Please register your face.";
         } else if (action == CameraAction.registration) {
-          print("emp deta hai S${employeeData.value!.empCode}");
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const MyHomePage(),
+              builder: (context) => LoginCameraTwo(
+                attendanceId: employeeIdCtr.text,
+                action: action,
+              ),
             ),
           );
-          return "Redirecting to the registration page...";
         }
         break;
-      case LoginStatus.faceNotExists:
-        return "Your face is not registered. Please register before login.";
-      case LoginStatus.employeeVerified:
-        return "Employee is verified but not found.";
+
+      case LoginStatus.reRegisteredFace:
+        if (action == CameraAction.login) {
+          errorMessage =
+          "Your face has been registered. Please wait for verification by the web administrator.";
+        } else if (action == CameraAction.registration) {
+          showErrorDialog(
+            context: context,
+            subTitle:
+                "Your face is already registered. If you want to re-register, you need to login first.",
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MainPage(),
+                ),
+              );
+            },
+          );
+        }
+        break;
+
+      case LoginStatus.faceNotVerified:
+        errorMessage = action == CameraAction.login
+            ? "Face verification is pending. Please contact the web administrator."
+            : "Face verification is pending. Please complete the verification.";
+        break;
+
+      case LoginStatus.employeeNotExists:
+        handleIncorrectAttempt();
+        errorMessage =
+            "Employee does not exist. Please check your employee code.";
+        break;
+
+      case LoginStatus.employeeNotVerified:
+        errorMessage =
+            "Employee is not verified. Please contact the web administrator.";
+        break;
+
       default:
-        return "An unknown error occurred. Please try again.";
+        errorMessage = "An unknown error occurred. Please try again.";
     }
-    throw Exception("Unhandled LoginStatus: $status");
+
+    // Show error dialog if an error message is defined
+    if (errorMessage.isNotEmpty) {
+      showErrorDialog(
+        context: context,
+        subTitle: errorMessage,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      );
+    }
+
+    return errorMessage;
   }
 }

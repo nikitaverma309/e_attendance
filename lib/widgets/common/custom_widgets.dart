@@ -185,7 +185,6 @@ class CustomSnackbarSuccessfully {
   }
 }
 
-
 void showSuccessDialog({
   required BuildContext context,
   String? textHeading,
@@ -252,13 +251,14 @@ void showErrorDialog({
   Get.defaultDialog(
     title: textHeading ?? "",
     titleStyle: const TextStyle(
-      fontSize: 12,
+      fontSize: 13,
       fontWeight: FontWeight.bold,
       color: Colors.red,
     ),
     middleText: subTitle,
     middleTextStyle: const TextStyle(
       fontSize: 12,
+      fontWeight: FontWeight.bold,
       color: Colors.black87,
     ),
     radius: 8.0,
@@ -281,62 +281,3 @@ void showErrorDialog({
   );
 }
 
-
-void reRegisterBox ({
-  required BuildContext context,
-  required String subTitle,
-  String? textHeading,
-  VoidCallback? onPressed, // Optional onPressed parameter
-  bool permanentlyDisableButton = false,
-}) {
-  RxBool isButtonDisabled = permanentlyDisableButton.obs;
-
-  if (permanentlyDisableButton) {
-    Future.delayed(const Duration(seconds: 10), () {
-      if (Get.isDialogOpen ?? false) {
-        Get.back(); // Dismiss the dialog
-        onPressed?.call(); // Call the provided onPressed action
-      }
-    });
-  }
-
-  // Ensure the dialog does not reappear on navigating back
-  if (Get.isDialogOpen ?? false) {
-    Get.back(); // Close any existing dialog
-  }
-
-  Get.defaultDialog(
-    title: textHeading ?? "",
-    titleStyle: const TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.bold,
-      color: Colors.red,
-    ),
-    middleText: subTitle,
-    middleTextStyle: const TextStyle(
-      fontSize: 12,
-      color: Colors.black87,
-    ),
-    radius: 8.0,
-    barrierDismissible: false,
-    actions: [
-      Obx(() {
-        if (isButtonDisabled.value) {
-          return const SizedBox.shrink();
-        } else {
-          return ButtonCard(
-            color: Colors.red,
-            width: 60,
-            height: 40,
-            text: "Ok",
-            onPressed: () {
-              isButtonDisabled.value = true; // Disable button to avoid multiple presses
-              Get.back(); // Dismiss the dialog
-              onPressed?.call(); // Execute the provided onPressed callback
-            },
-          );
-        }
-      }),
-    ],
-  );
-}

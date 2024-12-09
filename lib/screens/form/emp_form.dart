@@ -5,7 +5,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/controllers/user_Register_form_controller.dart';
 import 'package:online/controllers/dropdown_controller.dart';
-import 'package:online/models/check_status_user_register_model.dart';
+import 'package:online/models/employee_register_model.dart';
 import 'package:online/models/droupDown/class_model.dart';
 import 'package:online/models/droupDown/college_model.dart';
 import 'package:online/models/droupDown/designation_model.dart';
@@ -320,7 +320,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     hint: 'Select DesignationList',
                     onChanged: (DesignationModel? newCass) {
                       if (newCass != null) {
-                        dropDownController.selectDesignationOOb(newCass!.id!);
+                        dropDownController.selectDesignationOOb(newCass.id!);
                       }
                     },
                     idKey: '_id',

@@ -114,7 +114,7 @@ packages:
     source: hosted
     version: "1.18.0"
   connectivity_plus:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: connectivity_plus
       sha256: b74247fad72c171381dbe700ca17da24deac637ab6d43c343b42867acb95c991
@@ -185,43 +185,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
-  fl_location:
-    dependency: transitive
-    description:
-      name: fl_location
-      sha256: ef65db6ab481df98b22b81985a4dfb1f9348968c1a974f75ca91d8d7b5292e0d
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.0"
-  fl_location_platform_interface:
-    dependency: transitive
-    description:
-      name: fl_location_platform_interface
-      sha256: ffb84044f1791ec719477bf43a26b6d347af697dacf624a25f5c28721d3a0ce1
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
-  fl_location_web:
-    dependency: transitive
-    description:
-      name: fl_location_web
-      sha256: db4cecc6e120dff002339e350be6a9e59e311925802bfd8c648c8789ed2c1003
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_foreground_task:
-    dependency: transitive
-    description:
-      name: flutter_foreground_task
-      sha256: "6cf10a27f5e344cd2ecad0752d3a5f4ec32846d82fda8753b3fe2480ebb832a3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.5.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -672,14 +640,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
-  poly_geofence_service:
-    dependency: "direct main"
-    description:
-      name: poly_geofence_service
-      sha256: "5a60a2b1033d95f4fe08b1860ff7f52336e34284ad21971b4150f91a3c985a62"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   quiver:
     dependency: transitive
     description:
