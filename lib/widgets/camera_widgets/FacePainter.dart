@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-<<<<<<< HEAD
-import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
-=======
->>>>>>> 73707ac735af1804bd6daf6a49eb13ae46407c7c
+
 import 'package:online/utils/utils.dart';
 
 class FacePainter extends CustomPainter {

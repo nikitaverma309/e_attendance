@@ -179,9 +179,11 @@ class LoginController extends GetxController {
           print(resData.attendance?.loginTime);
           print(resData.attendance?.logoutTime);
           print(resData);
+
           showDialog(
             context: context,
             builder: (BuildContext context) {
+
               return AlertDialog(
                 title: const Text(
                   "Attendance Type",
@@ -229,6 +231,7 @@ class LoginController extends GetxController {
                         "${Utils.formatTime(resData!.attendance!.logoutTime)},",
                         style: kTextBlueColorStyle,
                       ),
+
                     ],
                   ),
                 ),
