@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:camera/camera.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
 class CameraService {
   CameraController? _cameraController;
@@ -16,23 +16,39 @@ class CameraService {
     if (_cameraController != null) return;
     CameraDescription description = await _getCameraDescription();
     await _setupCameraController(description: description);
+    print("Camera _cameraController: $_cameraController");
+    print("Camera description: $description");
     _cameraRotation = rotationIntToImageRotation(
       description.sensorOrientation,
+
     );
+    print("Camera rotation: $_cameraRotation");
   }
 
+  // Future<CameraDescription> _getCameraDescription() async {
+  //   List<CameraDescription> cameras = await availableCameras();
+  //   print("Available cameras: $cameras");
+  //   return cameras.firstWhere((CameraDescription camera) =>
+  //       camera.lensDirection == CameraLensDirection.front);
+  // }
   Future<CameraDescription> _getCameraDescription() async {
+    print("Fetching available cameras...");
     List<CameraDescription> cameras = await availableCameras();
-    return cameras.firstWhere((CameraDescription camera) =>
-        camera.lensDirection == CameraLensDirection.front);
-  }
+    print("Available cameras: $cameras");
 
+    CameraDescription selectedCamera = cameras.firstWhere(
+          (CameraDescription camera) =>
+      camera.lensDirection == CameraLensDirection.front,
+    );
+    print("Selected front camera: $selectedCamera");
+    return selectedCamera;
+  }
   Future _setupCameraController({
     required CameraDescription description,
   }) async {
     _cameraController = CameraController(
       description,
-      ResolutionPreset.low,
+      ResolutionPreset.medium,
       enableAudio: false,
     );
     await _cameraController?.initialize();
@@ -56,6 +72,7 @@ class CameraService {
     await _cameraController?.stopImageStream();
     XFile? file = await _cameraController?.takePicture();
     _imagePath = file?.path;
+    print("Picture taken. Image path: $_imagePath");
     return file;
   }
 
