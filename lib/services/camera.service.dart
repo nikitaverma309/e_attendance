@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+// import 'package:google_ml_kit/google_ml_kit.dart';
 
 class CameraService {
   CameraController? _cameraController;
@@ -32,7 +33,7 @@ class CameraService {
   }) async {
     _cameraController = CameraController(
       description,
-      ResolutionPreset.low,
+      ResolutionPreset.high,
       enableAudio: false,
     );
     await _cameraController?.initialize();

@@ -22,7 +22,12 @@ class FaceDetectorService {
   void initialize() {
     Utils.printLog('Initializing Face Detector...');
     _faceDetector = GoogleMlKit.vision.faceDetector(
-      FaceDetectorOptions(performanceMode: FaceDetectorMode.accurate),
+      // FaceDetectorOptions(performanceMode: FaceDetectorMode.accurate),
+
+      FaceDetectorOptions(
+        performanceMode: FaceDetectorMode.fast,  // Try this for better performance
+        minFaceSize: 0.1,
+      ),
     );
     Utils.printLog('Face Detector Initialized');
   }
