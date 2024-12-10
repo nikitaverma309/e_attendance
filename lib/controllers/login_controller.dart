@@ -97,10 +97,10 @@ class LoginController extends GetxController {
   }
 
   Future<void> uploadLogin(
-    BuildContext context,
-    File file,
-    String empCode,
-  ) async {
+      BuildContext context,
+      File file,
+      String empCode,
+      ) async {
     if (!file.existsSync()) {
       Utils.showErrorToast(message: 'File does not exist.');
       return;
@@ -175,19 +175,42 @@ class LoginController extends GetxController {
             jsonResponse['attendance'] != null) {
           showErrorLoginDialog(
               context, "सफलता", "उपस्थिति सफलतापूर्वक दर्ज।", true);
-          final resData = ProfileModel.fromJson(jsonResponse);
+          final resData = AttendanceProfileModel.fromJson(jsonResponse);
           print(resData.attendance?.loginTime);
           print(resData.attendance?.logoutTime);
           print(resData);
-
           showDialog(
             context: context,
             builder: (BuildContext context) {
+              String logoutTimeText = resData!.attendance!.logoutTime != null
+                  ? Utils.formatTime(resData!.attendance!.logoutTime)
+                  : "...";
+              String responseTimeText = resData!.attendance!.logoutTime != null
+                  ? "Closing Time Response"
+                  : "Login Response";
+              Future.delayed(const Duration(seconds: 10), () {
+                Navigator.pop(context); // Close the dialog
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainPage(),
+                  ),
+                      (Route<dynamic> route) => false, // Remove all previous routes
+                );
+              });
 
               return AlertDialog(
-                title: const Text(
-                  "Attendance Type",
-                  style: kText15BaNaBoldBlackColorStyle,
+                title:  Column(
+                  children: [
+                    const Text(
+                      "Attendance Type ",
+                      style: kText15BaNaBoldBlackColorStyle,
+                    ),
+                    Text(
+                      "$responseTimeText ",
+                      style: kText15BaNaBoldBlackColorStyle,
+                    ),
+                  ],
                 ),
                 content: SingleChildScrollView(
                   child: Column(
@@ -216,22 +239,21 @@ class LoginController extends GetxController {
                       ),
                       10.height,
                       const Text(
-                        "Login Time : /${Strings.inTime}",
+                        "${Strings.inTime}:/  Login Time ",
                         style: kText15BaNaBoldBlackColorStyle,
                       ),
                       Text(
-                        "${Utils.formatTime(resData!.attendance!.loginTime)},",
+                        "${Utils.formatTime(resData!.attendance!.loginTime)}",
                         style: kTextBlueColorStyle,
                       ),
                       const Text(
-                        "Logout Time: /${Strings.outTime},",
+                        "${Strings.outTime}:/   Logout Time",
                         style: kText15BaNaBoldBlackColorStyle,
                       ),
                       Text(
-                        "${Utils.formatTime(resData!.attendance!.logoutTime)},",
+                        "${logoutTimeText}",
                         style: kTextBlueColorStyle,
                       ),
-
                     ],
                   ),
                 ),
@@ -248,8 +270,8 @@ class LoginController extends GetxController {
                         MaterialPageRoute(
                           builder: (context) => const MainPage(),
                         ),
-                        (Route<dynamic> route) =>
-                            false, // Remove all previous routes
+                            (Route<dynamic> route) =>
+                        false, // Remove all previous routes
                       );
                     },
 

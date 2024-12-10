@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,7 +7,6 @@ import 'package:online/enum/enum_screen.dart';
 import 'package:online/enum/location_status.dart';
 import 'package:online/models/profile/check_user_location_model.dart';
 import 'package:online/modules/auth/camera_pic.dart';
-import 'package:online/modules/home/home.dart';
 import 'package:online/modules/home/main_page.dart';
 import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
 import 'package:online/utils/utils.dart';
@@ -64,7 +62,7 @@ class UserLocationController extends GetxController {
     isLoading(true);
     try {
       var employeeResponse =
-          await ApiServices.getUserLocationApiServices(empCode);
+      await ApiServices.getUserLocationApiServices(empCode);
 
       if (employeeResponse.userData != null) {
         Position currentPosition = await determinePosition(context);
@@ -73,9 +71,9 @@ class UserLocationController extends GetxController {
         double currentLong = currentPosition.longitude;
 
         double? compareLat =
-            double.tryParse(employeeData.value!.collegeDetails!.homeLat!);
+        double.tryParse(employeeData.value!.collegeDetails!.lat!);
         double? compareLong =
-            double.tryParse(employeeData.value!.collegeDetails!.homeLong!);
+        double.tryParse(employeeData.value!.collegeDetails!.long!);
 
         if (compareLat != null && compareLong != null) {
           double distanceInMeters = Geolocator.distanceBetween(
@@ -103,7 +101,6 @@ class UserLocationController extends GetxController {
                 context: context,
                 subTitle:
                 "Your face is already registered. If you want to re-register, you need to login first.",
-
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
@@ -165,123 +162,7 @@ class UserLocationController extends GetxController {
       },
     );
   }
-//   String getErrorMessage(
-//     BuildContext context, LoginStatus? status, CameraAction action) {
-//   switch (status) {
-//     case LoginStatus.faceNotExists:
-//       if (action == CameraAction.login) {
-//         return "Your face is not registered. Please register before login.";
-//       } else if (action == CameraAction.registration) {
-//         print("emp deta hai S${employeeData.value!.empCode}");
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(
-//             builder: (context) => LoginCameraTwo(
-//               attendanceId: employeeIdCtr.text,
-//               action: action,
-//             ),
-//           ),
-//         );
-//       }
-//       break;
-//     case LoginStatus.reRegisteredFace:
-//       if (action == CameraAction.login) {
-//         return "Your face is not registered. Please Re Register Your Face before login.";
-//       } else if (action == CameraAction.registration) {
-//         showErrorDialog(
-//             context: context,
-//             subTitle:
-//                 "Your face is not registered. To re-register your face, you need to log in first.",
-//             onPressed: () {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (context) => const MyHomePage(),
-//                 ),
-//               );
-//             });
-//       }
-//       break;
-//     case LoginStatus.faceNotVerified:
-//       return action == CameraAction.login
-//           ? "Face verification is pending. Please contact the web administrator."
-//           : "Face verification is pending. Please complete the verification.";
-//
-//     case LoginStatus.employeeNotExists:
-//       handleIncorrectAttempt();
-//       return "Employee does not exist. Please check your employee code.";
-//
-//     case LoginStatus.employeeNotVerified:
-//       return "Employee is not verified Please contact the web administrator.";
-//     default:
-//       return "An unknown error occurred. Please try again.";
-//   }
-//   print("Unhandled LoginStatus: $status");
-//   throw Exception("Unhandled LoginStatus: $status");
-// }
 
-  /* // String getErrorMessage(
-  //     BuildContext context, LoginStatus? status, CameraAction action) {
-  //   switch (status) {
-  //     case LoginStatus.faceNotExists:
-  //       if (action == CameraAction.login) {
-  //         showErrorDialog(
-  //             context: context,
-  //             subTitle:
-  //                 "Your face is not registered. Please register before login.",
-  //             onPressed: () {
-  //               Navigator.pop(context);
-  //             });
-  //       } else if (action == CameraAction.registration) {
-  //         Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => LoginCameraTwo(
-  //               attendanceId: employeeIdCtr.text,
-  //               action: action,
-  //             ),
-  //           ),
-  //         );
-  //       }
-  //     case LoginStatus.reRegisteredFace:
-  //       if (action == CameraAction.login) {
-  //         showErrorDialog(
-  //             context: context,
-  //             subTitle:
-  //                 "Your face is not registered. Please Re Register Your Face before login.",
-  //             onPressed: () {
-  //               Navigator.pop(context);
-  //             });
-  //       } else if (action == CameraAction.registration) {
-  //         showErrorDialog(
-  //             context: context,
-  //             subTitle:
-  //                 "Your face is not registered. To re-register your face, you need to log in first.",
-  //             onPressed: () {
-  //               Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                   builder: (context) => const MyHomePage(),
-  //                 ),
-  //               );
-  //             });
-  //       }
-  //     case LoginStatus.faceNotVerified:
-  //       return action == CameraAction.login
-  //           ? "Face verification is pending. Please contact the web administrator."
-  //           : "Face verification is pending. Please complete the verification.";
-  //     case LoginStatus.employeeNotExists:
-  //       handleIncorrectAttempt();
-  //       return "Employee does not exist. Please check your employee code.";
-  //     case LoginStatus.employeeNotVerified:
-  //       return "Employee is not verified. Please contact the web administrator.";
-  //     default:
-  //       return "An unknown error occurred. Please try again.";
-  //   }
-  //
-  //   // Fallback return to handle any unexpected cases
-  //   throw Exception("Unhandled LoginStatus or missing return path.");
-  // }*/
   String getErrorMessage(
       BuildContext context, LoginStatus? status, CameraAction action) {
     String errorMessage = ""; // Initialize the error message
@@ -307,13 +188,12 @@ class UserLocationController extends GetxController {
       case LoginStatus.reRegisteredFace:
         if (action == CameraAction.login) {
           errorMessage =
-              "Your face is not registered. Please register your face .";
+          "Your face has been registered. Please wait for verification by the web administrator.";
         } else if (action == CameraAction.registration) {
           showErrorDialog(
             context: context,
             subTitle:
             "Your face is already registered. If you want to re-register, you need to login first.",
-
             onPressed: () {
               Navigator.pop(context);
               Navigator.pushReplacement(
@@ -324,7 +204,6 @@ class UserLocationController extends GetxController {
               );
             },
           );
-
         }
         break;
 
@@ -337,12 +216,12 @@ class UserLocationController extends GetxController {
       case LoginStatus.employeeNotExists:
         handleIncorrectAttempt();
         errorMessage =
-            "Employee does not exist. Please check your employee code.";
+        "Employee does not exist. Please check your employee code.";
         break;
 
       case LoginStatus.employeeNotVerified:
         errorMessage =
-            "Employee is not verified. Please contact the web administrator.";
+        "Employee is not verified. Please contact the web administrator.";
         break;
 
       default:

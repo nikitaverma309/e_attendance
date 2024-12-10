@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final ProfileController profileController = Get.put(ProfileController());
 
   final UserRegistrationFormController userRegistrationFormController =
-      Get.put(UserRegistrationFormController());
+  Get.put(UserRegistrationFormController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -137,11 +137,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Color(0xFFCEEEEE),
                   Colors.black,
                   Icons.login,
-                  () {
+                      () {
                     if (mounted) {
                       Get.to(() => const FaceAttendanceScreen(
-                            action: CameraAction.login,
-                          ));
+                        action: CameraAction.login,
+                      ));
                     }
                   },
                 ),
@@ -152,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Color(0xFFCEEEEE),
                   Colors.black,
                   Icons.perm_contact_calendar_outlined,
-                  () {
+                      () {
                     // _profileDialog(context);
                     Get.to(() => LoginPage());
                   },
@@ -165,8 +165,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Get.to(() => const FaceAttendanceScreen(
-                action: CameraAction.registration,
-              ));
+            action: CameraAction.registration,
+          ));
         },
         icon: const Icon(Icons.person_add),
         label: const Text('Face Register'),
@@ -232,37 +232,37 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     20.height,
                     Obx(
-                      () => userRegistrationFormController.isLoading.value
+                          () => userRegistrationFormController.isLoading.value
                           ? const Center(child: CircularProgressIndicator())
                           : CommonButton(
-                              text: "Check status",
-                              onPressed: userRegistrationFormController
-                                      .isLoading.value
-                                  ? null
-                                  : () async {
-                                      print("jij");
-                                      if (_formKey.currentState?.validate() ??
-                                          false) {
-                                        if (empCodeController.text.isNotEmpty &&
-                                            contactController.text.isNotEmpty) {
-                                          userRegistrationFormController
-                                              .isLoading.value = true;
-                                          await userRegistrationFormController
-                                              .getUserRegisterData(
-                                            empCodeController.text.trim(),
-                                            contactController.text.trim(),
-                                          );
-                                          userRegistrationFormController
-                                              .isLoading.value = false;
-                                        } else {
-                                          CustomSnackbarError.showSnackbar(
-                                            message:
-                                                'Please fill in all fields',
-                                          );
-                                        }
-                                      }
-                                    },
-                            ),
+                        text: "Check status",
+                        onPressed: userRegistrationFormController
+                            .isLoading.value
+                            ? null
+                            : () async {
+                          print("jij");
+                          if (_formKey.currentState?.validate() ??
+                              false) {
+                            if (empCodeController.text.isNotEmpty &&
+                                contactController.text.isNotEmpty) {
+                              userRegistrationFormController
+                                  .isLoading.value = true;
+                              await userRegistrationFormController
+                                  .getUserRegisterData(
+                                empCodeController.text.trim(),
+                                contactController.text.trim(),
+                              );
+                              userRegistrationFormController
+                                  .isLoading.value = false;
+                            } else {
+                              CustomSnackbarError.showSnackbar(
+                                message:
+                                'Please fill in all fields',
+                              );
+                            }
+                          }
+                        },
+                      ),
                     ),
                     40.height,
                   ],
@@ -334,24 +334,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     20.height,
                     Obx(
-                      () => profileController.isLoading.value
+                          () => profileController.isLoading.value
                           ? const Center(child: CircularProgressIndicator())
                           : CommonButton(
-                              text: "Verify",
-                              onPressed: () async {
-                                if (empCodeController.text.isEmpty) {
-                                  // Show an error message or highlight the input field
-                                  Utils.showErrorToast(message: "Please enter the employee code.");
-                                  return; // Don't proceed if the input is empty
-                                }
+                        text: "Verify",
+                        onPressed: () async {
+                          if (empCodeController.text.isEmpty) {
+                            // Show an error message or highlight the input field
+                            Utils.showErrorToast(message: "Please enter the employee code.");
+                            return; // Don't proceed if the input is empty
+                          }
 
-                                profileController.isLoading.value = true;
-                                await profileController
-                                    .getProfile(empCodeController.text);
-                                profileController.isLoading.value = false;
-                                empCodeController.clear();
-                              },
-                            ),
+                          profileController.isLoading.value = true;
+                          await profileController
+                              .getProfile(empCodeController.text);
+                          profileController.isLoading.value = false;
+                          empCodeController.clear();
+                        },
+                      ),
                     ),
                     30.height,
                   ],
