@@ -1,11 +1,13 @@
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image/image.dart' as imglib;
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+// import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/enum/enum_screen.dart';
 import 'package:online/locator.dart';
@@ -37,7 +39,7 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
 
   // Service injection
   final FaceDetectorService _faceDetectorService =
-      serviceLocator<FaceDetectorService>();
+  serviceLocator<FaceDetectorService>();
   final CameraService _cameraService = serviceLocator<CameraService>();
   @override
   void initState() {
@@ -121,16 +123,16 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
           _faceDetectorService.captureImage = false;
           Utils.printLog('Capturing new image...');
           final imglib.Image? imgCrop =
-              await _faceDetectorService.cropFaceFromImage(cameraImage);
+          await _faceDetectorService.cropFaceFromImage(cameraImage);
           print("crop $imgCrop");
           final File imgFile = await convertImageToFile(imgCrop!);
           print("file img$imgFile");
           if (mounted) {
             Get.off(() => LoginCameraViewTwo(
-                  imageFile: imgFile,
-                  attendanceId: widget.attendanceId,
-                  action: widget.action,
-                ));
+              imageFile: imgFile,
+              attendanceId: widget.attendanceId,
+              action: widget.action,
+            ));
           }
         }
       } catch (e) {
@@ -203,28 +205,38 @@ class LoginCameraTwoState extends State<LoginCameraTwo> {
       );
     }
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          body,
-          CameraHeader(
-            widget.action == CameraAction.login
-                ? "Login with face"
-                : Strings.signUp,
-            onBackPressed: _onBackPressed,
-          ),
-        ],
+    return WillPopScope(
+        onWillPop: () async {
+        _cameraService.dispose();
+        return true; // Allow the back navigation
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            body,
+            CameraHeader(
+              widget.action == CameraAction.login
+                  ? "Login with face"
+                  : Strings.signUp,
+              onBackPressed: _onBackPressed,
+            ),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Obx(() {
+          return Visibility(
+            visible: isFaceDetected.value,
+            child: ElevatedButton(
+              onPressed: faceDetected != null ? onShot : null,
+              child: const Icon(Icons.camera_alt),
+            ),
+          );
+        }),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Obx(() {
-        return Visibility(
-          visible: isFaceDetected.value,
-          child: ElevatedButton(
-            onPressed: faceDetected != null ? onShot : null,
-            child: const Icon(Icons.camera_alt),
-          ),
-        );
-      }),
     );
   }
 }
+
+
+
+

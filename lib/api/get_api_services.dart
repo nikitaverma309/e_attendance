@@ -8,7 +8,6 @@ import 'package:online/models/droupDown/class_model.dart';
 import 'package:online/models/droupDown/designation_model.dart';
 import 'dart:convert';
 import 'package:online/models/profile/check_user_location_model.dart';
-import 'package:online/models/profile/profile_model.dart';
 import 'package:online/models/profile/user_model.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
@@ -35,7 +34,6 @@ class ApiServices {
       return null; // Return null in case of any error
     }
   }
-
 
   /// API to update faceVerified to true
   static Future<bool> updateFaceVerifiedStatus(String empCode) async {
@@ -114,14 +112,12 @@ class ApiServices {
         }
         return CheckUserRegisterModel.fromJson(data);
       } else {
-        CustomSnackbarError.showSnackbar(
-          title: "Error",
-          message: 'Employee data does not exist in the database.',
-        );
+        Utils.showToast('Employee data does not exist in the database.');
+
         return null;
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
+      print('An error occurred: $e');
       return null;
     }
   }
