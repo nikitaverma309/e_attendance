@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
-import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/login_controller.dart';
@@ -15,11 +13,13 @@ class LoginCameraViewTwo extends StatefulWidget {
   final CameraAction action;
   final String? attendanceId;
   final File? imageFile;
-  const LoginCameraViewTwo(
-      {super.key,
-      this.imageFile,
-      required this.action,
-      required this.attendanceId});
+
+  const LoginCameraViewTwo({
+    super.key,
+    this.imageFile,
+    required this.action,
+    required this.attendanceId,
+  });
 
   @override
   State<LoginCameraViewTwo> createState() => _LoginCameraViewTwoState();
@@ -37,13 +37,14 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
       backgroundColor: const Color(0xff176daa),
       appBar: AppBar(
         title: Text(
-            widget.action == CameraAction.login
-                ? Strings.login
-                : Strings.signUp,
-            style: kText19BoldBlackColorStyle),
+          widget.action == CameraAction.login ? Strings.login : Strings.signUp,
+          style: kText19BoldBlackColorStyle.copyWith(
+            fontSize: screenWidth * 0.05, // Dynamically scale font size
+          ),
+        ),
         backgroundColor: const Color(0xff176daa),
         leading: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(screenWidth * 0.02),
           child: Container(
             decoration: Shape.cameraView(context),
             child: IconButton(
@@ -58,53 +59,36 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
       ),
       body: Column(
         children: [
-          50.height,
+          SizedBox(height: screenHeight * 0.05),
           Expanded(
             child: Container(
               width: double.infinity,
               padding: EdgeInsets.fromLTRB(
-                0.05 * screenWidth,
-                0.025 * screenHeight,
-                0.05 * screenWidth,
-                0.04 * screenHeight,
+                screenWidth * 0.05,
+                screenHeight * 0.025,
+                screenWidth * 0.05,
+                screenHeight * 0.04,
               ),
               decoration: BoxDecoration(
                 color: const Color(0xFF484646),
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(0.03 * screenHeight),
-                  topRight: Radius.circular(0.03 * screenHeight),
+                  topLeft: Radius.circular(screenHeight * 0.03),
+                  topRight: Radius.circular(screenHeight * 0.03),
                 ),
               ),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.camera_alt_outlined,
-                        color: AppColors.white,
-                        size: screenHeight * 0.038,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.012),
-                  Material(
+                  SizedBox(height: screenHeight * 0.05),
+                  Card(
                     elevation: 44,
-                    borderRadius: BorderRadius.circular(10),
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xff204867),
-                        borderRadius: BorderRadius.circular(1),
-                        border: Border.all(
-                          color: Colors.blueGrey,
-                          width: 6.0,
-                        ),
-                      ),
+                      decoration: Shape.cameraView(context),
                       child: widget.imageFile != null
                           ? Image.file(
                               widget.imageFile!,
-                              fit: BoxFit.contain,
+                              fit: BoxFit.cover,
                               height: screenHeight * 0.4,
+                              width: screenWidth * 0.6,
                             )
                           : Icon(
                               Icons.camera_alt,
@@ -113,7 +97,7 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                             ),
                     ),
                   ),
-                  SizedBox(height: screenHeight * 0.045),
+                  SizedBox(height: screenHeight * 0.11),
                   if (widget.imageFile != null)
                     Obx(() {
                       return loginController.isLoading.value
@@ -122,10 +106,10 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                               onPressed: () async {
                                 loginController.isLoading.value = true;
 
-                                // फ़ाइल और एक्शन चेक करें
+                                // Check file and action
                                 if (widget.imageFile != null) {
                                   if (widget.action == CameraAction.login) {
-                                    // अटेंडेंस के लिए API कॉल
+                                    // API call for attendance
                                     await loginController.uploadLogin(
                                       context,
                                       widget.imageFile!,
@@ -133,7 +117,7 @@ class _LoginCameraViewTwoState extends State<LoginCameraViewTwo> {
                                     );
                                   } else if (widget.action ==
                                       CameraAction.registration) {
-                                    // लॉगिन के लिए API कॉल
+                                    // API call for registration
                                     int? employeeCode =
                                         int.tryParse(widget.attendanceId!);
                                     await loginController.signUp(

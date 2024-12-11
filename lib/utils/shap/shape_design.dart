@@ -3,17 +3,19 @@ import 'package:online/constants/colors_res.dart';
 
 class Shape {
   static BoxDecoration chooseCheckBox(BuildContext context) {
-    return   BoxDecoration(
-    color: const Color(0xFFE3C998),
-    borderRadius: BorderRadius.circular(8),
+    return BoxDecoration(
+      color: const Color(0xFFE3C998),
+      borderRadius: BorderRadius.circular(8),
     );
   }
+
   static BoxDecoration cCheckBox(BuildContext context) {
-    return   BoxDecoration(
+    return BoxDecoration(
       color: const Color(0xFFF8F1F1),
       borderRadius: BorderRadius.circular(8),
     );
   }
+
   static Card getStyledCard(BuildContext context, List<Widget> children) {
     return Card(
       elevation: 0.0,
@@ -36,6 +38,7 @@ class Shape {
       ),
     );
   }
+
   static BoxDecoration purpleContainerDecoration(BuildContext context) {
     return BoxDecoration(
       boxShadow: [
@@ -54,26 +57,18 @@ class Shape {
       borderRadius: BorderRadius.circular(10.0),
     );
   }
+
   static BoxDecoration cameraView(BuildContext context) {
-    return   const BoxDecoration(
-      color: Color(0xff4787b4),
-      shape: BoxShape.circle,
-      boxShadow: [
-        BoxShadow(
-          color: Color(0xff246b9d),
-          offset: Offset(4, 4),
-          blurRadius: 8,
-          spreadRadius: 1,
-        ),
-        BoxShadow(
-          color: Color(0xff176daa),
-          offset: Offset(-4, -4),
-          blurRadius: 8,
-          spreadRadius: 1,
-        ),
-      ],
+    return BoxDecoration(
+      color: const Color(0xff204867),
+      borderRadius: BorderRadius.circular(4),
+      border: Border.all(
+        color: Colors.blueGrey,
+        width: 1.0,
+      ),
     );
   }
+
   static BoxDecoration scrollText(BuildContext context) {
     return BoxDecoration(
       color: Colors.cyan.shade50,
@@ -100,7 +95,6 @@ class Shape {
       borderRadius: BorderRadius.circular(2.0),
     );
   }
-
 
   //error Container Red
   static BoxDecoration boxContainer(BuildContext context) {

@@ -80,14 +80,7 @@ class DashBordCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Positioned(
-              //   top: 2,
-              //   left: 5,
-              //   child: CustomNeuCircleICon(
-              //     onTap: () {},
-              //     image: image, // Example with an image
-              //   ),
-              // ),
+
             ],
           ),
         ),
