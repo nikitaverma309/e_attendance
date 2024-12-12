@@ -71,9 +71,9 @@ class UserLocationController extends GetxController {
         double currentLong = currentPosition.longitude;
 
         double? compareLat =
-            double.tryParse(employeeData.value!.collegeDetails!.lat!);
+            double.tryParse(employeeData.value!.collegeDetails!.homeLat!);
         double? compareLong =
-            double.tryParse(employeeData.value!.collegeDetails!.long!);
+            double.tryParse(employeeData.value!.collegeDetails!.homeLong!);
 
         if (compareLat != null && compareLong != null) {
           double distanceInMeters = Geolocator.distanceBetween(
