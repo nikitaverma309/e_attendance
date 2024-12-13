@@ -18,16 +18,9 @@ class _UserDashBordState extends State<UserDashBord> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xF5ECF4F5),
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: 'Master Dashboard',
         showDrawer: true,
-        actionWidget: IconButton(
-          icon: const Icon(
-            Icons.logout,
-            color: Colors.white,
-          ),
-          onPressed: () {},
-        ),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {

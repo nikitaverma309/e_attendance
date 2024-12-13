@@ -23,7 +23,7 @@ class LoginDashBordController extends GetxController {
         "userType": userType,
       });
 
-      // Send POST request using http package
+
       var response = await http.post(url, headers: headers, body: body);
 
       // Check the response status

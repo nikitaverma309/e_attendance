@@ -35,7 +35,6 @@ class ApiServices {
     }
   }
 
-
   /// API to update faceVerified to true
   static Future<bool> updateFaceVerifiedStatus(String empCode) async {
     final url = Uri.parse('${ApiStrings.userLocation}$empCode');
@@ -109,18 +108,15 @@ class ApiServices {
         final data = jsonDecode(response.body);
 
         if (data["msg"] == "NOT FOUND") {
-          return null; // Data not found
+          return null;
         }
         return CheckUserRegisterModel.fromJson(data);
       } else {
-        CustomSnackbarError.showSnackbar(
-          title: "Error",
-          message: 'Employee data does not exist in the database.',
-        );
         return null;
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
+      print('An error occurred: $e');
+
       return null;
     }
   }

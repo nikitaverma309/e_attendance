@@ -9,7 +9,6 @@ import 'package:online/models/droupDown/district_model.dart';
 import 'package:online/models/droupDown/division_model.dart';
 import 'package:online/models/droupDown/vidhan_sabha_model.dart';
 import 'package:online/utils/utils.dart';
-import 'package:online/widgets/common/custom_widgets.dart';
 
 class DropDownController extends GetxController {
   var isLoading = false.obs;
@@ -40,15 +39,6 @@ class DropDownController extends GetxController {
     final List<ClassModel>? fetchedClassList = await ApiServices.fetchClass();
     if (fetchedClassList != null) {
       classList.value = fetchedClassList;
-      CustomSnackbarError.showSnackbar(
-        title: "Success",
-        message: "Class List Loaded Successfully",
-      );
-    } else {
-      CustomSnackbarError.showSnackbar(
-        title: "Error",
-        message: "Failed to load Class List",
-      );
     }
     isLoading.value = false;
   }
@@ -62,11 +52,6 @@ class DropDownController extends GetxController {
     if (fetchedData != null) {
       designationList.value = fetchedData;
       Utils.printLog("Response Designation Body: ${fetchedData}");
-    } else {
-      CustomSnackbarError.showSnackbar(
-        title: "Error",
-        message: 'Failed to load Designation',
-      );
     }
 
     isLoading(false); // End Loading
@@ -78,18 +63,9 @@ class DropDownController extends GetxController {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         college.value = collegeModelFromJson(response.body);
-      } else {
-        CustomSnackbarError.showSnackbar(
-          title: "Error",
-          message: 'Failed to load colleges',
-        );
       }
     } catch (e) {
       Utils.printLog("Error was $e");
-      CustomSnackbarError.showSnackbar(
-        title: "Error",
-        message: 'An error occurred: $e',
-      );
     }
   }
 
@@ -98,11 +74,6 @@ class DropDownController extends GetxController {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       divisions.value = divisionModelFromJson(response.body);
-    } else {
-      CustomSnackbarError.showSnackbar(
-        title: "Error",
-        message: 'Failed to load divisions',
-      );
     }
   }
 
@@ -112,19 +83,10 @@ class DropDownController extends GetxController {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         districts.value = districtModelFromJson(response.body);
-        Utils.printLog("Data was $districts.value");
-      } else {
-        CustomSnackbarError.showSnackbar(
-          title: "Error",
-          message: 'Failed to load districts',
-        );
+        Utils.printLog("Data was fetch Districts By Division $districts.value");
       }
     } catch (e) {
       Utils.printLog("Error was $e");
-      CustomSnackbarError.showSnackbar(
-        title: "Error",
-        message: 'An error occurred: $e',
-      );
     }
   }
 
@@ -135,19 +97,10 @@ class DropDownController extends GetxController {
       if (response.statusCode == 200) {
         var re = vidhanSabha.value = vidhanModelFromJson(response.body);
 
-        Utils.printLog("Data was $re");
-      } else {
-        CustomSnackbarError.showSnackbar(
-          title: "Error",
-          message: 'Failed to load vidhanSaba',
-        );
+        Utils.printLog("Data was Vidhan Sabha By Division $re");
       }
     } catch (e) {
       Utils.printLog("error was $e");
-      CustomSnackbarError.showSnackbar(
-        title: "Error",
-        message: 'An error occurred: $e',
-      );
     }
   }
 

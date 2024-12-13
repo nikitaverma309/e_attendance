@@ -54,7 +54,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
 
   @override
   void dispose() {
-    // Dispose of controllers when not in use
     empCodeCtr.dispose();
     nameCtr.dispose();
     emailCtr.dispose();
@@ -64,7 +63,6 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
   }
 
   TextEditingController emailCtr = TextEditingController();
-
   TextEditingController addressCtr = TextEditingController();
   TextEditingController workTypeCtr = TextEditingController();
 
@@ -150,7 +148,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                                 dropDownController.selectedDivision.value),
                     hint: 'Select Division  ',
                     idKey: 'divisionCode',
-                    displayKey: 'name', // Display the 'ConstituencyName'
+                    displayKey: 'name',
                     onChanged: (DivisionModel? Value) {
                       if (Value != null) {
                         dropDownController
@@ -186,7 +184,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                     hint: 'Select districtName',
                     idKey: 'LGDCode',
                     displayKey:
-                        'districtName', // Display name to show in dropdown
+                        'districtName',
                     onChanged: (DistrictModel? newDistrict) {
                       if (newDistrict != null) {
                         dropDownController
@@ -349,33 +347,35 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                             text: "Register Now",
                             icon: const Icon(Icons.logout, color: Colors.white),
                             color: AppColors.bbAppColor1,
-                            onPressed: userRegistrationFormController.isLoading.value
-                                ? null
-                                : () async {
-                                    if (_formKey.currentState?.validate() ??
-                                        false) {
-                                      userRegistrationFormController.addFormData(
-                                        name: nameCtr.text.trim(),
-                                        empCode: empCodeCtr.text.trim(),
-                                        email: emailCtr.text.trim(),
-                                        contact: mobCtr.text.trim(),
-                                        division: dropDownController
-                                            .selectedDivision.value,
-                                        district: dropDownController
-                                            .selectedDistrict.value,
-                                        vidhanSabha: dropDownController
-                                            .selectedVidhanSabha.value,
-                                        college: dropDownController
-                                            .selectedCollege.value,
-                                        classData: dropDownController
-                                            .selectedClass.value,
-                                        designation: dropDownController
-                                            .selDesignation.value,
-                                        address: addressCtr.text.trim(),
-                                        workType: workTypeCtr.text.trim(),
-                                      );
-                                    }
-                                  },
+                            onPressed:
+                                userRegistrationFormController.isLoading.value
+                                    ? null
+                                    : () async {
+                                        if (_formKey.currentState?.validate() ??
+                                            false) {
+                                          userRegistrationFormController
+                                              .addFormData(
+                                            name: nameCtr.text.trim(),
+                                            empCode: empCodeCtr.text.trim(),
+                                            email: emailCtr.text.trim(),
+                                            contact: mobCtr.text.trim(),
+                                            division: dropDownController
+                                                .selectedDivision.value,
+                                            district: dropDownController
+                                                .selectedDistrict.value,
+                                            vidhanSabha: dropDownController
+                                                .selectedVidhanSabha.value,
+                                            college: dropDownController
+                                                .selectedCollege.value,
+                                            classData: dropDownController
+                                                .selectedClass.value,
+                                            designation: dropDownController
+                                                .selDesignation.value,
+                                            address: addressCtr.text.trim(),
+                                            workType: workTypeCtr.text.trim(),
+                                          );
+                                        }
+                                      },
                           ),
                   ),
                 ),
