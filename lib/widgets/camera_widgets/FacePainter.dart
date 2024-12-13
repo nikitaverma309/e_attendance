@@ -69,3 +69,73 @@ RRect _scaleRect(
       rect.bottom.toDouble() * scaleY,
       const Radius.circular(10));
 }
+/*
+import 'dart:math' as math;
+
+class FacePainter extends CustomPainter {
+  FacePainter({
+    required this.imageSize,
+    required this.face,
+    required this.isAligned,
+    required this.rotationAngle,
+  });
+
+  final Size imageSize;
+  final Face? face;
+  final bool isAligned;
+  final double rotationAngle;
+  double? scaleX, scaleY;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (face == null) return;
+
+    scaleX = size.width / imageSize.width;
+    scaleY = size.height / imageSize.height;
+
+    final center = Offset(
+      size.width - (face!.boundingBox.center.dx * (scaleX ?? 1)),
+      face!.boundingBox.center.dy * (scaleY ?? 1),
+    );
+
+    final radius = (face!.boundingBox.width / 2) * scaleX!;
+
+    // Face bounding circle
+    Paint facePaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0
+      ..color = isAligned ? Colors.green : Colors.red;
+
+    canvas.drawCircle(center, radius, facePaint);
+
+    // Rotating circle
+    if (isAligned) {
+      Paint rotatingPaint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.0
+        ..color = Colors.green;
+
+      double outerRadius = radius + 10; // Slightly larger than face circle
+      double startAngle = rotationAngle;
+      double sweepAngle = math.pi / 4;
+
+      for (int i = 0; i < 8; i++) {
+        canvas.drawArc(
+          Rect.fromCircle(center: center, radius: outerRadius),
+          startAngle + i * (math.pi / 4),
+          sweepAngle / 2,
+          false,
+          rotatingPaint,
+        );
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant FacePainter oldDelegate) {
+    return oldDelegate.imageSize != imageSize ||
+        oldDelegate.face != face ||
+        oldDelegate.isAligned != isAligned ||
+        oldDelegate.rotationAngle != rotationAngle;
+  }
+}*/

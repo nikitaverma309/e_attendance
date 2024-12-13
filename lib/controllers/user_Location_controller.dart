@@ -56,82 +56,98 @@ class UserLocationController extends GetxController {
     "0",
     "Back"
   ].obs;
-
   Future<void> getCheckStatusLatLong(
       String empCode, CameraAction action, BuildContext context) async {
+    // Show loading indicator while making the request.
     isLoading(true);
+
     try {
+      // Fetch employee data asynchronously.
       var employeeResponse =
           await ApiServices.getUserLocationApiServices(empCode);
 
+      // Check if the response contains valid data.
       if (employeeResponse.userData != null) {
-        Position currentPosition = await determinePosition(context);
         employeeData.value = employeeResponse.userData;
+
+        if (employeeData.value?.collegeDetails == null) {
+          Utils.showErrorToast(message: "College details are missing.");
+          return;
+        }
+
+        var collegeDetails = employeeData.value!.collegeDetails!;
+        double? compareLat = double.tryParse(collegeDetails.lat ?? "");
+        double? compareLong = double.tryParse(collegeDetails.long ?? "");
+
+        if (compareLat == null || compareLong == null) {
+          Utils.showErrorToast(message: "Invalid latitude or longitude.");
+          showErrorDialog(
+            context: context,
+            subTitle: "Your location does not match the required location.",
+          );
+          return;
+        }
+
+        // Fetch current position in parallel with other tasks.
+        Position currentPosition = await determinePosition(context);
         double currentLat = currentPosition.latitude;
         double currentLong = currentPosition.longitude;
 
-        double? compareLat =
-            double.tryParse(employeeData.value!.collegeDetails!.homeLat!);
-        double? compareLong =
-            double.tryParse(employeeData.value!.collegeDetails!.homeLong!);
+        // Calculate distance asynchronously.
+        double distanceInMeters = Geolocator.distanceBetween(
+            currentLat, currentLong, compareLat, compareLong);
+        double tolerance = 50.0;
 
-        if (compareLat != null && compareLong != null) {
-          double distanceInMeters = Geolocator.distanceBetween(
-            currentLat,
-            currentLong,
-            compareLat!,
-            compareLong!,
-          );
-          double tolerance = 50.0;
-          if (distanceInMeters <= 160 + tolerance) {
-            isChecked.value = true;
-            isLocationMatched.value = true;
-            if (action == CameraAction.login) {
-              showSuccessDialog(
-                context: context,
-                subTitle: "Attendance marked successfully!",
-                navigateAfterDelay: true,
-                onPressed: () {
-                  navigateToCamera(
-                      context, action, employeeData.value!.empCode!);
-                },
-              );
-            } else {
-              showErrorDialog(
-                context: context,
-                subTitle:
-                    "Your face is already registered. If you want to re-register, you need to login first.",
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainPage(),
-                    ),
-                  );
-                },
-              );
-            }
-            // return;
+        // Check if location is within the tolerance.
+        if (distanceInMeters <= 160 + tolerance) {
+          isChecked.value = true;
+          isLocationMatched.value = true;
+
+          // Handle action based on status.
+          if (action == CameraAction.login) {
+            showSuccessDialog(
+              context: context,
+              subTitle: "Attendance marked successfully!",
+              navigateAfterDelay: true,
+              onPressed: () {
+                navigateToCamera(context, action, employeeData.value!.empCode!);
+              },
+            );
           } else {
             showErrorDialog(
               context: context,
-              subTitle: "Your location does not match the required location.",
+              subTitle:
+                  "Your face is already registered. If you want to re-register, you need to login first.",
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainPage(),
+                  ),
+                );
+              },
             );
-            Utils.showErrorToast(
-                message: 'Your location does not match the required location.');
-            isChecked.value = false;
-            isLocationMatched.value = false;
           }
+        } else {
+          showErrorDialog(
+            context: context,
+            subTitle: "Your location does not match the required location.",
+          );
+          isLocationMatched.value = false;
         }
       } else {
-        getErrorMessage(context, employeeResponse.errorType, action);
-        // handleErrorResponse(
-        //     context,
-        //     getErrorMessage(context, employeeResponse.errorType, action),
-        //     action);
+        // Handle error response and show the error message
+        if (employeeResponse.errorType != null) {
+          getErrorMessage(context, employeeResponse.errorType, action);
+        } else {
+          Utils.showErrorToast(message: "Unexpected error occurred.");
+        }
       }
     } catch (e) {
-      Utils.showErrorToast(message: e.toString());
+      // Handle exceptions and show the error message
+      Utils.showErrorToast(
+          message: "An error occurred. Please try again later.");
+      print("Error: $e");
     } finally {
       isLoading(false);
       isChecked.value = false;
@@ -188,7 +204,7 @@ class UserLocationController extends GetxController {
       case LoginStatus.reRegisteredFace:
         if (action == CameraAction.login) {
           errorMessage =
-          "Your face has been registered. Please wait for verification by the web administrator.";
+              "Your face has been registered. Please wait for verification by the web administrator.";
         } else if (action == CameraAction.registration) {
           showErrorDialog(
             context: context,

@@ -8,7 +8,6 @@ import 'package:online/models/droupDown/class_model.dart';
 import 'package:online/models/droupDown/designation_model.dart';
 import 'dart:convert';
 import 'package:online/models/profile/check_user_location_model.dart';
-import 'package:online/models/profile/profile_model.dart';
 import 'package:online/models/profile/user_model.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
