@@ -133,12 +133,16 @@ class ApiServices {
 
   //  getClass
   static Future<List<ClassModel>?> fetchClass() async {
-    final url = Uri.parse(ApiStrings.getClass);
+    final url = Uri.parse("https://heonline.cg.nic.in/lmsbackend/api/class/getAll");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final List<ClassModel> classList = classModelFromJson(response.body);
+        Utils.printLog("statusCode ${response.statusCode}");
+        Utils.printLog("body${response.body}");
+
         return classList;
+
       } else {
         return null;
       }

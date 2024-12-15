@@ -275,14 +275,7 @@ class _EmployeeRegistrationFormState extends State<EmployeeRegistrationForm> {
                   }
                   return CustomDropdown<ClassModel>(
                     items: dropDownController.classList,
-                    selectedValue:
-                        dropDownController.selectedClass.value.isEmpty
-                            ? null
-                            : dropDownController.classList.firstWhere(
-                                (college) =>
-                                    college.id ==
-                                    dropDownController.selectedClass.value,
-                              ),
+                    selectedValue:dropDownController.getSelectedClass.value,
                     hint: 'Select Class',
                     onChanged: (ClassModel? newCass) {
                       if (newCass != null) {

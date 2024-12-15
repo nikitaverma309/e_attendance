@@ -34,7 +34,7 @@ class LoginDashBordController extends GetxController {
         if (data['status'] == true) {
           loginResponse.value = LoginResponseModel.fromJson(data);
 
-          Get.to(() => UserDashBord());
+          Get.to(() => const UserDashBord());
         } else {
           errorMessage.value = "Login Failed. Please check your credentials.";
         }
