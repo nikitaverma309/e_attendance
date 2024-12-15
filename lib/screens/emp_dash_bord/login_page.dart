@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/text_size_const.dart';
+import 'package:online/controllers/all_user_type.dart';
 import 'package:online/controllers/login_dash_bord.dart';
 import 'package:online/generated/assets.dart';
+import 'package:online/models/all_user_type_model.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 
@@ -13,7 +16,7 @@ class LoginPage extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController userType = TextEditingController();
-
+  final UserTypeController userTypeController = Get.put(UserTypeController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -57,8 +60,38 @@ class LoginPage extends StatelessWidget {
                     style: kTextBlackColorStyle),
                 const Text("Government Of Chhattisgarh",
                     style: k13BoldBlackColorStyle),
+                Obx(() {
+                  if (userTypeController.isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (userTypeController.userTypes.isEmpty) {
+                    return const Center(child: Text("No data found"));
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: DropdownButtonFormField<GetAllUserType>(
+                      decoration: const InputDecoration(
+                        labelText: "Select User Type",
+                        border: OutlineInputBorder(),
+                      ),
+                      items: userTypeController.userTypes.map((userType) {
+                        return DropdownMenuItem<GetAllUserType>(
+                          value: userType,
+                          child: Text(
+                              userType.userTypeHin ?? userType.userType ?? ""),
+                        );
+                      }).toList(),
+                      onChanged: (selected) {
+                        if (selected != null) {
 
-                50.height,
+                          if (kDebugMode) {
+                            print("Selected User Type: ${selected.userTypeHin}");
+                          }
+                        }
+                      },
+                    ),
+                  );
+                }),
                 TextFormField(
                   controller: usernameController,
                   decoration: InputDecoration(
@@ -69,8 +102,8 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -92,8 +125,8 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {

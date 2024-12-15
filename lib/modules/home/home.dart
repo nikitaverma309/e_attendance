@@ -146,17 +146,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
                 10.height,
-                // customButton(
-                //   context,
-                //   'Login',
-                //   const Color(0xFFCEEEEE),
-                //   Colors.black,
-                //   Icons.perm_contact_calendar_outlined,
-                //   () {
-                //     // _profileDialog(context);
-                //     Get.to(() => LoginPage());
-                //   },
-                // ),
+                customButton(
+                  context,
+                  'Login',
+                  const Color(0xFFCEEEEE),
+                  Colors.black,
+                  Icons.perm_contact_calendar_outlined,
+                  () {
+                    // _profileDialog(context);
+                    Get.to(() => LoginPage());
+                  },
+                ),
               ],
             ),
           ],

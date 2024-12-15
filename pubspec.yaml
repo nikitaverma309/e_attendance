@@ -31,22 +31,23 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
 #  camera: ^0.9.4+19
   camera: ^0.10.0
-#  path_provider: ^2.0.9
+  #  path_provider: ^2.0.9
   path_provider: ^2.1.5
   google_ml_kit: ^0.14.0
-#  google_mlkit_face_detection: ^0.12.0
+  #  google_mlkit_face_detection: ^0.12.0
 
   image: ^3.0.1
-#  image: ^4.4.0
+  #  image: ^4.4.0
   get_it: ^8.0.0
   get: ^4.3.8
   geolocator: ^12.0.0
-#  permission_handler: ^9.1.0
+  #  permission_handler: ^9.1.0
   permission_handler: ^11.3.1
   nb_utils: ^4.6.25
   http: ^1.2.2
@@ -54,8 +55,6 @@ dependencies:
   intl: ^0.19.0
   awesome_bottom_bar: ^1.2.4
   animate_do: ^3.1.2
-
-
 
 dev_dependencies:
   flutter_test:
@@ -86,9 +85,6 @@ flutter:
      - assets/images/
      - assets/intro/
      - assets/icon/
-     - assets/success.mp3
-     - assets/failed.mp3
-     - assets/scan_beep.wav
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

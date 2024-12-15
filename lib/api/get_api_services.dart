@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:online/api/api_strings.dart';
 import 'package:online/enum/handal.dart';
 import 'package:online/enum/location_status.dart';
+import 'package:online/models/all_user_type_model.dart';
 import 'package:online/models/employee_register_model.dart';
 import 'package:online/models/droupDown/class_model.dart';
 import 'package:online/models/droupDown/designation_model.dart';
@@ -34,7 +35,16 @@ class ApiServices {
       return null; // Return null in case of any error
     }
   }
+  static Future<AllUserTypeModel> fetchUserTypes() async {
+    final response = await http.get(Uri.parse('http://164.100.150.78/lmsbackend/api/userType'));
 
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      return allUserTypeModelFromJson(response.body);
+    } else {
+      throw Exception("Failed to load user types");
+    }
+  }
   /// API to update faceVerified to true
   static Future<bool> updateFaceVerifiedStatus(String empCode) async {
     final url = Uri.parse('${ApiStrings.userLocation}$empCode');
