@@ -1,17 +1,17 @@
-
-
 import 'dart:convert';
 
-LoginResponseModel loginResponseModelFromJson(String str) => LoginResponseModel.fromJson(json.decode(str));
+LoginResponseModel loginResponseModelFromJson(String str) =>
+    LoginResponseModel.fromJson(json.decode(str));
 
-String loginResponseModelToJson(LoginResponseModel data) => json.encode(data.toJson());
+String loginResponseModelToJson(LoginResponseModel data) =>
+    json.encode(data.toJson());
 
 class LoginResponseModel {
   bool? status;
   String? id;
   String? username;
   String? userType;
-  String? empCode;
+
   int? type;
   String? token;
 
@@ -20,28 +20,26 @@ class LoginResponseModel {
     this.id,
     this.username,
     this.userType,
-    this.empCode,
     this.type,
     this.token,
   });
 
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json) => LoginResponseModel(
-    status: json["status"],
-    id: json["id"],
-    username: json["username"],
-    userType: json["userType"],
-    empCode: json["empCode"],
-    type: json["type"],
-    token: json["token"],
-  );
+  factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
+      LoginResponseModel(
+        status: json["status"],
+        id: json["id"],
+        username: json["username"],
+        userType: json["userType"],
+        type: json["type"],
+        token: json["token"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "id": id,
-    "username": username,
-    "userType": userType,
-    "empCode": empCode,
-    "type": type,
-    "token": token,
-  };
+        "status": status,
+        "id": id,
+        "username": username,
+        "userType": userType,
+        "type": type,
+        "token": token,
+      };
 }

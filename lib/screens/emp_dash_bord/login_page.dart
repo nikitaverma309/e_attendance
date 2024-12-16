@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
       Get.put(LoginDashBordController());
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController userType = TextEditingController();
+
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

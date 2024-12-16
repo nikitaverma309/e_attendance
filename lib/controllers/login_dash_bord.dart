@@ -10,23 +10,25 @@ class LoginDashBordController extends GetxController {
   var errorMessage = ''.obs; // Observable for error messages
 
   // Method to handle login
-  Future<void> login(String username, String password, String userType) async {
-    isLoading(true); // Set loading state to true
+  Future<void> login(
+    String userType,
+    String username,
+    String password,
+  ) async {
+    isLoading(true);
     try {
       var url = Uri.parse('http://164.100.150.78/lmsbackend/api/login');
       var headers = {'Content-Type': 'application/json'};
-
+      print(url);
       // Prepare the body
       var body = json.encode({
+        "userType": userType,
         "username": username,
         "password": password,
-        "userType": userType,
       });
-
 
       var response = await http.post(url, headers: headers, body: body);
 
-      // Check the response status
       if (response.statusCode == 200) {
         var data = json.decode(response.body); // Decode the JSON response
         print(response.statusCode);
