@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:online/enum/enum_screen.dart';
+import 'package:online/modules/auth/views/home/main_page.dart';
+import 'package:online/screens/camera/check_emp_id_screen.dart';
 import 'package:online/utils/utils.dart';
+import 'package:online/widgets/common/card_button.dart';
 
 
 
@@ -49,6 +55,94 @@ Future<void> showLocationAlert(BuildContext context,
 
 
 //profile controller
+
+void handleResponseRegister(String message) {
+  if (message.contains("User ID does not exist.")) {
+    showMessageErrorDialog(
+      "Employee Code Not Registered. Please Contact the Administrator.",
+      message,
+    );
+  } else if (message.contains("Employee Not Verified")) {
+    showMessageErrorDialog(
+      "Employee Not Verified. Please Contact the Administrator.",
+      message,
+    );
+  } else if (message.contains(RegExp(r'^\d{11}$'))) {
+    showMessageErrorDialog(
+      "Employee Code Verified and Please wait, the face verification is being processed.",
+      "Employee Code: $message",
+    );
+    Future.delayed(const Duration(seconds: 4), () {
+      Get.off(() => const MainPage());
+    });
+  } else {
+    showMessageErrorDialog(
+      "Unexpected Response. Please Contact the Administrator.",
+      message,
+    );
+  }
+}
+void showMessageErrorDialog(String title, String message) {
+  Get.dialog(
+    AlertDialog(
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
+      content: Text(
+        message,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
+      actions: [
+        ButtonCard(
+          color: Colors.red, // Optional: Customize the background color
+          width: 60, // Set the width for ButtonCard
+          height: 50,
+          text: "Ok  ",
+          onPressed: () {
+            Get.off(() => const FaceAttendanceScreen(
+              action: CameraAction.registration,
+            ));
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+void showErrorLoginDialog(BuildContext context, String title, String message,
+    bool navigateToProfile) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              if (navigateToProfile) {
+                Navigator.pop(context);
+              } else {
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 
 // Function to get the current position (latitude, longitude)
   Future<Position> determinePosition(BuildContext context) async {

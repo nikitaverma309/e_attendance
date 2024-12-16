@@ -3,17 +3,51 @@ import 'package:get/get.dart';
 import 'package:online/api/api_strings.dart';
 import 'package:online/enum/handal.dart';
 import 'package:online/enum/location_status.dart';
-import 'package:online/models/all_user_type_model.dart';
+import 'package:online/modules/auth/models/all_user_type_model.dart';
 import 'package:online/models/employee_register_model.dart';
 import 'package:online/models/droupDown/class_model.dart';
 import 'package:online/models/droupDown/designation_model.dart';
+import 'package:online/models/leave_model.dart';
 import 'dart:convert';
 import 'package:online/models/profile/check_user_location_model.dart';
-import 'package:online/models/profile/user_model.dart';
+import 'package:online/modules/auth/models/user_model.dart';
+import 'package:online/modules/auth/SharedPref.dart';
 import 'package:online/utils/utils.dart';
-import 'package:online/widgets/common/custom_widgets.dart';
 
 class ApiServices {
+  // leave
+  static Future<List<LeaveResponseModel>?> fetchLeave() async {
+    final String? uid = SharedPref.getUid();
+
+    if (uid == null || uid.isEmpty) {
+      Utils.printLog("Error: UID is null or empty.");
+      return null;
+    }
+    final url = Uri.parse("http://164.100.150.78/lmsbackend/api/leave/applied_Leaves/$uid");
+    print(url);
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonData = jsonDecode(response.body);
+        final List<LeaveResponseModel> leaveList = jsonData
+            .map((jsonItem) => LeaveResponseModel.fromJson(jsonItem))
+            .toList();
+
+        // Logging for debugging
+        Utils.printLog("statusCode: ${response.statusCode}");
+        Utils.printLog("body: ${response.body}");
+
+        return leaveList;
+      } else {
+        Utils.printLog("Failed to fetch data. Status code: ${response.statusCode}");
+        return null;
+      }
+    } catch (e) {
+      Utils.printLog("Error: $e");
+      return null;
+    }
+  }
   //Profile
   static Future<ProfileModel?> profileApi(String empCode) async {
     final url = Uri.parse(

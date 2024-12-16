@@ -8,11 +8,11 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:online/api/api_strings.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/models/profile/profile_model.dart';
-import 'package:online/modules/home/main_page.dart';
+import 'package:online/modules/auth/models/profile_model.dart';
+import 'package:online/modules/auth/views/home/main_page.dart';
+import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/card_button.dart';
-import 'package:online/widgets/common/custom_dailog_widgets.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
@@ -68,32 +68,6 @@ class LoginController extends GetxController {
     }
   }
 
-  void handleResponseRegister(String message) {
-    if (message.contains("User ID does not exist.")) {
-      showMessageErrorDialog(
-        "Employee Code Not Registered. Please Contact the Administrator.",
-        message,
-      );
-    } else if (message.contains("Employee Not Verified")) {
-      showMessageErrorDialog(
-        "Employee Not Verified. Please Contact the Administrator.",
-        message,
-      );
-    } else if (message.contains(RegExp(r'^\d{11}$'))) {
-      showMessageErrorDialog(
-        "Employee Code Verified and Please wait, the face verification is being processed.",
-        "Employee Code: $message",
-      );
-      Future.delayed(const Duration(seconds: 4), () {
-        Get.off(() => const MainPage());
-      });
-    } else {
-      showMessageErrorDialog(
-        "Unexpected Response. Please Contact the Administrator.",
-        message,
-      );
-    }
-  }
 
   Future<void> uploadLogin(
     BuildContext context,

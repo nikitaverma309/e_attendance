@@ -1,4 +1,3 @@
-import 'package:online/models/login_model.dart';
 
 class ApiStrings {
   static const String baseUrl = 'http://164.100.150.78';

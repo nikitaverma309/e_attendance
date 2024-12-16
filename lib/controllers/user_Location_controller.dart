@@ -6,9 +6,9 @@ import 'package:online/api/get_api_services.dart';
 import 'package:online/enum/enum_screen.dart';
 import 'package:online/enum/location_status.dart';
 import 'package:online/models/profile/check_user_location_model.dart';
-import 'package:online/modules/auth/camera_pic.dart';
-import 'package:online/modules/home/main_page.dart';
+import 'package:online/modules/auth/views/home/main_page.dart';
 import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
+import 'package:online/screens/camera/camera_pic.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 

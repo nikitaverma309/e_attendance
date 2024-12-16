@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/models/profile/user_model.dart';
-import 'package:online/modules/home/main_page.dart';
+import 'package:online/modules/auth/models/user_model.dart';
+import 'package:online/modules/auth/views/home/main_page.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/app_button.dart';
@@ -39,7 +39,6 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       body: Container(
-
         decoration: const BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
@@ -58,14 +57,6 @@ class ProfileScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               decoration: Shape.cameraView(context),
-              // decoration: BoxDecoration(
-              //   color: const Color(0xff204867),
-              //   borderRadius: BorderRadius.circular(4),
-              //   border: Border.all(
-              //     color: Colors.blueGrey,
-              //     width: 1.0,
-              //   ),
-              // ),
               child: SizedBox(
                 height: screenHeight * 0.2,
                 width: screenWidth * 0.4,
@@ -112,12 +103,6 @@ class ProfileScreen extends StatelessWidget {
                         title: 'Work Type ',
                         subTitle: "${data!.workType}",
                       ),
-
-                      // ResultOutPutCard(
-                      //   title: 'Login OutTime ',
-                      //   subTitle:
-                      //       Utils.formatTime(data!.logoutTime),
-                      // ),
                       10.height,
                     ],
                   ),

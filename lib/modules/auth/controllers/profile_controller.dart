@@ -1,25 +1,13 @@
 import 'package:get/get.dart';
 import 'package:online/api/get_api_services.dart';
-import 'package:online/models/profile/profile_model.dart';
-import 'package:online/models/profile/user_model.dart';
-import 'package:online/modules/profile/profile_screen.dart';
+import 'package:online/modules/auth/models/user_model.dart';
+import 'package:online/modules/auth/views/profile_screen.dart';
 import 'package:online/utils/utils.dart';
 
 class ProfileController extends GetxController {
   var isLoading = false.obs;
   var employeeDataA = Rxn<ProfileModel>();
 
-  // Future<void> getProfile(String empCode) async {
-  //   isLoading(true);
-  //   final profileData = await ApiServices.profileApi(empCode);
-  //   if (profileData != null) {
-  //     employeeDataA.value = profileData;
-  //     Get.to(() => ProfileScreen(
-  //       data: employeeDataA.value,
-  //     ));
-  //   }
-  //   isLoading(false);
-  // }
   Future<void> getProfile(String empCode) async {
     isLoading(true);
     try {

@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:online/models/login_model.dart';
+import 'package:online/modules/auth/models/login_model.dart';
 import 'package:online/modules/auth/SharedPref.dart';
 import 'package:online/screens/emp_dash_bord/cmo_dash_bord.dart';
 
 class LoginDashBordController extends GetxController {
   var isLoading = false.obs;
   var loginResponse = Rxn<LoginResponseModel>();
-  var errorMessage = ''.obs; // Observable for error messages
+  var errorMessage = ''.obs;
 
   // Method to handle login
   Future<void> login(

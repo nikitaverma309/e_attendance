@@ -18,8 +18,8 @@ class ButtonCard extends StatelessWidget {
   final String? text;
   final Icon icon;
   final Color color;
-  final double? width; // Optional width parameter
-  final double? height; // Optional height parameter
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,8 @@ class ButtonCard extends StatelessWidget {
       child: Card(
         elevation: 12,
         child: Container(
-          width: width, // Use the passed width
-          height: height, // Use the passed height
+          width: width,
+          height: height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: color,

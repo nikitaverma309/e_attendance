@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 
-import 'leaveController.dart';
+import '../controllers/leave_controller.dart';
 
 class LeaveListScreen extends StatelessWidget {
   final LeaveController leaveController = Get.put(LeaveController());
@@ -22,26 +22,23 @@ class LeaveListScreen extends StatelessWidget {
       body: Obx(() {
         if (leaveController.isLoading.value) {
           return const Center(
-              child: CircularProgressIndicator()); // Show loading indicator
+              child: CircularProgressIndicator());
         }
 
         if (leaveController.errorMessage.isNotEmpty) {
           return Center(
               child: Text(
-                  leaveController.errorMessage.value)); // Show error message
+                  leaveController.errorMessage.value));
         }
 
-        // Main content with buttons and leave lists
         return Column(
           children: [
-            // Buttons for each leave status
             _buildStatusButtons(context),
-            // Display list of filtered leaves
             Expanded(
               child: _buildLeaveList(
                 leaveController,
                 leaveController.leaveStatus
-                    .value, // Show filtered list based on selected status
+                    .value,
               ),
             ),
           ],
@@ -86,7 +83,6 @@ class LeaveListScreen extends StatelessWidget {
     );
   }
 
-  // Widget to build the list of leaves based on the selected status
   Widget _buildLeaveList(LeaveController controller, int status) {
     final filteredLeaves = controller.appliedLeaves
         .where((leave) => leave.leaveStatus == status)
@@ -134,7 +130,7 @@ class LeaveListScreen extends StatelessWidget {
                       const SizedBox(height: 4),
                       // Subtitle
                       Text(
-                        'Date: ${leave.appliedDate ?? "N/A"}', // Replace `leaveDate` with your actual field
+                        'Date: ${leave.appliedDate ?? "N/A"}',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],

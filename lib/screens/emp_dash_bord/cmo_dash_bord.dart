@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:online/api/leaveScreen.dart';
+import 'package:online/screens/leave_screen.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/screens/emp_dash_bord/widgets/card_dash_bord.dart';

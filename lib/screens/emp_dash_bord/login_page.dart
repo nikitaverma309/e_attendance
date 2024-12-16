@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/controllers/all_user_type.dart';
-import 'package:online/controllers/login_dash_bord.dart';
+import 'package:online/modules/auth/controllers/all_user_type.dart';
+import 'package:online/modules/auth/controllers/login_controller.dart';
 import 'package:online/generated/assets.dart';
-import 'package:online/models/all_user_type_model.dart';
+import 'package:online/modules/auth/models/all_user_type_model.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 

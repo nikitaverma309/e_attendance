@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:online/api/get_api_services.dart';
-import 'package:online/models/all_user_type_model.dart';
+import 'package:online/modules/auth/models/all_user_type_model.dart';
 
 
 

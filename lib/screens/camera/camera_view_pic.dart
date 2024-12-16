@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
-import 'package:online/controllers/login_controller.dart';
+import 'package:online/modules/auth/controllers/face_recog_controller.dart';
 import 'package:online/enum/enum_screen.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/app_button.dart';

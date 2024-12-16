@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online/constants/colors_res.dart';
-import 'package:online/modules/home/main_page.dart';
+import 'package:online/modules/auth/views/home/main_page.dart';
 import 'constants/string_res.dart';
 
 class FeatureShowCasePage extends StatefulWidget {
