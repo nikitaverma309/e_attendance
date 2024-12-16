@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/api/leaveScreen.dart';
 import 'package:online/constants/string_res.dart';
@@ -50,7 +49,7 @@ class _UserDashBordState extends State<UserDashBord> {
                                   title: Strings.login,
                                   numberTwo: 'Leave',
                                   onPressed: () {
-                                  Get.to(() =>  AppliedLeaveListScreen());
+                                  Get.to(() =>  LeaveListScreen());
                                   },
                                   // gradientColors: [],
                                 ),

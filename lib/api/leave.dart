@@ -1,45 +1,61 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:online/modules/auth/SharedPref.dart';
+import 'package:online/models/leave_model.dart';
+
+import '../modules/auth/SharedPref.dart';
+import '../utils/utils.dart';
 
 class LeaveApiService {
   static const String baseUrl =
       'http://164.100.150.78/lmsbackend/api/leave/applied_Leaves/';
+  static Future<List<LeaveResponseModel>?> fetchClass() async {
+    final String? uid = SharedPref.getUid();
 
-  /// Fetch applied leaves for an employee
-  static Future<List<dynamic>?> fetchAppliedLeaves() async {
-    // Retrieve the user ID from SharedPreferences
-    final userId = SharedPref.getUid();
-
-    if (userId == null) {
-      print('User ID not found in SharedPreferences.');
+    if (uid == null || uid.isEmpty) {
+      Utils.printLog("Error: UID is null or empty.");
       return null;
     }
-    print(userId);
-    // Construct the API endpoint
-    final url = Uri.parse('$baseUrl$userId');
+    final url = Uri.parse("http://164.100.150.78/lmsbackend/api/leave/applied_Leaves/$uid");
     print(url);
     try {
-      // Make the GET request
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        // Parse the JSON response
-        final jsonData = jsonDecode(response.body);
+        // Decode the JSON response
+        final List<dynamic> jsonData = jsonDecode(response.body);
 
-        if (jsonData['status'] == true) {
-          // Assuming the data is in the 'data' key
-          return jsonData['data'];
-        } else {
-          print('Error in response: ${jsonData['message']}');
-        }
+        // Map the decoded JSON to a list of LeaveResponseModel
+        final List<LeaveResponseModel> leaveList = jsonData
+            .map((jsonItem) => LeaveResponseModel.fromJson(jsonItem))
+            .toList();
+
+        // Logging for debugging
+        Utils.printLog("statusCode: ${response.statusCode}");
+        Utils.printLog("body: ${response.body}");
+
+        return leaveList;
       } else {
-        print('Failed to fetch data. HTTP status: ${response.statusCode}');
+        Utils.printLog("Failed to fetch data. Status code: ${response.statusCode}");
+        return null;
       }
     } catch (e) {
-      print('Error while fetching applied leaves: $e');
+      Utils.printLog("Error: $e");
+      return null;
     }
-
-    return null;
   }
+  // static Future<List<LeaveResponseModel>> fetchLeaveData() async {
+  //   try {
+  //     final response = await http.get(Uri.parse('$_baseUrl/leaves'));
+  //
+  //     if (response.statusCode == 200) {
+  //       final List<dynamic> data = json.decode(response.body);
+  //       return data.map((json) => LeaveResponseModel.fromJson(json)).toList();
+  //     } else {
+  //       throw Exception('Failed to fetch leave data: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Error: $e');
+  //   }
+  // }
+
 }

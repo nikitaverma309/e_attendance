@@ -38,13 +38,24 @@ class LoginDashBordController extends GetxController {
         print(response.statusCode);
         print(response.body);
         if (data['status'] == true) {
-          SharedPref.setUid(data['id']);
-          SharedPref.setUsername(data['username']);
-          SharedPref.setUserType(data['userType']);
-          SharedPref.setEmpCode(data['empCode']);
-          SharedPref.setType(data['type']);
-          SharedPref.setToken(data['token']);
-          loginResponse.value = LoginResponseModel.fromJson(data);
+         loginResponse.value = LoginResponseModel.fromJson(data);
+         SharedPref.setUid(data['id']);
+         print("Set UID: ${data['id']}");
+
+         SharedPref.setUsername(data['username']);
+         print("Set Username: ${data['username']}");
+
+         SharedPref.setUserType(data['userType']);
+         print("Set UserType: ${data['userType']}");
+
+         SharedPref.setEmpCode(data['empCode']);
+         print("Set EmpCode: ${data['empCode']}");
+
+         SharedPref.setType(data['type']);
+         print("Set Type: ${data['type']}");
+
+         SharedPref.setToken(data['token']);
+         print("Set Token: ${data['token']}");
 
           Get.to(() => const UserDashBord());
         } else {

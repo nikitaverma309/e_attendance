@@ -6,12 +6,15 @@ import 'package:online/locator.dart';
 import 'package:online/modules/splash/splash_page.dart';
 import 'package:online/utils/utils.dart';
 
+import 'modules/auth/SharedPref.dart';
 
 
-void main() {
 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = CustomHttpOverrides();
   setupServices();
+  await SharedPref().init(); // Await initialization
   runApp(const MyApp());
 }
 class CustomHttpOverrides extends HttpOverrides{
