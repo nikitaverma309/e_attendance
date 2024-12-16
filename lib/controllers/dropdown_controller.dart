@@ -13,7 +13,7 @@ import 'package:online/utils/utils.dart';
 class DropDownController extends GetxController {
   var isLoading = false.obs;
   var classList = <ClassModel>[].obs;
-  var selectedClass = ''.obs;
+  Rx<String> selectedClass = ''.obs;
   var designationList = <DesignationModel>[].obs;
   var selDesignation = ''.obs;
   var college = <CollegeModel>[].obs;
@@ -25,6 +25,16 @@ class DropDownController extends GetxController {
   var vidhanSabha = <VidhanModel>[].obs;
   var selectedVidhanSabha = ''.obs;
 
+  Rx<ClassModel?> get getSelectedClass {
+    return selectedClass.value.isEmpty
+        ? null.obs
+        : classList
+            .firstWhere(
+              (college) => college.id == selectedClass.value,
+            )
+            .obs;
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -35,7 +45,6 @@ class DropDownController extends GetxController {
 
   Future<void> fetchClass() async {
     isLoading.value = true;
-
     final List<ClassModel>? fetchedClassList = await ApiServices.fetchClass();
     if (fetchedClassList != null) {
       classList.value = fetchedClassList;
@@ -51,7 +60,7 @@ class DropDownController extends GetxController {
 
     if (fetchedData != null) {
       designationList.value = fetchedData;
-      Utils.printLog("Response Designation Body: ${fetchedData}");
+
     }
 
     isLoading(false); // End Loading

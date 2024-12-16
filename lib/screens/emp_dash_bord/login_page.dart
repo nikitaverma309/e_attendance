@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:online/constants/text_size_const.dart';
+import 'package:online/controllers/all_user_type.dart';
 import 'package:online/controllers/login_dash_bord.dart';
 import 'package:online/generated/assets.dart';
+import 'package:online/models/all_user_type_model.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 
@@ -12,8 +15,9 @@ class LoginPage extends StatelessWidget {
       Get.put(LoginDashBordController());
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-
+  final TextEditingController userType = TextEditingController();
+  final UserTypeController userTypeController = Get.put(UserTypeController());
+  GetAllUserType? selectedUserType;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -57,8 +61,38 @@ class LoginPage extends StatelessWidget {
                     style: kTextBlackColorStyle),
                 const Text("Government Of Chhattisgarh",
                     style: k13BoldBlackColorStyle),
-
-                50.height,
+                Obx(() {
+                  if (userTypeController.isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (userTypeController.userTypes.isEmpty) {
+                    return const Center(child: Text("No data found"));
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: DropdownButtonFormField<GetAllUserType>(
+                      decoration: const InputDecoration(
+                        labelText: "Select User Type",
+                        border: OutlineInputBorder(),
+                      ),
+                      items: userTypeController.userTypes.map((userType) {
+                        return DropdownMenuItem<GetAllUserType>(
+                          value: userType,
+                          child: Text(
+                              userType.userType ?? userType.userType ?? ""),
+                        );
+                      }).toList(),
+                      onChanged: (selected) {
+                        if (selected != null) {
+                          selectedUserType = selected;
+                          if (kDebugMode) {
+                            print("Selected User Type: ${selected.userType}");
+                          }
+                        }
+                      },
+                    ),
+                  );
+                }),
                 TextFormField(
                   controller: usernameController,
                   decoration: InputDecoration(
@@ -69,8 +103,8 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -92,8 +126,8 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -112,15 +146,18 @@ class LoginPage extends StatelessWidget {
                     return CommonButton(
                       onPressed: () {
                         if (_formKey.currentState?.validate() ?? false) {
-                          // If the form is valid, proceed with login
+                          if (selectedUserType == null) {
+                            toast("Please select a user type");
+                            return;
+                          }
                           String username = usernameController.text.trim();
                           String password = passwordController.text.trim();
-                          String userType = "Employee";
-                          loginController.login(username, password, userType);
-                        } else {
-                          // If validation fails, show snackbar
-                          Get.snackbar(
-                              "Error", "Please fill in all fields correctly.");
+
+                          loginController.login(
+                            selectedUserType?.userType ?? "",
+                            username,
+                            password,
+                          );
                         }
                       },
                       text: "Login",
@@ -135,9 +172,7 @@ class LoginPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        // Navigate to forgot password screen
-                      },
+                      onTap: () {},
                       child: const Text(
                         'Forgot Password?',
                         style: TextStyle(

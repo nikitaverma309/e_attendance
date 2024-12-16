@@ -1,3 +1,5 @@
+import 'package:online/models/login_model.dart';
+
 class ApiStrings {
   static const String baseUrl = 'http://164.100.150.78';
   static const String lms = '$baseUrl/lmsbackend/api';
@@ -9,22 +11,18 @@ class ApiStrings {
   //live server
   static const String he = 'https://heonline.cg.nic.in/lmsbackend/api';
   //staging
-  static const String staging = 'https://heonline.cg.nic.in/staging';
+  static const String staging = 'https://heonline.cg.nic.in/lmsbackend/api';
   //
   static const String checkStatus = '$lms/employee-code/check?';
   static const String empRegister = '$lms/employee/add';
   static const String formRegister = '$staging/api/employee/add';
   static const String getClass = '$staging/api/class/getAll';
-  static const String designation = '$staging/api/designation-class-wise';
+  static const String designation = 'https://heonline.cg.nic.in/lmsbackend/api/designation-class-wise';
   static const String college = '$he/college/get-all-college';
   static const String division = '$he/division/get-all';
   static const String district = '$he/district/get-division-district';
   static const String getVidhansabha =
       '$he/district/getVidhansabha-district-wise';
-}
-
-class ApiVariables {
-  static const String id = 'id';
 }
 
 class ApiMethods {

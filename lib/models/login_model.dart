@@ -8,10 +8,10 @@ String loginResponseModelToJson(LoginResponseModel data) =>
 
 class LoginResponseModel {
   bool? status;
-  String? id;
+  dynamic id; // Set to dynamic to handle both String and int
   String? username;
   String? userType;
-
+  String? empCode;
   int? type;
   String? token;
 
@@ -20,6 +20,7 @@ class LoginResponseModel {
     this.id,
     this.username,
     this.userType,
+    this.empCode,
     this.type,
     this.token,
   });
@@ -27,19 +28,21 @@ class LoginResponseModel {
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
       LoginResponseModel(
         status: json["status"],
-        id: json["id"],
+        id: json["id"], // Dynamically handled
         username: json["username"],
         userType: json["userType"],
+        empCode: json["empCode"],
         type: json["type"],
         token: json["token"],
       );
 
   Map<String, dynamic> toJson() => {
-        "status": status,
-        "id": id,
-        "username": username,
-        "userType": userType,
-        "type": type,
-        "token": token,
-      };
+    "status": status,
+    "id": id, // Dynamically handled
+    "username": username,
+    "userType": userType,
+    "empCode": empCode,
+    "type": type,
+    "token": token,
+  };
 }

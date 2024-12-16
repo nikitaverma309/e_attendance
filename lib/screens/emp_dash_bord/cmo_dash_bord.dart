@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:online/api/leaveScreen.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/screens/emp_dash_bord/widgets/card_dash_bord.dart';
@@ -45,9 +48,9 @@ class _UserDashBordState extends State<UserDashBord> {
                                 child: DashBordCard(
                                   image: Assets.assetsFaceId,
                                   title: Strings.login,
-                                  numberTwo: '180',
+                                  numberTwo: 'Leave',
                                   onPressed: () {
-                                    // Get.to(() => const TotalUlb());
+                                  Get.to(() =>  AppliedLeaveListScreen());
                                   },
                                   // gradientColors: [],
                                 ),

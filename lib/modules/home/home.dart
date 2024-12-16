@@ -9,6 +9,7 @@ import 'package:online/enum/enum_screen.dart';
 import 'package:online/generated/assets.dart';
 import 'package:online/modules/auth/check_emp_id_screen.dart';
 import 'package:online/screens/emp_dash_bord/login_page.dart';
+import 'package:online/screens/form/emp_form.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
@@ -146,15 +147,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
                 10.height,
+                customButton(
+                  context,
+                  'Login',
+                  const Color(0xFFCEEEEE),
+                  Colors.black,
+                  Icons.perm_contact_calendar_outlined,
+                  () {
+                    // _profileDialog(context);
+                    Get.to(() => LoginPage());
+                  },
+                ),
                 // customButton(
                 //   context,
                 //   'Login',
                 //   const Color(0xFFCEEEEE),
                 //   Colors.black,
                 //   Icons.perm_contact_calendar_outlined,
-                //   () {
+                //       () {
                 //     // _profileDialog(context);
-                //     Get.to(() => LoginPage());
+                //    // Get.to(() => EmployeeRegistrationForm(employeeData: null,));
                 //   },
                 // ),
               ],
