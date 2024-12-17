@@ -10,7 +10,6 @@ import 'package:online/constants/string_res.dart';
 import 'package:online/constants/text_size_const.dart';
 import 'package:online/models/profile/profile_model.dart';
 import 'package:online/modules/home/main_page.dart';
-import 'package:online/modules/profile/profile_screen.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/card_button.dart';
 import 'package:online/widgets/common/custom_dailog_widgets.dart';
