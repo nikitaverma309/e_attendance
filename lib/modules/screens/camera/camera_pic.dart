@@ -9,7 +9,7 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:online/constants/string_res.dart';
 import 'package:online/enum/enum_screen.dart';
 import 'package:online/locator.dart';
-import 'package:online/screens/camera/camera_view_pic.dart';
+import 'package:online/modules/screens/camera/camera_view_pic.dart';
 import 'package:online/services/camera.service.dart';
 import 'package:online/services/face_detector_service.dart';
 import 'package:online/services/image_converter.dart';

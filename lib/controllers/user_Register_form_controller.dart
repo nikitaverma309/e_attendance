@@ -2,10 +2,9 @@ import 'package:get/get.dart';
 import 'package:online/api/get_api_services.dart';
 import 'package:online/api/post_api_services.dart';
 import 'package:online/models/employee_register_model.dart';
-import 'package:online/screens/form/emp_form.dart';
+import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
+import 'package:online/modules/screens/form/emp_form.dart';
 
-import 'package:online/utils/utils.dart';
-import 'package:online/widgets/common/custom_widgets.dart';
 
 class UserRegistrationFormController extends GetxController {
   var isLoading = false.obs;
@@ -14,30 +13,31 @@ class UserRegistrationFormController extends GetxController {
   Future<void> getUserRegisterData(String empCode, String contact) async {
     isLoading(true);
     final checkStatusModel =
-    await ApiServices.checkEmployeeStatus(empCode, contact);
+        await ApiServices.checkEmployeeStatus(empCode, contact);
     if (checkStatusModel == null) {
       isLoading(false);
       CustomSnackbarError.showSnackbar(
         title: "Error",
         message: 'Employee data does not exist in the database.',
       );
-      Utils.showErrorToast(message: "Employee data does not exist in the database.");
+
       return;
     }
     if (checkStatusModel.msg == "FOUND BUT USED") {
       employeeDataA.value = checkStatusModel;
-      print(employeeDataA.value);
+
       CustomSnackbarSuccessfully.showSnackbar(
         title: "Found",
         message: 'Employee data exists in the database.',
       );
-      Utils.printLog("Employee Data: ${checkStatusModel.toJson()}");
+
       Get.to(() => EmployeeRegistrationForm(
-        employeeData: checkStatusModel.getEmployeeDetails,
-      ));
+            employeeData: checkStatusModel.getEmployeeDetails,
+          ));
     }
     isLoading(false);
   }
+
 // from data post
   Future<void> addFormData({
     required String name,
@@ -73,13 +73,9 @@ class UserRegistrationFormController extends GetxController {
     isLoading.value = false;
 
     if (response['success']) {
-      Get.snackbar(
-        'Success',
-        'Employee registered successfully.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
     } else {
-      String errorMessage = response['data']['msg'] ?? 'An unexpected error occurred';
+      String errorMessage =
+          response['data']['msg'] ?? 'An unexpected error occurred';
       CustomSnackbarError.showSnackbar(
         title: 'Error',
         message: errorMessage,

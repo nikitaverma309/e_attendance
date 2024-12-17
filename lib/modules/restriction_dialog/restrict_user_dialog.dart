@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:online/enum/enum_screen.dart';
 import 'package:online/modules/auth/views/home/main_page.dart';
-import 'package:online/screens/camera/check_emp_id_screen.dart';
+import 'package:online/modules/screens/camera/check_emp_id_screen.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/card_button.dart';
 
@@ -234,3 +234,147 @@ void showErrorLoginDialog(BuildContext context, String title, String message,
       },
     );
   }
+
+
+
+
+
+class CustomSnackbarError {
+  static void showSnackbar({
+    String? title,
+    required String message,
+    SnackPosition position = SnackPosition.TOP,
+    Color backgroundColor = Colors.red,
+    Color textColor = Colors.white,
+    double borderRadius = 10.0,
+    EdgeInsets margin = const EdgeInsets.all(10),
+  }) {
+    Get.snackbar(
+      title!,
+      message,
+      snackPosition: position,
+      backgroundColor: backgroundColor,
+      colorText: textColor,
+      borderRadius: borderRadius,
+      margin: margin,
+    );
+  }
+}
+
+class CustomSnackbarSuccessfully {
+  static void showSnackbar({
+    required String title,
+    required String message,
+    SnackPosition position = SnackPosition.BOTTOM,
+    Color backgroundColor = Colors.green,
+    Color textColor = Colors.white,
+    double borderRadius = 10.0,
+    EdgeInsets margin = const EdgeInsets.all(10),
+  }) {
+    Get.snackbar(
+      title,
+      message,
+      snackPosition: position,
+      backgroundColor: backgroundColor,
+      colorText: textColor,
+      borderRadius: borderRadius,
+      margin: margin,
+    );
+  }
+}
+
+void showSuccessDialog({
+  required BuildContext context,
+  String? textHeading,
+  required String subTitle,
+  VoidCallback? onPressed,
+  bool navigateAfterDelay = false,
+}) {
+  if (navigateAfterDelay) {
+    Future.delayed(const Duration(seconds: 0), () {
+      if (Get.isDialogOpen!) {
+        Get.back();
+        onPressed?.call();
+      }
+    });
+  }
+
+  Get.defaultDialog(
+    title: textHeading ?? "",
+    titleStyle: const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.green,
+    ),
+    middleText: subTitle,
+    middleTextStyle: const TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.black87,
+    ),
+    radius: 8.0,
+    barrierDismissible: false,
+    actions: [
+      navigateAfterDelay == true
+          ? const SizedBox
+          .shrink() // यदि navigateAfterDelay false है तो खाली Widget दिखाएं
+          : ButtonCard(
+        color: Colors.green,
+        width: 60,
+        height: 40,
+        text: "process",
+        onPressed: onPressed ?? () => Get.back(),
+      ),
+    ],
+  );
+}
+
+void showErrorDialog({
+  required BuildContext context,
+  required String subTitle,
+  String? textHeading,
+  VoidCallback? onPressed, // Optional onPressed parameter
+  bool permanentlyDisableButton = false,
+}) {
+  RxBool isButtonDisabled = permanentlyDisableButton.obs;
+
+  if (permanentlyDisableButton) {
+    Future.delayed(const Duration(seconds: 10), () {
+      if (Get.isDialogOpen!) {
+        Get.back();
+        onPressed?.call();
+      }
+    });
+  }
+  Get.defaultDialog(
+    title: textHeading ?? "",
+    titleStyle: const TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.bold,
+      color: Colors.red,
+    ),
+    middleText: subTitle,
+    middleTextStyle: const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.black87,
+    ),
+    radius: 8.0,
+    barrierDismissible: false,
+    actions: [
+      Obx(() {
+        if (isButtonDisabled.value) {
+          return const SizedBox.shrink();
+        } else {
+          return ButtonCard(
+            color: Colors.red,
+            width: 60,
+            height: 40,
+            text: "Ok",
+            onPressed: onPressed ?? () => Get.back(),
+          );
+        }
+      }),
+    ],
+  );
+}

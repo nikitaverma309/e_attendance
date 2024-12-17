@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online/constants/text_size_const.dart';
+import 'package:online/controllers/leave_controller.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
 
-import '../controllers/leave_controller.dart';
 
 class LeaveListScreen extends StatelessWidget {
   final LeaveController leaveController = Get.put(LeaveController());

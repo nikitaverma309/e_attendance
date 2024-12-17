@@ -8,7 +8,7 @@ import 'package:online/enum/location_status.dart';
 import 'package:online/models/profile/check_user_location_model.dart';
 import 'package:online/modules/auth/views/home/main_page.dart';
 import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
-import 'package:online/screens/camera/camera_pic.dart';
+import 'package:online/modules/screens/camera/camera_pic.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 
@@ -80,7 +80,6 @@ class UserLocationController extends GetxController {
         double? compareLong = double.tryParse(collegeDetails.long ?? "");
 
         if (compareLat == null || compareLong == null) {
-          Utils.showErrorToast(message: "Invalid latitude or longitude.");
           showErrorDialog(
             context: context,
             subTitle: "Your location does not match the required location.",
@@ -136,7 +135,6 @@ class UserLocationController extends GetxController {
           isLocationMatched.value = false;
         }
       } else {
-        // Handle error response and show the error message
         if (employeeResponse.errorType != null) {
           getErrorMessage(context, employeeResponse.errorType, action);
         } else {
@@ -144,10 +142,7 @@ class UserLocationController extends GetxController {
         }
       }
     } catch (e) {
-      // Handle exceptions and show the error message
-      Utils.showErrorToast(
-          message: "An error occurred. Please try again later.");
-      print("Error: $e");
+      Utils.loggerLog("Error: $e");
     } finally {
       isLoading(false);
       isChecked.value = false;

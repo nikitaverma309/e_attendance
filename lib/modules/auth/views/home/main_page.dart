@@ -2,7 +2,7 @@ import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:online/modules/auth/views/home/home.dart';
-import 'package:online/screens/comman_screen/faq_screen.dart';
+import 'package:online/modules/screens/comman_screen/faq_screen.dart';
 
 class MainPage extends StatefulWidget {
   final int? initialPage;

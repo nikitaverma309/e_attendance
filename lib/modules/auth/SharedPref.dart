@@ -1,5 +1,6 @@
-import 'dart:convert';
-
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:online/splash/feature_showcase_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String _uidKey = 'id';
@@ -89,7 +90,8 @@ class SharedPref {
 
   // Save Type as int
   static void setType(int type) {
-    ApiVariables.type = type.toString(); // Optional: Keep as String if needed elsewhere
+    ApiVariables.type =
+        type.toString(); // Optional: Keep as String if needed elsewhere
     _prefs?.setInt(_uTypeKey, type);
   }
 
@@ -97,6 +99,7 @@ class SharedPref {
   static int? getType() {
     return _prefs?.getInt(_uTypeKey);
   }
+
   // Save Token
   static void setToken(String token) {
     ApiVariables.token = token;
@@ -118,6 +121,12 @@ class SharedPref {
     ApiVariables.empCode = null;
     ApiVariables.type = null;
     ApiVariables.token = null;
+  }
+
+  static void logoutUser() {
+    logout();
+
+    Get.offAll(() => const FeatureShowCasePage());
   }
 
   // Retrieve all data as a Map (optional utility)

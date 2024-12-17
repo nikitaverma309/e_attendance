@@ -4,8 +4,8 @@ class ApiStrings {
   static const String register = '$baseUrl/upload/training?username=';
   // static const String login = '$baseUrl:5000/api/recognize';
   static const String login = '$baseUrl/recognize';
-  static const String profile = 'http://164.100.150.78/lmsbackend/api/attendance/add?empCode=';
-
+  static const String profile =
+      'http://164.100.150.78/lmsbackend/api/attendance/add?empCode=';
 
   //live server
   static const String lBaseUrl = 'https://heonline.cg.nic.in/lmsbackend/api';
@@ -20,16 +20,4 @@ class ApiStrings {
   static const String district = '$sBaseUrl/district/get-division-district/';
   static const String getVidhansabha =
       '$sBaseUrl/district/getVidhansabha-district-wise/';
-}
-
-class ApiVariables {
-  static const String id = 'id';
-}
-
-class ApiMethods {
-  static const String post = 'POST';
-  static const String put = 'PUT';
-  static const String get = 'GET';
-  static const String delete = 'DELETE';
-  static const String patch = 'PATCH';
 }

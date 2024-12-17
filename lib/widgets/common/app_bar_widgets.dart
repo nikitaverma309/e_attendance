@@ -25,7 +25,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xff176daa),
-      automaticallyImplyLeading: false, // Set to false to control leading manually
+      automaticallyImplyLeading:
+          false, // Set to false to control leading manually
       elevation: 7,
       centerTitle: true,
       title: Row(
@@ -34,12 +35,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Expanded(
             child: title != null
                 ? Center(
-              child: Text(
-                title!,
-                textAlign: TextAlign.center,
-                style: kWhite.copyWith(color: Colors.white),
-              ),
-            )
+                    child: Text(
+                      title!,
+                      textAlign: TextAlign.center,
+                      style: kWhite.copyWith(color: Colors.white),
+                    ),
+                  )
                 : const SizedBox.shrink(),
           ),
           if (actionWidget != null)
@@ -56,15 +57,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       leading: showBackButton
           ? IconButton(
-        icon: const Icon(
-          Icons.arrow_back, // Default back icon
-          color: Colors.white, // Set the color to white
-        ),
-        onPressed: onBackTap ??
-                () {
-              Navigator.of(context).pop();
-            },
-      )
+              icon: const Icon(
+                Icons.arrow_back, // Default back icon
+                color: Colors.white, // Set the color to white
+              ),
+              onPressed: onBackTap ??
+                  () {
+                    Navigator.of(context).pop();
+                  },
+            )
           : null,
     );
   }

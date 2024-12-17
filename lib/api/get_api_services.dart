@@ -23,7 +23,8 @@ class ApiServices {
       Utils.printLog("Error: UID is null or empty.");
       return null;
     }
-    final url = Uri.parse("http://164.100.150.78/lmsbackend/api/leave/applied_Leaves/$uid");
+    final url = Uri.parse(
+        "http://164.100.150.78/lmsbackend/api/leave/applied_Leaves/$uid");
     print(url);
     try {
       final response = await http.get(url);
@@ -40,7 +41,8 @@ class ApiServices {
 
         return leaveList;
       } else {
-        Utils.printLog("Failed to fetch data. Status code: ${response.statusCode}");
+        Utils.printLog(
+            "Failed to fetch data. Status code: ${response.statusCode}");
         return null;
       }
     } catch (e) {
@@ -48,6 +50,7 @@ class ApiServices {
       return null;
     }
   }
+
   //Profile
   static Future<ProfileModel?> profileApi(String empCode) async {
     final url = Uri.parse(
@@ -59,18 +62,20 @@ class ApiServices {
         if (data['msg'] == "Employee Not Found") {
           return null; // Employee not found, return null
         }
-        print(data);
+        Utils.printLog(data);
         return ProfileModel.fromJson(data);
       } else {
         return null; // If response code is not 200, return null
       }
     } catch (e) {
-      print("Error: $e");
+      Utils.printLog("Error: $e");
       return null; // Return null in case of any error
     }
   }
+
   static Future<AllUserTypeModel> fetchUserTypes() async {
-    final response = await http.get(Uri.parse('http://164.100.150.78/lmsbackend/api/userType'));
+    final response = await http
+        .get(Uri.parse('http://164.100.150.78/lmsbackend/api/userType'));
 
     if (response.statusCode == 200) {
       // Parse the JSON response
@@ -79,6 +84,7 @@ class ApiServices {
       throw Exception("Failed to load user types");
     }
   }
+
   /// API to update faceVerified to true
   static Future<bool> updateFaceVerifiedStatus(String empCode) async {
     final url = Uri.parse('${ApiStrings.userLocation}$empCode');
@@ -88,11 +94,11 @@ class ApiServices {
       if (response.statusCode == 200) {
         return true;
       } else {
-        Get.snackbar('Error', 'Failed to update face verification status');
         return false;
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
+      Utils.printLog("An error occurred: $e");
+
       return false;
     }
   }
@@ -103,13 +109,13 @@ class ApiServices {
     final url = Uri.parse('${ApiStrings.userLocation}$empCode');
 
     try {
-      print("Requesting API: $url");
+      Utils.printLog("Requesting API: $url");
 
       final response = await http.get(url);
-      print("Response Status Code: ${response.statusCode}");
+      Utils.printLog("Response Status Code: ${response.statusCode}");
 
       if (response.statusCode == 200) {
-        print("Response Body: ${response.body}");
+        Utils.printLog("Response Body: ${response.body}");
 
         final jsonResponse = jsonDecode(response.body);
 
@@ -167,7 +173,8 @@ class ApiServices {
 
   //  getClass
   static Future<List<ClassModel>?> fetchClass() async {
-    final url = Uri.parse("https://heonline.cg.nic.in/lmsbackend/api/class/getAll");
+    final url =
+        Uri.parse("https://heonline.cg.nic.in/lmsbackend/api/class/getAll");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -176,7 +183,6 @@ class ApiServices {
         Utils.printLog("body${response.body}");
 
         return classList;
-
       } else {
         return null;
       }

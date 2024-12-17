@@ -6,13 +6,14 @@ import 'package:online/constants/text_size_const.dart';
 import 'package:online/modules/auth/controllers/profile_controller.dart';
 import 'package:online/controllers/user_Register_form_controller.dart';
 import 'package:online/enum/enum_screen.dart';
-import 'package:online/generated/assets.dart';
-import 'package:online/screens/camera/check_emp_id_screen.dart';
-import 'package:online/screens/emp_dash_bord/login_page.dart';
+import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
+import 'package:online/modules/screens/camera/check_emp_id_screen.dart';
+import 'package:online/modules/auth/views/login_page.dart';
 import 'package:online/utils/utils.dart';
 import 'package:online/widgets/app_button.dart';
 import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/common/form_input_widgets.dart';
+import 'package:online/widgets/logo_widgets.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -92,29 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      color: const Color(0xffb8cbd8),
-                      elevation: 6,
-                      child: const Image(
-                        image: AssetImage(Assets.imagesCglogo),
-                        height: 88,
-                        width: 88,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                10.height,
-                const Text("Higher Education Department",
-                    style: kText15whiteColorStyle),
-                const Text("Government Of Chhattisgarh",
-                    style: kText15BaNaBoldWhiteColorStyle),
+                const CustomLogoWidget(),
                 58.height,
                 Center(
                   child: ClipRRect(
@@ -157,17 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     Get.to(() => LoginPage());
                   },
                 ),
-                // customButton(
-                //   context,
-                //   'Login',
-                //   const Color(0xFFCEEEEE),
-                //   Colors.black,
-                //   Icons.perm_contact_calendar_outlined,
-                //       () {
-                //     // _profileDialog(context);
-                //    // Get.to(() => EmployeeRegistrationForm(employeeData: null,));
-                //   },
-                // ),
               ],
             ),
           ],
@@ -352,7 +320,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               onPressed: () async {
                                 if (empCodeController.text.isEmpty) {
                                   // Show an error message or highlight the input field
-                                  Utils.showErrorToast(message: "Please enter the employee code.");
+                                  Utils.showErrorToast(
+                                      message:
+                                          "Please enter the employee code.");
                                   return; // Don't proceed if the input is empty
                                 }
 

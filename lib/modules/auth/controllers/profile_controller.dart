@@ -21,8 +21,8 @@ class ProfileController extends GetxController {
         Utils.showErrorToast(message: "Invalid employee code. Please try again.");
       }
     } catch (e) {
-      Utils.showErrorToast(message: "An error occurred: $e");
-      print("An error occurred: $e");
+
+      Utils.printLog("An error occurred: $e");
     } finally {
       isLoading(false);
     }

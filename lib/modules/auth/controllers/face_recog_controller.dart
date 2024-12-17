@@ -44,7 +44,6 @@ class LoginController extends GetxController {
       var response = await request.send();
       var responseData = await http.Response.fromStream(response);
 
-      print("Response Data: ${responseData.body}");
       Utils.printLog(
           "Response code: ${response.statusCode} ${responseData.body}");
 
@@ -53,11 +52,6 @@ class LoginController extends GetxController {
 
       if (response.statusCode == 201) {
         handleResponseRegister(message);
-      } else {
-        showMessageErrorDialog(
-          "Error",
-          "Failed to process your request. Please try again later.",
-        );
       }
     } catch (error) {
       showMessageErrorDialog(
@@ -67,7 +61,6 @@ class LoginController extends GetxController {
       Utils.printLog('Error: $error');
     }
   }
-
 
   Future<void> uploadLogin(
     BuildContext context,
@@ -124,15 +117,9 @@ class LoginController extends GetxController {
           showErrorLoginDialog(
               context, "Recognition Failed", "Face not recognized.", false);
         }
-      } else if (response.statusCode == 401) {
-        showErrorLoginDialog(context, "Unauthorized",
-            "Face not recognized and No match found.", false);
-      } else {
-        showErrorLoginDialog(context, "Error",
-            "Failed to recognize face: ${responseData.body}", false);
       }
     } catch (e) {
-      print("Error occurred: ${e.toString()}");
+      Utils.printLog("Error occurred: ${e.toString()}");
     }
   }
 
@@ -149,9 +136,7 @@ class LoginController extends GetxController {
           showErrorLoginDialog(
               context, "सफलता", "उपस्थिति सफलतापूर्वक दर्ज।", true);
           final resData = AttendanceProfileModel.fromJson(jsonResponse);
-          print(resData.attendance?.loginTime);
-          print(resData.attendance?.logoutTime);
-          print(resData);
+
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -168,12 +153,12 @@ class LoginController extends GetxController {
                   MaterialPageRoute(
                     builder: (context) => const MainPage(),
                   ),
-                      (Route<dynamic> route) => false, // Remove all previous routes
+                  (Route<dynamic> route) => false, // Remove all previous routes
                 );
               });
 
               return AlertDialog(
-                title:  Column(
+                title: Column(
                   children: [
                     const Text(
                       "Attendance Type ",
@@ -216,7 +201,7 @@ class LoginController extends GetxController {
                         style: kText15BaNaBoldBlackColorStyle,
                       ),
                       Text(
-                        "${Utils.formatTime(resData!.attendance!.loginTime)}",
+                        Utils.formatTime(resData!.attendance!.loginTime),
                         style: kTextBlueColorStyle,
                       ),
                       const Text(
@@ -224,7 +209,7 @@ class LoginController extends GetxController {
                         style: kText15BaNaBoldBlackColorStyle,
                       ),
                       Text(
-                        "${logoutTimeText}",
+                        logoutTimeText,
                         style: kTextBlueColorStyle,
                       ),
                     ],
@@ -247,19 +232,12 @@ class LoginController extends GetxController {
                             false, // Remove all previous routes
                       );
                     },
-
                   ),
                 ],
               );
             },
           );
-        } else {
-          showErrorLoginDialog(
-              context, "त्रुटि", "अमान्य उपस्थिति डेटा।", false);
         }
-      } else {
-        showErrorLoginDialog(context, "त्रुटि",
-            "उपस्थिति प्राप्त करने में विफल: ${response.body}", false);
       }
     } catch (e) {
       print("त्रुटि: $e");

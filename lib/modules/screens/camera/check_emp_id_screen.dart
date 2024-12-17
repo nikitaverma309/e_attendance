@@ -7,9 +7,9 @@ import 'package:online/constants/text_size_const.dart';
 import 'package:online/controllers/user_Location_controller.dart';
 import 'package:online/enum/enum_screen.dart';
 import 'package:online/generated/assets.dart';
+import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
 import 'package:online/utils/shap/shape_design.dart';
 import 'package:online/widgets/common/app_bar_widgets.dart';
-import 'package:online/widgets/common/custom_widgets.dart';
 import 'package:online/widgets/footer_widget.dart';
 import 'package:text_scroll/text_scroll.dart';
 

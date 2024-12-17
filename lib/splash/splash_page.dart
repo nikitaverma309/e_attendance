@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:online/feature_showcase_page.dart';
+import 'package:online/modules/auth/SharedPref.dart';
 import 'package:online/modules/restriction_dialog/restrict_user_dialog.dart';
+import 'package:online/modules/screens/emp_dash_bord/cmo_dash_bord.dart';
 import 'package:online/services/geolocator_service.dart';
+import 'package:online/splash/feature_showcase_page.dart';
 import 'package:online/utils/utils.dart';
 
 import 'package:permission_handler/permission_handler.dart'
@@ -109,7 +111,11 @@ class _SplashScreenOneState extends State<SplashScreenOne>
     }
 
     await Future.delayed(const Duration(seconds: 2));
-    Widget screen = const FeatureShowCasePage();
+    print("Token: ${SharedPref.getToken()}");
+    bool isLoggedIn = SharedPref.getToken() != null && SharedPref.getToken()!.isNotEmpty;
+    print("Is Logged In: $isLoggedIn");
+    Widget screen = isLoggedIn ? const UserDashBord() : const FeatureShowCasePage();
+  //  Widget screen = const FeatureShowCasePage();
 
     // initGeoLocation();
     if (mounted) {

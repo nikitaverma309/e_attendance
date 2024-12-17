@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online/constants/colors_res.dart';
 import 'package:online/modules/auth/views/home/main_page.dart';
-import 'constants/string_res.dart';
+import '../../constants/string_res.dart';
 
 class FeatureShowCasePage extends StatefulWidget {
   const FeatureShowCasePage({super.key});
@@ -36,8 +36,10 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     bool isDark =
@@ -132,6 +134,15 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
                           ),
+                          // onPressed: () {
+                          //   if (isLoggedIn) {
+                          //     // User is logged in, navigate to the Dashboard
+                          //     Get.to(() => const UserDashBord());
+                          //   } else {
+                          //     // User is not logged in, navigate to login page (or MainPage)
+                          //     Get.to(() => const MainPage());
+                          //   }
+                          // },
                           onPressed: () {
                             Get.to(() => const MainPage());
                           },
@@ -145,6 +156,13 @@ class _FeatureShowCasePageState extends State<FeatureShowCasePage> {
                         TextButton(
                             onPressed: () {
                               Get.to(() => const MainPage());
+                              // if (isLoggedIn) {
+                              //   // User is logged in, navigate to the Dashboard
+                              //   Get.to(() => const UserDashBord());
+                              // } else {
+                              //   // User is not logged in, navigate to login page (or MainPage)
+                              //   Get.to(() => const MainPage());
+                              // }
                             },
                             child: Text(
                               "Skip",
