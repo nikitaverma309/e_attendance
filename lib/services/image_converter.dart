@@ -39,7 +39,53 @@ imglib.Image convertToImage(CameraImage image) {
   throw Exception('Image format not supported');
 }
 
+/// Convert CameraImage BGRA8888 to an imglib.Image
 imglib.Image _convertBGRA8888(CameraImage image) {
+  // Extract the plane's bytes (raw image data)
+  final bgraBytes = image.planes[0].bytes;
+
+  // Convert raw bytes into an imglib.Image
+  return imglib.Image.fromBytes(
+    width: image.width,
+    height: image.height,
+    bytes: bgraBytes.buffer, // Convert Uint8List to ByteBuffer
+    format: imglib.Format.uint8,
+  );
+
+ }
+imglib.Image _convertYUV420(CameraImage image) {
+  final width = image.width;
+  final height = image.height;
+
+  final yPlane = image.planes[0].bytes;
+  final uPlane = image.planes[1].bytes;
+  final vPlane = image.planes[2].bytes;
+
+  // Create an empty imglib.Image with proper dimensions
+  final img = imglib.Image(width: width, height: height);
+
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
+      final yValue = yPlane[y * width + x] & 0xFF;
+      final uvIndex = (y ~/ 2) * (width ~/ 2) + (x ~/ 2);
+
+      final uValue = uPlane[uvIndex] & 0xFF;
+      final vValue = vPlane[uvIndex] & 0xFF;
+
+      // Convert YUV to RGB
+      final r = (yValue + 1.402 * (vValue - 128)).clamp(0, 255).toInt();
+      final g = (yValue - 0.344136 * (uValue - 128) - 0.714136 * (vValue - 128))
+          .clamp(0, 255)
+          .toInt();
+      final b = (yValue + 1.772 * (uValue - 128)).clamp(0, 255).toInt();
+
+      img.setPixel(x, y, imglib.ColorInt8.rgb(r, g, b));
+    }
+  }
+  return img;
+}
+
+/*imglib.Image _convertBGRA8888(CameraImage image) {
   return imglib.Image.fromBytes(
     image.width,
     image.height,
@@ -73,13 +119,19 @@ imglib.Image _convertYUV420(CameraImage image) {
   }
 
   return img;
-}
+}*/
+/*
 
 imglib.Image convertCameraImage(CameraImage image) {
   var img = convertToImage(image);
   return imglib.copyRotate(img, -90); // घुमाव करें जैसा आवश्यक हो
 }
 
+*/
+imglib.Image convertCameraImage(CameraImage image) {
+  var img = convertToImage(image);
+  return imglib.copyRotate(img, angle: -90); // Pass the required 'angle' parameter
+}
 
 Future<File> convertImageToFile(imglib.Image image) async {
   // Encode the image to JPEG format
